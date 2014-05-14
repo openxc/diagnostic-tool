@@ -1,0 +1,7 @@
+OpenXCStarter
+==============
+
+This is a simple "hello world" project. Follow the OpenXC getting started app
+[tutorial](http://openxcplatform.com/getting-started/tutorial.html) to learn
+more about what this code does. You can also use this project to jumpstart your
+own OpenXC app.
