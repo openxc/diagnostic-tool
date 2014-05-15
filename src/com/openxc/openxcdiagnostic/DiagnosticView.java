@@ -2,20 +2,13 @@ package com.openxc.openxcdiagnostic;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.openxc.NoValueException;
-import com.openxc.VehicleManager;
-import com.openxc.measurements.SteeringWheelAngle;
-import com.openxc.measurements.UnrecognizedMeasurementTypeException;
 
 public class DiagnosticView extends SurfaceView implements
 	SurfaceHolder.Callback, Runnable {
@@ -24,10 +17,8 @@ public class DiagnosticView extends SurfaceView implements
 
     Thread mainLoop = null;
     private static Bitmap sOverlayLinesBitmap = null;
-    private static Bitmap sSteeringAngleLinesBitmap = null;
     private static double screenHeight; 
     private static double screenWidth; 
-    private VehicleManager mVehicleManager;
 
     public DiagnosticView(Context context) {
         super(context);
@@ -46,11 +37,7 @@ public class DiagnosticView extends SurfaceView implements
             sOverlayLinesBitmap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.overlay);
         }
-
-        if(sSteeringAngleLinesBitmap == null) {
-            sSteeringAngleLinesBitmap = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.dynamiclines);
-        }*/
+         */
     }
 
     protected void drawOnCanvas(Canvas canvas, Bitmap videoBitmap) {

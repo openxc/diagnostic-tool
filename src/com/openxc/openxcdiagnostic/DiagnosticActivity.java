@@ -23,11 +23,13 @@ public class DiagnosticActivity extends Activity {
 
     private VehicleManager mVehicleManager;
     private TextView mEngineSpeedView;
+    private DiagnosticView dv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_starter);
+        setContentView(R.layout.diagnostic_layout);
         // grab a reference to the engine speed text object in the UI, so we can
         // manipulate its value later from Java code
         mEngineSpeedView = (TextView) findViewById(R.id.vehicle_speed);
@@ -122,7 +124,7 @@ public class DiagnosticActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.starter, menu);
+        getMenuInflater().inflate(R.menu.diagnostic_menu, menu);
         return true;
     }
 }
