@@ -78,7 +78,7 @@ public class DiagnosticActivity extends Activity {
             // When we receive a new EngineSpeed value from the car, we want to
             // update the UI to display the new value. First we cast the generic
             // Measurement back to the type we know it to be, an EngineSpeed.
-            final EngineSpeed speed = (EngineSpeed) measurement;
+            /*       final EngineSpeed speed = (EngineSpeed) measurement;      */
             // In order to modify the UI, we have to make sure the code is
             // running on the "UI thread" - Google around for this, it's an
             // important concept in Android.

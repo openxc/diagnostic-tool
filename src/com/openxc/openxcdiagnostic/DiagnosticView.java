@@ -12,9 +12,9 @@ import android.view.SurfaceView;
 public class DiagnosticView extends SurfaceView implements
 	SurfaceHolder.Callback, Runnable {
 	
-    private static String TAG = "DiagnosticView";
+    //private static String TAG = "DiagnosticView";
 
-    Thread mainLoop = null;
+    private Thread mainLoop = null;
     private static Bitmap sOverlayLinesBitmap = null;
     private static double screenHeight; 
     private static double screenWidth; 
@@ -67,13 +67,6 @@ public class DiagnosticView extends SurfaceView implements
             bmpDash = BitmapFactory.decodeResource(this.getResources(),
                     R.drawable.mustangdash);
         }
-        if (bmpNeedle == null) {
-            bmpNeedle = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.needle2);
-        }
-        if (bmpBackground == null) {
-            bmpBackground = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.twoflags);
         }*/
 
         this.mainLoop = new Thread(this);
