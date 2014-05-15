@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 public class DiagnosticView extends SurfaceView implements
 	SurfaceHolder.Callback, Runnable {
 	

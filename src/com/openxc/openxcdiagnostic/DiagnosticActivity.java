@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.openxc.VehicleManager;
 import com.openxc.measurements.Measurement;
@@ -96,6 +94,14 @@ public class DiagnosticActivity extends Activity {
         }
     };
 
+    private void cleanBitmapMemory() {
+    	
+    	/*if (DashboardSurface.bmpDash != null) {
+    		DashboardSurface.bmpDash.recycle();
+    		DashboardSurface.bmpDash = null;
+    	}*/
+	}
+    
     private ServiceConnection mConnection = new ServiceConnection() {
         // Called when the connection with the VehicleManager service is established, i.e. bound.
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -129,16 +135,19 @@ public class DiagnosticActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.diagnostic_menu, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	if (item.getItemId() == R.id.Dashboard) {
+    	if (item.getItemId() == R.id.Diagnostic) {
     		//dv = new DiagnosticView(this);
     		setContentView(dv);
-    		//cleanBitmapMemory();
+    		cleanBitmapMemory();
+    	} else if (item.getItemId() == R.id.Dashboard) {
+    	    startActivity(new Intent(this, DashboardActivity.class));
+            return true;
     	}
     	return super.onOptionsItemSelected(item);
     }
