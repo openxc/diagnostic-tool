@@ -135,20 +135,23 @@ public class DiagnosticActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.options, menu);
         return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	if (item.getItemId() == R.id.Diagnostic) {
-    		//dv = new DiagnosticView(this);
-    		setContentView(dv);
-    		cleanBitmapMemory();
-    	} else if (item.getItemId() == R.id.Dashboard) {
+    		//do nothing
+    	} else if (item.getItemId() == R.id.Menu) {
+    		startActivity(new Intent(this, MenuActivity.class));
+            return true;
+    	}
+    	else if (item.getItemId() == R.id.Dashboard) {
     	    startActivity(new Intent(this, DashboardActivity.class));
             return true;
     	}
+    	cleanBitmapMemory();
     	return super.onOptionsItemSelected(item);
     }
 }

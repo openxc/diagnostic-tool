@@ -403,19 +403,22 @@ public class DashboardActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.Diagnostic:
-            startActivity(new Intent(this, DiagnosticActivity.class));
+    	if (item.getItemId() == R.id.Diagnostic) {
+    		startActivity(new Intent(this, DiagnosticActivity.class));
+    	} else if (item.getItemId() == R.id.Menu) {
+    		startActivity(new Intent(this, MenuActivity.class));
             return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+    	}
+    	else if (item.getItemId() == R.id.Dashboard) {
+    	    //do nothing
+    	}
+    	return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.options, menu);
         return true;
     }
 }

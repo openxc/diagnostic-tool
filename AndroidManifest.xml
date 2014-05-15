@@ -8,7 +8,7 @@
   	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="16"
         android:targetSdkVersion="18" />
 
     <application
@@ -29,6 +29,11 @@
         <activity 
             android:name="com.openxc.openxcdiagnostic.DashboardActivity"
             android:label="@string/dash_label" >
+      	</activity>
+      	
+        <activity 
+            android:name="com.openxc.openxcdiagnostic.MenuActivity"
+            android:label="@string/menu_label" >
       	</activity>
 
         <service android:name="com.openxc.VehicleManager"/>
