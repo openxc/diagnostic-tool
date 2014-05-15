@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.openxc.VehicleManager;
@@ -22,19 +24,19 @@ public class DiagnosticActivity extends Activity {
     private static final String TAG = "DiagnosticActivity";
 
     private VehicleManager mVehicleManager;
-    private TextView mEngineSpeedView;
+    //private TextView mEngineSpeedView;
     private DiagnosticView dv;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diagnostic_layout);
+        dv = new DiagnosticView(this);
+        setContentView(dv);
         // grab a reference to the engine speed text object in the UI, so we can
         // manipulate its value later from Java code
-        mEngineSpeedView = (TextView) findViewById(R.id.vehicle_speed);
+        //mEngineSpeedView = (TextView) findViewById(R.id.vehicle_speed);
     }
-
+    
     @Override
     public void onPause() {
         super.onPause();
@@ -63,7 +65,10 @@ public class DiagnosticActivity extends Activity {
             Intent intent = new Intent(this, VehicleManager.class);
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
         }
+        //dv = new DiagnosticView(this);
+        setContentView(dv);
     }
+    
 
     /* This is an OpenXC measurement listener object - the type is recognized
      * by the VehicleManager as something that can receive measurement updates.
@@ -84,8 +89,8 @@ public class DiagnosticActivity extends Activity {
                     // Finally, we've got a new value and we're running on the
                     // UI thread - we set the text of the EngineSpeed view to
                     // the latest value
-                    mEngineSpeedView.setText("Engine speed (RPM): "
-                            + speed.getValue().doubleValue());
+                    //mEngineSpeedView.setText("Engine speed (RPM): "
+                          //  + speed.getValue().doubleValue());
                 }
             });
         }
@@ -126,5 +131,15 @@ public class DiagnosticActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.diagnostic_menu, menu);
         return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if (item.getItemId() == R.id.Dashboard) {
+    		//dv = new DiagnosticView(this);
+    		setContentView(dv);
+    		//cleanBitmapMemory();
+    	}
+    	return super.onOptionsItemSelected(item);
     }
 }
