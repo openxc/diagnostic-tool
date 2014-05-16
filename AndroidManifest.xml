@@ -19,11 +19,6 @@
         <activity
             android:name="com.openxc.openxcdiagnostic.DiagnosticActivity"
             android:label="@string/diagnostic_label" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         
         <activity 
@@ -34,6 +29,10 @@
         <activity 
             android:name="com.openxc.openxcdiagnostic.MenuActivity"
             android:label="@string/menu_label" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
       	</activity>
 
         <service android:name="com.openxc.VehicleManager"/>
