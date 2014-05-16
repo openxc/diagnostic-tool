@@ -2,6 +2,7 @@ package com.openxc.openxcdiagnostic;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ public class MenuActivity extends Activity {
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new ImageAdapter(this));
-
+        gridview.setBackgroundColor(Color.BLACK);
         gridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
         	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

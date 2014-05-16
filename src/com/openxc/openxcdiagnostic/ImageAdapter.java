@@ -50,11 +50,11 @@ public class ImageAdapter extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.drawable.steeringwheel, R.drawable.speedometer,
-            R.drawable.tachometer, R.drawable.gaspump, 
-            R.drawable.odometer, R.drawable.windshieldwiper, 
-            R.drawable.brakepedal, R.drawable.gaspedal,
+            R.drawable.steeringwheel, R.drawable.speedrpm,
+            R.drawable.gaspump, R.drawable.odometer, 
+            R.drawable.windshieldwiper, R.drawable.pedals,
             R.drawable.parkingbrake, R.drawable.headlamp, 
-            R.drawable.transmissiontorque,
+            R.drawable.transmissiontorque, R.drawable.transmissiongear,
+            R.drawable.key, R.drawable.location
     };
 }
