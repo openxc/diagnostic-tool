@@ -1,5 +1,9 @@
 package com.openxc.openxcdiagnostic;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphView.GraphViewData;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.LineGraphView;
 import com.openxc.openxcdiagnostic.resources.ResourceManager;
 
 import android.app.Activity;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 public class MenuActivity extends Activity {
 
@@ -27,9 +32,26 @@ public class MenuActivity extends Activity {
             @Override
         	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             	flipButtonBackground(v);
+                GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
+                        new GraphViewData(1, 2.0d)
+                        , new GraphViewData(2, 1.5d)
+                        , new GraphViewData(3, 2.5d)
+                        , new GraphViewData(4, 1.0d)
+                    });
+                     
+                    GraphView graphView = new LineGraphView(
+                        MenuActivity.this // context
+                        , "GraphViewDemo" // heading
+                    );
+                    graphView.addSeries(exampleSeries); // data
+                     
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+                    layout.addView(graphView);
+                    MenuActivity.this.setContentView(R.layout.graph);
             }
         });
     }
+
     
     private void flipButtonBackground(View v) {
     	Drawable pressed = getResources().getDrawable(ResourceManager.MenuButtonPressedImgID);
