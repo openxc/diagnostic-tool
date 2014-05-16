@@ -1,8 +1,11 @@
 package com.openxc.openxcdiagnostic;
 
+import com.openxc.openxcdiagnostic.resources.ResourceManager;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,14 +22,24 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.menu);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
+        gridview.setAdapter(new GridImageAdapter(this, ResourceManager.MenuThumbIDs, ResourceManager.MenuButtonUnpressedImgID));
         gridview.setBackgroundColor(Color.BLACK);
         gridview.setOnItemClickListener(new OnItemClickListener() {
             @Override
         	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            	v.setBackground(getResources().getDrawable(R.drawable.graybuttonpressedbackground));
+            	flipButtonBackground(v);
             }
         });
+    }
+    
+    private void flipButtonBackground(View v) {
+    	Drawable pressed = getResources().getDrawable(ResourceManager.MenuButtonPressedImgID);
+    	Drawable unpressed = getResources().getDrawable(ResourceManager.MenuButtonUnpressedImgID);
+    	if (ResourceManager.drawablesAreEqual(v.getBackground(), pressed)) {
+    		v.setBackground(unpressed);
+    	} else if (ResourceManager.drawablesAreEqual(v.getBackground(), unpressed)) {
+    		v.setBackground(pressed);
+    	}    	
     }
 
     @Override

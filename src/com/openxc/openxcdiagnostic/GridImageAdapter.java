@@ -7,19 +7,23 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-public class ImageAdapter extends BaseAdapter {
+public class GridImageAdapter extends BaseAdapter {
     private Context mContext;
-    private static double screenWidth;
-    private static double screenHeight;
+    private double screenWidth;
+    private double screenHeight;
+    private Integer[] images;
+    private Integer initialBackground;
 
-    public ImageAdapter(Context c) {
+    public GridImageAdapter(Context c, Integer[] img, Integer backgrnd) {
         mContext = c;
+        images = img;
+        initialBackground = backgrnd;
         screenHeight = c.getResources().getDisplayMetrics().heightPixels;
     	screenWidth = c.getResources().getDisplayMetrics().widthPixels;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return images.length;
     }
 
     public Object getItem(int position) {
@@ -43,18 +47,9 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
-        imageView.setBackground(mContext.getResources().getDrawable(R.drawable.graybuttonbackground));
+        imageView.setImageResource(images[position]);
+        imageView.setBackground(mContext.getResources().getDrawable(initialBackground));
         return imageView;
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.steeringwheel, R.drawable.speedrpm,
-            R.drawable.gaspump, R.drawable.odometer, 
-            R.drawable.windshieldwiper, R.drawable.pedals,
-            R.drawable.parkingbrake, R.drawable.headlamp, 
-            R.drawable.transmissiontorque, R.drawable.transmissiongear,
-            R.drawable.key, R.drawable.location
-    };
 }
