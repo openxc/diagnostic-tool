@@ -53,7 +53,8 @@ public class ImageAdapter extends BaseAdapter {
             R.drawable.steeringwheel, R.drawable.speedometer,
             R.drawable.tachometer, R.drawable.gaspump, 
             R.drawable.odometer, R.drawable.windshieldwiper, 
-            R.drawable.brakepedal, R.drawable.parkingbrake, 
-            R.drawable.headlamp, R.drawable.transmissiontorque
+            R.drawable.brakepedal, R.drawable.gaspedal,
+            R.drawable.parkingbrake, R.drawable.headlamp, 
+            R.drawable.transmissiontorque,
     };
 }
