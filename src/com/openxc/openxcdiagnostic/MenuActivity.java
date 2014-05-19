@@ -30,7 +30,11 @@ public class MenuActivity extends Activity {
             @Override
         	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             	flipButtonBackground(v);
-            	MenuActivity.this.startActivity(new Intent(MenuActivity.this, GrapherActivity.class));
+            	Intent intent = new Intent(MenuActivity.this, GrapherActivity.class);
+            	Bundle info = new Bundle();
+            	info.putInt("pos", position);
+            	intent.putExtras(info);
+            	MenuActivity.this.startActivity(intent);
             	Log.i(TAG, "Launching Grapher Activity");
             }
         });

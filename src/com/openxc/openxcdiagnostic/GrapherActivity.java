@@ -1,29 +1,26 @@
 package com.openxc.openxcdiagnostic;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.openxc.VehicleManager;
 import com.openxc.measurements.Measurement;
-import com.openxc.measurements.SteeringWheelAngle;
-import com.openxc.measurements.UnrecognizedMeasurementTypeException;
-import com.openxc.measurements.WindshieldWiperStatus;
-import com.openxc.remote.VehicleServiceException;
+import com.openxc.openxcdiagnostic.resources.GridManager;
 
 public class GrapherActivity extends Activity {
 
@@ -31,39 +28,24 @@ public class GrapherActivity extends Activity {
 
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
-    private final Handler mHandler = new Handler();
-    private TextView mWiperStatusView;
-    
+    private TimerTask mUpdateGraphTask;
+    private Timer mTimer;
+    private GraphViewSeries dataSeries;
 
-    /*WindshieldWiperStatus.Listener mWiperListener =
-            new WindshieldWiperStatus.Listener() {
-        public void receive(Measurement measurement) {
-            final WindshieldWiperStatus wiperStatus =
-                (WindshieldWiperStatus) measurement;
-            mHandler.post(new Runnable() {
-                public void run() {
-                    //mWiperStatusView.setText(wiperStatus.toString());
-                }
-            });
-        }
-    };*/
-
-    /*private ServiceConnection mConnection = new ServiceConnection() {
+    private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className,
                 IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
             mVehicleManager = ((VehicleManager.VehicleBinder)service
                     ).getService();
-
-            try {
-                mVehicleManager.addListener(SteeringWheelAngle.class,
-                        mWiperListener);
-            } catch(VehicleServiceException e) {
-                Log.w(TAG, "Couldn't add listeners for measurements", e);
-            } catch(UnrecognizedMeasurementTypeException e) {
-                Log.w(TAG, "Couldn't add listeners for measurements", e);
-            }
+            
             mIsBound = true;
+            
+            Integer gridPosition = getIntent().getExtras().getInt("pos");
+            Class <? extends Measurement> measurementType = GridManager.getClass(gridPosition);
+            mUpdateGraphTask = new GraphDataRetrieveTask(mVehicleManager, GrapherActivity.this, dataSeries, measurementType);
+            mTimer = new Timer();
+            mTimer.schedule(mUpdateGraphTask, 100, 1000);
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -71,7 +53,7 @@ public class GrapherActivity extends Activity {
             mVehicleManager = null;
             mIsBound = false;
         }
-    };*/
+    };
 
 
     @Override
@@ -79,57 +61,39 @@ public class GrapherActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         Log.i(TAG, "Vehicle dashboard created");
-
-
-        //mWiperStatusView = (TextView) findViewById(
-                //R.id.wiper_status);
         
         // init example series data
-        GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
-            new GraphViewData(1, 2.0d)
-            , new GraphViewData(2, 1.5d)
-            , new GraphViewData(3, 2.5d)
-            , new GraphViewData(4, 1.0d)
-        });
+        dataSeries = new GraphViewSeries(new GraphViewData[] {});
          
         GraphView graphView = new LineGraphView(
             this // context
             , "GraphViewDemo" // heading
         );
-        graphView.addSeries(exampleSeries); // data
+        graphView.addSeries(dataSeries); // data
+        graphView.setScrollable(true);
+        graphView.setScalable(true);
+        graphView.setManualYAxisBounds(1000, 0);
         setContentView(R.layout.graphlayout);
         LinearLayout layout = (LinearLayout) findViewById(R.id.graphlayout);
         layout.addView(graphView);
-        //setContentView(layout);
+
     }
-    
-    /*try {
-	Class<? extends Measurement> measurementType = GridManager.getClass(position);
-	Measurement measurement = MenuActivity.this.mVehicleManager.get(measurementType);
-	Toast.makeText(MenuActivity.this, measurementType.toString() + " : "+ measurement.toString(), Toast.LENGTH_SHORT).show();
-} catch (UnrecognizedMeasurementTypeException e) {
-    Log.w(TAG, "Unrecognized Measurement Type");
-	e.printStackTrace();
-} catch (NoValueException e) {
-    Log.w(TAG, "No Value Available");
-	e.printStackTrace();
-}*/
 
     @Override
     public void onResume() {
         super.onResume();
-        //bindService(new Intent(this, VehicleManager.class),
-        //        mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, VehicleManager.class),
+                mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        /*if(mIsBound) {
+        if(mIsBound) {
             Log.i(TAG, "Unbinding from vehicle service");
             unbindService(mConnection);
             mIsBound = false;
-        }*/
+        }
     }
 
     @Override
