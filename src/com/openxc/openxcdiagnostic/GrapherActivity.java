@@ -97,10 +97,23 @@ public class GrapherActivity extends Activity {
             , "GraphViewDemo" // heading
         );
         graphView.addSeries(exampleSeries); // data
-         
-        LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+        setContentView(R.layout.graphlayout);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.graphlayout);
         layout.addView(graphView);
+        //setContentView(layout);
     }
+    
+    /*try {
+	Class<? extends Measurement> measurementType = GridManager.getClass(position);
+	Measurement measurement = MenuActivity.this.mVehicleManager.get(measurementType);
+	Toast.makeText(MenuActivity.this, measurementType.toString() + " : "+ measurement.toString(), Toast.LENGTH_SHORT).show();
+} catch (UnrecognizedMeasurementTypeException e) {
+    Log.w(TAG, "Unrecognized Measurement Type");
+	e.printStackTrace();
+} catch (NoValueException e) {
+    Log.w(TAG, "No Value Available");
+	e.printStackTrace();
+}*/
 
     @Override
     public void onResume() {
