@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.menu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
+import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.dash.DashboardActivity;
+import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.resources.GridManager;
 
 public class MenuActivity extends Activity {

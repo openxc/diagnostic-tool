@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.diagnostic;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.dash;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -35,6 +35,9 @@ import com.openxc.measurements.TransmissionGearPosition;
 import com.openxc.measurements.UnrecognizedMeasurementTypeException;
 import com.openxc.measurements.VehicleSpeed;
 import com.openxc.measurements.WindshieldWiperStatus;
+import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
+import com.openxc.openxcdiagnostic.menu.MenuActivity;
 import com.openxc.remote.VehicleServiceException;
 
 public class DashboardActivity extends Activity {

@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.menu;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,6 +20,8 @@ import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 import com.openxc.VehicleManager;
 import com.openxc.measurements.Measurement;
+import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.resources.GridManager;
 
 public class GrapherActivity extends Activity {

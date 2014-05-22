@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.menu;
 
 import android.content.Context;
 import android.view.View;

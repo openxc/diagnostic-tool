@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic;
+package com.openxc.openxcdiagnostic.diagnostic;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -16,6 +16,8 @@ import com.openxc.measurements.Measurement;
 import com.openxc.measurements.UnrecognizedMeasurementTypeException;
 import com.openxc.measurements.EngineSpeed;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.dash.DashboardActivity;
+import com.openxc.openxcdiagnostic.menu.MenuActivity;
 import com.openxc.remote.VehicleServiceException;
 
 public class DiagnosticActivity extends Activity {
