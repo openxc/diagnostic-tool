@@ -7,12 +7,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.*;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+
 import com.openxc.VehicleManager;
 import com.openxc.measurements.DiagnosticMeasurement;
 import com.openxc.measurements.UnrecognizedMeasurementTypeException;
@@ -27,7 +33,7 @@ public class DiagnosticActivity extends Activity {
 
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
-    private Button mTestButton;
+    private Button sendRequestButton;
 
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -46,19 +52,114 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
-    public void initButton() {
-        mTestButton = (Button) findViewById(
-                R.id.hardButton);
-        mTestButton.setOnClickListener(new OnClickListener() {
+    private void initRequestButton() {
+        sendRequestButton = (Button) findViewById(
+                R.id.sendRequestButton);
+        sendRequestButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		try {
-					mVehicleManager.send(new DiagnosticMeasurement(1));
+					mVehicleManager.send(new DiagnosticMeasurement(1)); // this is not real
 				} catch (UnrecognizedMeasurementTypeException e) {
 					e.printStackTrace();
 				}
         	}
         });
+    }
+    
+    private void setKeyboardGoneDefault() {
+    	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    
+    private void initTextFields() {
+    	
+    	final EditText busInputText = (EditText) findViewById(R.id.busInput);
+    	busInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				busInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText idInputText = (EditText) findViewById(R.id.idInput);
+    	idInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				idInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText modeInputText = (EditText) findViewById(R.id.modeInput);
+    	modeInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				modeInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText pidInputText = (EditText) findViewById(R.id.pidInput);
+    	pidInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				pidInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText payloadInputText = (EditText) findViewById(R.id.payloadInput);
+    	payloadInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				payloadInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText factorInputText = (EditText) findViewById(R.id.factorInput);
+    	factorInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				factorInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText offsetInputText = (EditText) findViewById(R.id.offsetInput);
+    	offsetInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				offsetInputText.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});
+    	
+    	final EditText nameInput = (EditText) findViewById(R.id.nameInput);
+    	nameInput.setOnEditorActionListener(new OnEditorActionListener() {
+    		@Override
+    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+    			if (actionId == EditorInfo.IME_ACTION_DONE) {
+    				nameInput.setCursorVisible(false);
+    			}
+    			return false;
+    		}
+    	});	
     }
 
     @Override
@@ -67,7 +168,9 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle dashboard created");
 
-        initButton();
+        setKeyboardGoneDefault();
+        initRequestButton();
+        initTextFields();
     }
 
     @Override

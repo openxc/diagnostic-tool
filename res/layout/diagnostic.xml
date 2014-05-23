@@ -9,46 +9,97 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:padding="2dp">
+		android:orientation="vertical" >
 
-        <TableRow style="@style/ItemRow">
+        <TableRow style="@style/DiagRow">
 
 			<TextView
-			    android:id="@+id/bus_label_view"
+			    android:id="@+id/busLabel"
 				style="@style/DiagLabel"
-				android:text="@string/bus_label"
-			/>
-
+				android:text="@string/bus_label"/>
 			<EditText
 			    android:id="@+id/busInput"
 			    style="@style/DiagInputText"
-			    android:ems="10" >
-			</EditText>
-			
+			    android:inputType="number" />
 			<TextView
-			    android:id="@+id/id_label_view"
+			    android:id="@+id/idLabel"
 			    style="@style/DiagLabel"
-                android:text="@string/id_label"        
-			/>		
-			
+                android:text="@string/id_label"/>		
 			<EditText
                 android:id="@+id/idInput"
-				style="@style/DiagInputText"			
-            />	
+				style="@style/DiagInputText"
+				android:inputType="number"/>	
+            
+        </TableRow>
+        
+        <TableRow style="@style/DiagRow">
+
+			<TextView
+			    android:id="@+id/modeLabel"
+				style="@style/DiagLabel"
+				android:text="@string/mode_label"/>
+			<EditText
+			    android:id="@+id/modeInput"
+			    style="@style/DiagInputText"
+			    android:inputType="number"/>
+			<TextView
+			    android:id="@+id/pidLabel"
+			    style="@style/DiagLabel"
+                android:text="@string/pid_label"/>
+			<EditText
+                android:id="@+id/pidInput"
+				style="@style/DiagInputText"
+				android:inputType="number"/>	
+            
+        </TableRow>
+        
+        <TableRow style="@style/DiagRow">
+
+			<TextView
+			    android:id="@+id/payloadLabel"
+				style="@style/DiagLabel"
+				android:text="@string/payload_label" />
+			<EditText
+			    android:id="@+id/payloadInput"
+			    style="@style/DiagInputText"
+			    android:inputType="number"/>
+			<TextView
+			    android:id="@+id/factorLabel"
+			    style="@style/DiagLabel"
+                android:text="@string/factor_label"/>
+			<EditText
+                android:id="@+id/factorInput"
+				style="@style/DiagInputText"
+				android:inputType="number"/>	
+            
+        </TableRow>
+        
+        <TableRow style="@style/DiagRow">
+
+			<TextView
+			    android:id="@+id/offsetLabel"
+				style="@style/DiagLabel"
+				android:text="@string/offset_label"/>
+			<EditText
+			    android:id="@+id/offsetInput"
+			    style="@style/DiagInputText"
+			    android:inputType="number"/>
+			<TextView
+			    android:id="@+id/nameLabel"
+			    style="@style/DiagLabel"
+                android:text="@string/name_label"/>
+			<EditText
+                android:id="@+id/nameInput"
+				style="@style/DiagInputText"
+				android:inputType="text"/>	
             
         </TableRow>
 
-        <TableRow style="@style/ItemRow" >
+        <TableRow style="@style/DiagRow" >
 
-            <Button
-                android:id="@+id/hardButton"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blah"
-                android:gravity="center"
-                android:padding="5dp"
-                android:layout_weight="1"
+            <Button style = "@style/RequestButton"
+                android:id="@+id/sendRequestButton"
+                android:background="@color/brightGreen"
                 android:text="@string/requestButtonLabel" />
         </TableRow>
         
