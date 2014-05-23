@@ -3,5 +3,7 @@
 <resources>
     <color name="lightBlue">#33A1C9</color>
     <color name="darkBlue">#0000FF</color>
+    <color name="blah">#0FF764</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

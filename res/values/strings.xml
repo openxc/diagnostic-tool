@@ -5,12 +5,22 @@
     <string name="diagnostic_label">OpenXC Diagnostics</string>
     <string name="dash_label">OpenXC Dash</string>
     <string name="menu_label">OpenXC Menu</string>
+    <string name ="requestButtonLabel">Send Request</string>
         
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="dashboard">Dash</string>
     <string name="diagnostic">Diagnostic</string>
     <string name="menu">Menu</string>
+    
+    <!-- Diagnostic Strings -->
+    <string name="bus_label">Bus</string>
+    <string name="id_label">ID</string>
+    <string name="mode_label">Mode</string>
+    <string name="pid_label">PID</string>
+    <string name="payload_label">Payload</string>
+    <string name="factor_label">Factor</string>
+    <string name="offset_offset">Offset</string>
+    <string name="name_label">Name</string>
     
     <!-- Vehicle Dashboard Strings -->
     <string name="steering_wheel_angle_label">Steering Wheel</string>
