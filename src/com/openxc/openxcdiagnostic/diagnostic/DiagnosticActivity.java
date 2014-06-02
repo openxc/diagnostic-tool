@@ -1,5 +1,8 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,8 +23,9 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.openxc.VehicleManager;
-import com.openxc.measurements.DiagnosticMeasurement;
 import com.openxc.measurements.UnrecognizedMeasurementTypeException;
+import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
@@ -58,11 +62,6 @@ public class DiagnosticActivity extends Activity {
         sendRequestButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		try {
-					mVehicleManager.send(new DiagnosticMeasurement(1)); // this is not real
-				} catch (UnrecognizedMeasurementTypeException e) {
-					e.printStackTrace();
-				}
         	}
         });
     }
