@@ -60,6 +60,7 @@ public class DiagnosticActivity extends Activity {
         sendRequestButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
+        	    //TODO
         	}
         });
         
