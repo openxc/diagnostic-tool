@@ -1,7 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -10,12 +10,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.*;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +24,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.openxc.VehicleManager;
-import com.openxc.measurements.UnrecognizedMeasurementTypeException;
-import com.openxc.messages.DiagnosticRequest;
-import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
-import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
 
 public class DiagnosticActivity extends Activity {
@@ -38,7 +35,8 @@ public class DiagnosticActivity extends Activity {
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private Button sendRequestButton;
-
+    private Button clearButton;
+    private List<EditText> textFields = new ArrayList<EditText>();
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className,
@@ -56,13 +54,23 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
-    private void initRequestButton() {
+    private void initButtons() {
         sendRequestButton = (Button) findViewById(
                 R.id.sendRequestButton);
         sendRequestButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         	}
+        });
+        
+        clearButton = (Button) findViewById(R.id.clearButton);
+        clearButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i=0; i < textFields.size(); i++) {
+                    textFields.get(i).setText("");
+                }
+            }
         });
     }
     
@@ -73,6 +81,7 @@ public class DiagnosticActivity extends Activity {
     private void initTextFields() {
     	
     	final EditText busInputText = (EditText) findViewById(R.id.busInput);
+    	textFields.add(busInputText);
     	busInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -84,6 +93,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText idInputText = (EditText) findViewById(R.id.idInput);
+        textFields.add(idInputText);
     	idInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -95,6 +105,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText modeInputText = (EditText) findViewById(R.id.modeInput);
+        textFields.add(modeInputText);
     	modeInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -106,6 +117,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText pidInputText = (EditText) findViewById(R.id.pidInput);
+        textFields.add(pidInputText);
     	pidInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -117,6 +129,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText payloadInputText = (EditText) findViewById(R.id.payloadInput);
+        textFields.add(payloadInputText);
     	payloadInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -128,6 +141,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText factorInputText = (EditText) findViewById(R.id.factorInput);
+        textFields.add(factorInputText);
     	factorInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -139,6 +153,7 @@ public class DiagnosticActivity extends Activity {
     	});
     	
     	final EditText offsetInputText = (EditText) findViewById(R.id.offsetInput);
+        textFields.add(offsetInputText);
     	offsetInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -149,12 +164,13 @@ public class DiagnosticActivity extends Activity {
     		}
     	});
     	
-    	final EditText nameInput = (EditText) findViewById(R.id.nameInput);
-    	nameInput.setOnEditorActionListener(new OnEditorActionListener() {
+    	final EditText nameInputText = (EditText) findViewById(R.id.nameInput);
+        textFields.add(nameInputText);
+    	nameInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				nameInput.setCursorVisible(false);
+    				nameInputText.setCursorVisible(false);
     			}
     			return false;
     		}
@@ -168,7 +184,7 @@ public class DiagnosticActivity extends Activity {
         Log.i(TAG, "Vehicle dashboard created");
 
         setKeyboardGoneDefault();
-        initRequestButton();
+        initButtons();
         initTextFields();
     }
 

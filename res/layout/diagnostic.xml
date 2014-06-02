@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/diagnostic"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/clearButton"
+            style="@style/ClearButton" />
     
+    </LinearLayout>
+
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 		android:orientation="vertical" >
-
+        
         <TableRow style="@style/DiagRow">
 
 			<TextView
@@ -99,10 +114,9 @@
 
             <Button style = "@style/RequestButton"
                 android:id="@+id/sendRequestButton"
-                android:background="@color/brightGreen"
                 android:text="@string/requestButtonLabel" />
         </TableRow>
         
 	</TableLayout>
         
-</ScrollView>
+</LinearLayout>

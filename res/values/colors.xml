@@ -6,4 +6,5 @@
     <color name="brightGreen">#0FF764</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="darkRed">#CC0000</color>
 </resources>
