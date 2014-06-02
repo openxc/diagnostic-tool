@@ -1,7 +1,9 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,6 +27,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.openxc.VehicleManager;
+import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
@@ -34,9 +39,29 @@ public class DiagnosticActivity extends Activity {
 
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
+    private final Handler mHandler = new Handler();
     private Button sendRequestButton;
     private Button clearButton;
+    private EditText mBusInputText;
+    private EditText mIdInputText;
+    private EditText mModeInputText;
+    private EditText mPidInputText;
+    private EditText mPayloadInputText;
+    private EditText mFactorInputText;
+    private EditText mOffsetInputText;
+    private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<EditText>();
+    
+    DiagnosticResponse.Listener mResponseListener =
+            new DiagnosticResponse.Listener() {
+        public void receive(DiagnosticResponse response) {
+            mHandler.post(new Runnable() {
+                public void run() {
+                    
+                }
+            });
+        }
+    };
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className,
@@ -54,13 +79,26 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
+    public Map<String, Object> generateMapFromTextFields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put(DiagnosticRequest.BUS_KEY, Integer.valueOf(mBusInputText.getText().toString()));
+        map.put(DiagnosticRequest.ID_KEY, Integer.valueOf(mIdInputText.getText().toString()));
+        map.put(DiagnosticRequest.MODE_KEY, Integer.valueOf(mModeInputText.getText().toString()));
+        map.put(DiagnosticRequest.PID_KEY,  Integer.valueOf(mPidInputText.getText().toString()));
+        map.put(DiagnosticRequest.PAYLOAD_KEY, mPayloadInputText.getText().toString().getBytes());
+        map.put(DiagnosticRequest.FACTOR_KEY, Float.valueOf(mFactorInputText.getText().toString()));
+        map.put(DiagnosticRequest.OFFSET_KEY, Float.valueOf(mOffsetInputText.getText().toString()));
+        map.put(DiagnosticRequest.NAME_KEY, mNameInputText.getText().toString());
+        return map;
+    }
+    
     private void initButtons() {
         sendRequestButton = (Button) findViewById(
                 R.id.sendRequestButton);
         sendRequestButton.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        	    //TODO
+        	    mVehicleManager.request(new DiagnosticRequest(generateMapFromTextFields()));
         	}
         });
         
@@ -81,97 +119,97 @@ public class DiagnosticActivity extends Activity {
     
     private void initTextFields() {
     	
-    	final EditText busInputText = (EditText) findViewById(R.id.busInput);
-    	textFields.add(busInputText);
-    	busInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mBusInputText = (EditText) findViewById(R.id.busInput);
+    	textFields.add(mBusInputText);
+    	mBusInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				busInputText.setCursorVisible(false);
+    			    mBusInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText idInputText = (EditText) findViewById(R.id.idInput);
-        textFields.add(idInputText);
-    	idInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mIdInputText = (EditText) findViewById(R.id.idInput);
+        textFields.add(mIdInputText);
+        mIdInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				idInputText.setCursorVisible(false);
+    			    mIdInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText modeInputText = (EditText) findViewById(R.id.modeInput);
-        textFields.add(modeInputText);
-    	modeInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mModeInputText = (EditText) findViewById(R.id.modeInput);
+        textFields.add(mModeInputText);
+        mModeInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				modeInputText.setCursorVisible(false);
+    			    mModeInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText pidInputText = (EditText) findViewById(R.id.pidInput);
-        textFields.add(pidInputText);
-    	pidInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mPidInputText = (EditText) findViewById(R.id.pidInput);
+        textFields.add(mPidInputText);
+        mPidInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				pidInputText.setCursorVisible(false);
+    			    mPidInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText payloadInputText = (EditText) findViewById(R.id.payloadInput);
-        textFields.add(payloadInputText);
-    	payloadInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
+        textFields.add(mPayloadInputText);
+        mPayloadInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				payloadInputText.setCursorVisible(false);
+    			    mPayloadInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText factorInputText = (EditText) findViewById(R.id.factorInput);
-        textFields.add(factorInputText);
-    	factorInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mFactorInputText = (EditText) findViewById(R.id.factorInput);
+        textFields.add(mFactorInputText);
+        mFactorInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				factorInputText.setCursorVisible(false);
+    			    mFactorInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText offsetInputText = (EditText) findViewById(R.id.offsetInput);
-        textFields.add(offsetInputText);
-    	offsetInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mOffsetInputText = (EditText) findViewById(R.id.offsetInput);
+        textFields.add(mOffsetInputText);
+        mOffsetInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				offsetInputText.setCursorVisible(false);
+    			    mOffsetInputText.setCursorVisible(false);
     			}
     			return false;
     		}
     	});
     	
-    	final EditText nameInputText = (EditText) findViewById(R.id.nameInput);
-        textFields.add(nameInputText);
-    	nameInputText.setOnEditorActionListener(new OnEditorActionListener() {
+    	mNameInputText = (EditText) findViewById(R.id.nameInput);
+        textFields.add(mNameInputText);
+        mNameInputText.setOnEditorActionListener(new OnEditorActionListener() {
     		@Override
     		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
     			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    				nameInputText.setCursorVisible(false);
+    			    mNameInputText.setCursorVisible(false);
     			}
     			return false;
     		}
