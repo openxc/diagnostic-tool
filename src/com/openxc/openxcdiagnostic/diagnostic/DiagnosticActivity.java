@@ -1,9 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -19,8 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -79,6 +77,7 @@ public class DiagnosticActivity extends Activity {
     };
 
     private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
+
         int bus = Integer.parseInt(mBusInputText.getText().toString());
         int id = Integer.parseInt(mIdInputText.getText().toString());
         int mode = Integer.parseInt(mModeInputText.getText().toString());
@@ -90,52 +89,58 @@ public class DiagnosticActivity extends Activity {
         String name = mNameInputText.getText().toString();
 
         return new DiagnosticRequest(bus, id, mode, pid, payload, factor, false, offset, 0f, name);
-
     }
 
     private boolean inputFieldsAreValid() {
 
-        // TODO could this all be done with one try/catch and still have
-        // specific error message?
-        Map<String, Object> map = new HashMap<>();
         try {
-            Integer.parseInt(mBusInputText.getText().toString());
+            int bus = Integer.parseInt(mBusInputText.getText().toString());
+            if (bus < 1) {
+                Toast.makeText(this, "Invalid Bus entry. Did you mean 1 or 2?", Toast.LENGTH_LONG).show();
+            }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered BUS cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered Bus does not appear to be an integer.", Toast.LENGTH_LONG).show();
             return false;
         }
         try {
             Integer.parseInt(mIdInputText.getText().toString());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered ID cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered ID does not appear to be an integer.", Toast.LENGTH_LONG).show();
             return false;
         }
         try {
-            Integer.parseInt(mModeInputText.getText().toString());
+            int mode = Integer.parseInt(mModeInputText.getText().toString());
+            if (mode < 1 || mode > 15) {
+                Toast.makeText(this, "Invalid mode entry.  Mode must be 0 < Mode < 16", Toast.LENGTH_LONG).show();
+                return false;
+            }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered MODE cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered Mode does not appear to be an integer.", Toast.LENGTH_LONG).show();
             return false;
         }
         try {
-            Integer.parseInt(mPidInputText.getText().toString());
+            String pidInput = mPidInputText.getText().toString();
+            if (!pidInput.equals("")) {
+                Integer.parseInt(pidInput);
+            }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered PID cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered PID does not appear to be an integer.", Toast.LENGTH_LONG).show();
             return false;
         }
 
         // TODO check if this is valid
-        map.put(DiagnosticRequest.PAYLOAD_KEY, mPayloadInputText.getText().toString());
+        mPayloadInputText.getText().toString();
 
         try {
             Float.parseFloat(mFactorInputText.getText().toString());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered FACTOR cannot be parsed as float", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered Factor does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
             return false;
         }
         try {
             Float.parseFloat(mOffsetInputText.getText().toString());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered OFFSET cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Entered Offset does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -146,11 +151,13 @@ public class DiagnosticActivity extends Activity {
     }
 
     private void initButtons() {
+
         sendRequestButton = (Button) findViewById(R.id.sendRequestButton);
         sendRequestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAllCursorsGone();
+                hideKeyboard();
+                getCurrentFocus().clearFocus();
                 if (inputFieldsAreValid()) {
                     mVehicleManager.request(generateDiagnosticRequestFromInputFields());
                 }
@@ -168,15 +175,18 @@ public class DiagnosticActivity extends Activity {
         });
     }
 
-    private void setAllCursorsGone() {
-        for (int i = 0; i < textFields.size(); i++) {
-            textFields.get(i).setCursorVisible(false);
+    private void hideKeyboard() {
+
+        InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (manager.isAcceptingText()) {
+            manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
 
     private void initTextFields() {
 
         mBusInputText = (EditText) findViewById(R.id.busInput);
+        mBusInputText.setHint("Likely 1 or 2");
         textFields.add(mBusInputText);
 
         mIdInputText = (EditText) findViewById(R.id.idInput);
@@ -189,6 +199,7 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mPidInputText);
 
         mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
+        mPayloadInputText.setHint("e.g. 0x1234");
         textFields.add(mPayloadInputText);
 
         mFactorInputText = (EditText) findViewById(R.id.factorInput);
@@ -198,6 +209,7 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mOffsetInputText);
 
         mNameInputText = (EditText) findViewById(R.id.nameInput);
+        mNameInputText.setHint("Lorem Ipsum");
         textFields.add(mNameInputText);
 
         for (int i = 0; i < textFields.size(); i++) {
@@ -207,15 +219,10 @@ public class DiagnosticActivity extends Activity {
                 public boolean onEditorAction(TextView v, int actionId,
                         KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        textField.setCursorVisible(false);
+                        hideKeyboard();
+                        getCurrentFocus().clearFocus();
                     }
                     return false;
-                }
-            });
-            textField.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    textField.setCursorVisible(hasFocus);
                 }
             });
         }
@@ -225,7 +232,7 @@ public class DiagnosticActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diagnostic);
-        Log.i(TAG, "Vehicle dashboard created");
+        Log.i(TAG, "Vehicle diagnostic created");
 
         initButtons();
         initTextFields();
