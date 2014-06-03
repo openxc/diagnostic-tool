@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.openxc.VehicleManager;
 import com.openxc.messages.DiagnosticRequest;
@@ -51,24 +52,22 @@ public class DiagnosticActivity extends Activity {
     private EditText mOffsetInputText;
     private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<EditText>();
-    
-    DiagnosticResponse.Listener mResponseListener =
-            new DiagnosticResponse.Listener() {
+
+    DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         public void receive(DiagnosticResponse response) {
             mHandler.post(new Runnable() {
                 public void run() {
-                    
+
                 }
             });
         }
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className,
-                IBinder service) {
+        public void
+                onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
-            mVehicleManager = ((VehicleManager.VehicleBinder)service
-                    ).getService();
+            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
             mIsBound = true;
         }
 
@@ -78,142 +77,206 @@ public class DiagnosticActivity extends Activity {
             mIsBound = false;
         }
     };
-    
-    public Map<String, Object> generateMapFromTextFields() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(DiagnosticRequest.BUS_KEY, Integer.valueOf(mBusInputText.getText().toString()));
-        map.put(DiagnosticRequest.ID_KEY, Integer.valueOf(mIdInputText.getText().toString()));
-        map.put(DiagnosticRequest.MODE_KEY, Integer.valueOf(mModeInputText.getText().toString()));
-        map.put(DiagnosticRequest.PID_KEY,  Integer.valueOf(mPidInputText.getText().toString()));
-        map.put(DiagnosticRequest.PAYLOAD_KEY, mPayloadInputText.getText().toString().getBytes());
-        map.put(DiagnosticRequest.FACTOR_KEY, Float.valueOf(mFactorInputText.getText().toString()));
-        map.put(DiagnosticRequest.OFFSET_KEY, Float.valueOf(mOffsetInputText.getText().toString()));
-        map.put(DiagnosticRequest.NAME_KEY, mNameInputText.getText().toString());
-        return map;
+
+    private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
+        int bus = Integer.parseInt(mBusInputText.getText().toString());
+        int id = Integer.parseInt(mIdInputText.getText().toString());
+        int mode = Integer.parseInt(mModeInputText.getText().toString());
+        int pid = Integer.parseInt(mPidInputText.getText().toString());
+        byte[] payload = mPayloadInputText.getText().toString().getBytes(); // TODO
+                                                                            // ?
+        float factor = Float.parseFloat(mFactorInputText.getText().toString());
+        float offset = Float.parseFloat(mOffsetInputText.getText().toString());
+        String name = mNameInputText.getText().toString();
+
+        return new DiagnosticRequest(bus, id, mode, pid, payload, factor, false, offset, 0f, name);
+
     }
-    
+
+    private boolean inputFieldsAreValid() {
+
+        // TODO could this all be done with one try/catch and still have
+        // specific error message?
+        Map<String, Object> map = new HashMap<>();
+        boolean valid = true;
+        try {
+            Integer.parseInt(mBusInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered BUS cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        try {
+            Integer.parseInt(mIdInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered ID cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        try {
+            Integer.parseInt(mModeInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered MODE cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        try {
+            Integer.parseInt(mPidInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered PID cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+
+        // TODO check if this is valid
+        map.put(DiagnosticRequest.PAYLOAD_KEY, mPayloadInputText.getText().toString());
+
+        try {
+            Float.parseFloat(mFactorInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered FACTOR cannot be parsed as float", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+        try {
+            Float.parseFloat(mOffsetInputText.getText().toString());
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Entered OFFSET cannot be parsed as integer", Toast.LENGTH_LONG).show();
+            valid = false;
+        }
+
+        // TODO check if this is valid
+        map.put(DiagnosticRequest.NAME_KEY, mNameInputText.getText().toString());
+
+        return valid;
+    }
+
     private void initButtons() {
-        sendRequestButton = (Button) findViewById(
-                R.id.sendRequestButton);
+        sendRequestButton = (Button) findViewById(R.id.sendRequestButton);
         sendRequestButton.setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        	    mVehicleManager.request(new DiagnosticRequest(generateMapFromTextFields()));
-        	}
+            @Override
+            public void onClick(View v) {
+                if (inputFieldsAreValid()) {
+                    mVehicleManager.request(generateDiagnosticRequestFromInputFields());
+                }
+            }
         });
-        
+
         clearButton = (Button) findViewById(R.id.clearButton);
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i=0; i < textFields.size(); i++) {
+                for (int i = 0; i < textFields.size(); i++) {
                     textFields.get(i).setText("");
                 }
             }
         });
     }
-    
+
     private void setKeyboardGoneDefault() {
-    	getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
-    
+
     private void initTextFields() {
-    	
-    	mBusInputText = (EditText) findViewById(R.id.busInput);
-    	textFields.add(mBusInputText);
-    	mBusInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mBusInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mIdInputText = (EditText) findViewById(R.id.idInput);
+
+        mBusInputText = (EditText) findViewById(R.id.busInput);
+        textFields.add(mBusInputText);
+        mBusInputText.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mBusInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mIdInputText = (EditText) findViewById(R.id.idInput);
         textFields.add(mIdInputText);
         mIdInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mIdInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mModeInputText = (EditText) findViewById(R.id.modeInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mIdInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mModeInputText = (EditText) findViewById(R.id.modeInput);
         textFields.add(mModeInputText);
         mModeInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mModeInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mPidInputText = (EditText) findViewById(R.id.pidInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mModeInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mPidInputText = (EditText) findViewById(R.id.pidInput);
         textFields.add(mPidInputText);
         mPidInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mPidInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mPidInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
         textFields.add(mPayloadInputText);
         mPayloadInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mPayloadInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mFactorInputText = (EditText) findViewById(R.id.factorInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mPayloadInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mFactorInputText = (EditText) findViewById(R.id.factorInput);
         textFields.add(mFactorInputText);
         mFactorInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mFactorInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mOffsetInputText = (EditText) findViewById(R.id.offsetInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mFactorInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mOffsetInputText = (EditText) findViewById(R.id.offsetInput);
         textFields.add(mOffsetInputText);
         mOffsetInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mOffsetInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});
-    	
-    	mNameInputText = (EditText) findViewById(R.id.nameInput);
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mOffsetInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
+
+        mNameInputText = (EditText) findViewById(R.id.nameInput);
         textFields.add(mNameInputText);
         mNameInputText.setOnEditorActionListener(new OnEditorActionListener() {
-    		@Override
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			    mNameInputText.setCursorVisible(false);
-    			}
-    			return false;
-    		}
-    	});	
+            @Override
+            public boolean onEditorAction(TextView v, int actionId,
+                    KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mNameInputText.setCursorVisible(false);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -230,14 +293,13 @@ public class DiagnosticActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        bindService(new Intent(this, VehicleManager.class),
-                mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, VehicleManager.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(mIsBound) {
+        if (mIsBound) {
             Log.i(TAG, "Unbinding from vehicle service");
             unbindService(mConnection);
             mIsBound = false;
@@ -246,18 +308,17 @@ public class DiagnosticActivity extends Activity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.Diagnostic) {
-               //do nothing
-               startActivity(new Intent(this, DiagnosticActivity.class));
+            // do nothing
+            startActivity(new Intent(this, DiagnosticActivity.class));
         } else if (item.getItemId() == R.id.Menu) {
-             startActivity(new Intent(this, MenuActivity.class));
-             return true;
-        }
-        else if (item.getItemId() == R.id.Dashboard) {
-        	startActivity(new Intent(this, DashboardActivity.class));
-        	return true;
+            startActivity(new Intent(this, MenuActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.Dashboard) {
+            startActivity(new Intent(this, DashboardActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
-     }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
