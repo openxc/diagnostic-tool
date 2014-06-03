@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -43,6 +46,15 @@ public class DiagnosticActivity extends Activity {
     private final Handler mHandler = new Handler();
     private Button sendRequestButton;
     private Button clearButton;
+    private Button mBusInfoButton;
+    private Button mIdInfoButton;
+    private Button mModeInfoButton;
+    private Button mPidInfoButton;
+    private Button mPayloadInfoButton;
+    private Button mFactorInfoButton;
+    private Button mOffsetInfoButton;
+    private Button mNameInfoButton;
+    private Map<Button, String> infoButtons = new HashMap<>();
     private EditText mBusInputText;
     private EditText mIdInputText;
     private EditText mModeInputText;
@@ -51,7 +63,7 @@ public class DiagnosticActivity extends Activity {
     private EditText mFactorInputText;
     private EditText mOffsetInputText;
     private EditText mNameInputText;
-    private List<EditText> textFields = new ArrayList<EditText>();
+    private List<EditText> textFields = new ArrayList<>();
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         public void receive(DiagnosticResponse response) {
@@ -195,6 +207,57 @@ public class DiagnosticActivity extends Activity {
                 }
             }
         });
+
+        initInfoButtons();
+    }
+
+    private void initInfoButtons() {
+
+        Resources res = getResources();
+
+        mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
+        infoButtons.put(mBusInfoButton, res.getString(R.string.busInfo));
+
+        mIdInfoButton = (Button) findViewById(R.id.idQuestionButton);
+        infoButtons.put(mIdInfoButton, res.getString(R.string.idInfo));
+
+        mModeInfoButton = (Button) findViewById(R.id.modeQuestionButton);
+        infoButtons.put(mModeInfoButton, res.getString(R.string.modeInfo));
+
+        mPidInfoButton = (Button) findViewById(R.id.pidQuestionButton);
+        infoButtons.put(mPidInfoButton, res.getString(R.string.pidInfo));
+
+        mPayloadInfoButton = (Button) findViewById(R.id.payloadQuestionButton);
+        infoButtons.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
+
+        mFactorInfoButton = (Button) findViewById(R.id.factorQuestionButton);
+        infoButtons.put(mFactorInfoButton, res.getString(R.string.factorInfo));
+
+        mOffsetInfoButton = (Button) findViewById(R.id.offsetQuestionButton);
+        infoButtons.put(mOffsetInfoButton, res.getString(R.string.offsetInfo));
+
+        mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
+        infoButtons.put(mNameInfoButton, res.getString(R.string.nameInfo));
+
+        for (final Button button : infoButtons.keySet()) {
+            button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DiagnosticActivity.this.getApplicationContext());
+
+                    builder.setMessage(infoButtons.get(button)).setTitle("idk");
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+
+                }
+            });
+        }
     }
 
     private void hideKeyboard() {
