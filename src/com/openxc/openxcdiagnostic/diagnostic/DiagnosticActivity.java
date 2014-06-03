@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -205,15 +206,21 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mNameInputText);
 
         for (int i = 0; i < textFields.size(); i++) {
-            EditText textField = textFields.get(i);
+            final EditText textField = textFields.get(i);
             textField.setOnEditorActionListener(new OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId,
                         KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        mNameInputText.setCursorVisible(false);
+                        textField.setCursorVisible(false);
                     }
                     return false;
+                }
+            });
+            textField.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    textField.setCursorVisible(hasFocus);
                 }
             });
         }
