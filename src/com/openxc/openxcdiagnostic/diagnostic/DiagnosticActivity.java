@@ -215,6 +215,8 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) findViewById(R.id.modeInput);
+        mModeInputText.setHint(DiagnosticRequest.MODE_RANGE.getMin() + " - "
+                + DiagnosticRequest.MODE_RANGE.getMax());
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) findViewById(R.id.pidInput);
