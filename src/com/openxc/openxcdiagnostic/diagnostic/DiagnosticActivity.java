@@ -1,7 +1,9 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -78,76 +80,93 @@ public class DiagnosticActivity extends Activity {
 
     private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
 
-        int bus = Integer.parseInt(mBusInputText.getText().toString());
-        int id = Integer.parseInt(mIdInputText.getText().toString());
-        int mode = Integer.parseInt(mModeInputText.getText().toString());
-        int pid = Integer.parseInt(mPidInputText.getText().toString());
-        byte[] payload = mPayloadInputText.getText().toString().getBytes(); // TODO
-                                                                            // ?
-        float factor = Float.parseFloat(mFactorInputText.getText().toString());
-        float offset = Float.parseFloat(mOffsetInputText.getText().toString());
-        String name = mNameInputText.getText().toString();
-
-        return new DiagnosticRequest(bus, id, mode, pid, payload, factor, false, offset, 0f, name);
-    }
-
-    private boolean inputFieldsAreValid() {
+        Map<String, Object> map = new HashMap<>();
 
         try {
             int bus = Integer.parseInt(mBusInputText.getText().toString());
-            if (bus < 1) {
+            if (bus > 0) {
+                map.put(DiagnosticRequest.BUS_KEY, bus);
+            } else {
                 Toast.makeText(this, "Invalid Bus entry. Did you mean 1 or 2?", Toast.LENGTH_LONG).show();
+                return null;
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered Bus does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
         try {
-            Integer.parseInt(mIdInputText.getText().toString());
+            int id = Integer.parseInt(mIdInputText.getText().toString());
+            map.put(DiagnosticRequest.ID_KEY, id);
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered ID does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
         try {
             int mode = Integer.parseInt(mModeInputText.getText().toString());
-            if (mode < 1 || mode > 15) {
+            if (mode > 0 && mode < 16) {
+                map.put(DiagnosticRequest.MODE_KEY, mode);
+            } else {
                 Toast.makeText(this, "Invalid mode entry.  Mode must be 0 < Mode < 16", Toast.LENGTH_LONG).show();
-                return false;
+                return null;
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered Mode does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
         try {
             String pidInput = mPidInputText.getText().toString();
+            // pid is optional, ok if empty
             if (!pidInput.equals("")) {
-                Integer.parseInt(pidInput);
+                int pid = Integer.parseInt(pidInput);
+                map.put(DiagnosticRequest.PID_KEY, pid);
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered PID does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
 
-        // TODO check if this is valid
-        mPayloadInputText.getText().toString();
+        String payloadString = mPayloadInputText.getText().toString();
+        if (!payloadString.equals("")) {
+            if (payloadString.length() < 15) {
+                if (payloadString.length() % 2 == 0) {
+                    map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString);
+                } else {
+                    Toast.makeText(this, "Payload must have an even number of digits.", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Payload can only be up to 7 bytes, i.e. 14 digits", Toast.LENGTH_LONG).show();
+            }
+        }
 
         try {
-            Float.parseFloat(mFactorInputText.getText().toString());
+            String factorInput = mFactorInputText.getText().toString();
+            // factor is optional, ok if empty
+            if (!factorInput.equals("")) {
+                float factor = Float.parseFloat(mFactorInputText.getText().toString());
+                map.put(DiagnosticRequest.FACTOR_KEY, factor);
+            }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered Factor does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
         try {
-            Float.parseFloat(mOffsetInputText.getText().toString());
+            String offsetInput = mOffsetInputText.getText().toString();
+            // factor is optional, ok if empty
+            if (!offsetInput.equals("")) {
+                float offset = Float.parseFloat(offsetInput);
+                map.put(DiagnosticRequest.OFFSET_KEY, offset);
+            }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Entered Offset does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
 
-        // TODO check if this is valid
-        mNameInputText.getText().toString();
+        String name = mNameInputText.getText().toString();
+        if (!name.equals("")) {
+            map.put(DiagnosticRequest.NAME_KEY, name);
+        }
 
-        return true;
+        return new DiagnosticRequest(map);
     }
 
     private void initButtons() {
@@ -158,8 +177,9 @@ public class DiagnosticActivity extends Activity {
             public void onClick(View v) {
                 hideKeyboard();
                 getCurrentFocus().clearFocus();
-                if (inputFieldsAreValid()) {
-                    mVehicleManager.request(generateDiagnosticRequestFromInputFields());
+                DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
+                if (request != null) {
+                    mVehicleManager.request(request);
                 }
             }
         });
