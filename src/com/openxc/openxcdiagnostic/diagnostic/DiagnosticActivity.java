@@ -84,7 +84,8 @@ public class DiagnosticActivity extends Activity {
 
         try {
             int bus = Integer.parseInt(mBusInputText.getText().toString());
-            if (bus > 0) {
+            if (bus <= (int) DiagnosticRequest.BUS_RANGE.getMax()
+                    && bus >= (int) DiagnosticRequest.BUS_RANGE.getMin()) {
                 map.put(DiagnosticRequest.BUS_KEY, bus);
             } else {
                 Toast.makeText(this, "Invalid Bus entry. Did you mean 1 or 2?", Toast.LENGTH_LONG).show();
@@ -103,7 +104,8 @@ public class DiagnosticActivity extends Activity {
         }
         try {
             int mode = Integer.parseInt(mModeInputText.getText().toString());
-            if (mode > 0 && mode < 16) {
+            if (mode <= (int) DiagnosticRequest.MODE_RANGE.getMax()
+                    && mode >= (int) DiagnosticRequest.MODE_RANGE.getMin()) {
                 map.put(DiagnosticRequest.MODE_KEY, mode);
             } else {
                 Toast.makeText(this, "Invalid mode entry.  Mode must be 0 < Mode < 16", Toast.LENGTH_LONG).show();
@@ -127,7 +129,7 @@ public class DiagnosticActivity extends Activity {
 
         String payloadString = mPayloadInputText.getText().toString();
         if (!payloadString.equals("")) {
-            if (payloadString.length() < 15) {
+            if (payloadString.length() <= DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
                     map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString);
                 } else {
