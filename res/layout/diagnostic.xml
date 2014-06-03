@@ -87,7 +87,7 @@
 			<EditText
                 android:id="@+id/factorInput"
 				style="@style/DiagInputText"
-				android:inputType="number"/>	
+				android:inputType="numberDecimal"/>	
             
         </TableRow>
         
@@ -100,7 +100,7 @@
 			<EditText
 			    android:id="@+id/offsetInput"
 			    style="@style/DiagInputText"
-			    android:inputType="number"/>
+			    android:inputType="numberDecimal"/>
 			<TextView
 			    android:id="@+id/nameLabel"
 			    style="@style/DiagLabel"
