@@ -25,26 +25,26 @@ public class GridManager {
 	private static final SparseArray<Class<? extends Measurement>> VehicleClassImgDict;
 	static {
 		VehicleClassImgDict = new SparseArray<Class<? extends Measurement>>();
-		VehicleClassImgDict.append(R.drawable.steeringwheel, SteeringWheelAngle.class);
+		VehicleClassImgDict.append(R.drawable.steering_wheel, SteeringWheelAngle.class);
 		VehicleClassImgDict.append(R.drawable.speedrpm, VehicleSpeed.class);
 		VehicleClassImgDict.append(R.drawable.gaspump, FuelConsumed.class);
 		VehicleClassImgDict.append(R.drawable.odometer, Odometer.class);
-		VehicleClassImgDict.append(R.drawable.windshieldwiper, WindshieldWiperStatus.class);
+		VehicleClassImgDict.append(R.drawable.windshield_wiper, WindshieldWiperStatus.class);
 		VehicleClassImgDict.append(R.drawable.pedals, BrakePedalStatus.class);
 		VehicleClassImgDict.append(R.drawable.parkingbrake, ParkingBrakeStatus.class);
 		VehicleClassImgDict.append(R.drawable.headlamp, HeadlampStatus.class);
-		VehicleClassImgDict.append(R.drawable.transmissiontorque, TorqueAtTransmission.class);
-		VehicleClassImgDict.append(R.drawable.transmissiongear, TransmissionGearPosition.class);
+		VehicleClassImgDict.append(R.drawable.transmission_torque, TorqueAtTransmission.class);
+		VehicleClassImgDict.append(R.drawable.transmission_gear, TransmissionGearPosition.class);
 		VehicleClassImgDict.append(R.drawable.key, IgnitionStatus.class);
 		VehicleClassImgDict.append(R.drawable.location, Longitude.class);		
 	}
     
 	public static final Integer[] MenuThumbIDs = {
-            R.drawable.steeringwheel, R.drawable.speedrpm,
+            R.drawable.steering_wheel, R.drawable.speedrpm,
             R.drawable.gaspump, R.drawable.odometer, 
-            R.drawable.windshieldwiper, R.drawable.pedals,
+            R.drawable.windshield_wiper, R.drawable.pedals,
             R.drawable.parkingbrake, R.drawable.headlamp, 
-            R.drawable.transmissiontorque, R.drawable.transmissiongear,
+            R.drawable.transmission_torque, R.drawable.transmission_gear,
             R.drawable.key, R.drawable.location
     };
 	

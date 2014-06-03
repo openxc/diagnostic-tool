@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -50,14 +50,15 @@
     
     <style name="DiagRow">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">fill_horizontal</item> >
     </style>
     
     <style name="DiagLabel">
         <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item> 
         <item name="android:textColor">@color/lightBlue</item>
         <item name="android:gravity">center</item>
@@ -66,22 +67,22 @@
     
     <style name="DiagInputText">
         <item name="android:textSize">20sp</item>
-        <item name="android:layout_width">200dp</item>
-		<item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">180dp</item>
+		<item name="android:layout_height">match_parent</item>
 		<item name="android:background">@color/white</item>
 		<item name="android:ems">10</item>
 		<item name="android:imeOptions">actionDone</item>
 		<item name="android:gravity">center</item>
-		<item name="android:ems">10</item>		
+		<item name="android:ems">10</item>	
+		<item name="android:layout_margin">5dp</item>
     </style>
     
     <style name="RequestButton">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/request_button_selector</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">5dp</item>
         <item name="android:state_pressed">false</item>
     </style>
     
@@ -89,8 +90,16 @@
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:background">@drawable/clear_button_selector</item>
-        <item name="android:padding">15dp</item>
+        <item name="android:layout_margin">5dp</item>
         <item name="android:state_pressed">false</item>
+    </style>    
+    
+    <style name="QuestionButton">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:background">@drawable/question_button_selector</item>
+        <item name="android:state_pressed">false</item>
+        <item name="android:layout_margin">5dp</item>
     </style>    
 
     <style name="ItemData" parent="ItemText">

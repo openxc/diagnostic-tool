@@ -22,103 +22,121 @@
             style="@style/ClearButton" />
     
     </LinearLayout>
-
-    <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-		android:orientation="vertical" >
         
-        <TableRow style="@style/DiagRow">
-
-			<TextView
-			    android:id="@+id/busLabel"
-				style="@style/DiagLabel"
-				android:text="@string/bus_label"/>
-			<EditText
-			    android:id="@+id/busInput"
-			    style="@style/DiagInputText"
-			    android:inputType="number" />
-			<TextView
-			    android:id="@+id/idLabel"
-			    style="@style/DiagLabel"
-                android:text="@string/id_label"/>		
-			<EditText
-                android:id="@+id/idInput"
-				style="@style/DiagInputText"
-				android:inputType="number"/>	
-            
-        </TableRow>
-        
-        <TableRow style="@style/DiagRow">
-
-			<TextView
-			    android:id="@+id/modeLabel"
-				style="@style/DiagLabel"
-				android:text="@string/mode_label"/>
-			<EditText
-			    android:id="@+id/modeInput"
-			    style="@style/DiagInputText"
-			    android:inputType="number"/>
-			<TextView
-			    android:id="@+id/pidLabel"
-			    style="@style/DiagLabel"
-                android:text="@string/pid_label"/>
-			<EditText
-                android:id="@+id/pidInput"
-				style="@style/DiagInputText"
-				android:inputType="number"/>	
-            
-        </TableRow>
-        
-        <TableRow style="@style/DiagRow">
-
-			<TextView
-			    android:id="@+id/payloadLabel"
-				style="@style/DiagLabel"
-				android:text="@string/payload_label" />
-			<EditText
-			    android:id="@+id/payloadInput"
-			    style="@style/DiagInputText"
-			    android:inputType="number"/>
-			<TextView
-			    android:id="@+id/factorLabel"
-			    style="@style/DiagLabel"
-                android:text="@string/factor_label"/>
-			<EditText
-                android:id="@+id/factorInput"
-				style="@style/DiagInputText"
-				android:inputType="numberDecimal"/>	
-            
-        </TableRow>
-        
-        <TableRow style="@style/DiagRow">
-
-			<TextView
-			    android:id="@+id/offsetLabel"
-				style="@style/DiagLabel"
-				android:text="@string/offset_label"/>
-			<EditText
-			    android:id="@+id/offsetInput"
-			    style="@style/DiagInputText"
-			    android:inputType="numberDecimal"/>
-			<TextView
-			    android:id="@+id/nameLabel"
-			    style="@style/DiagLabel"
-                android:text="@string/name_label"/>
-			<EditText
-                android:id="@+id/nameInput"
-				style="@style/DiagInputText"
-				android:inputType="text"/>	
-            
-        </TableRow>
-
-        <TableRow style="@style/DiagRow" >
-
-            <Button style = "@style/RequestButton"
-                android:id="@+id/sendRequestButton"
-                android:text="@string/requestButtonLabel" />
-        </TableRow>
-        
-	</TableLayout>
-        
+	<LinearLayout style="@style/DiagRow">
+	       
+	    <Button
+	         android:id="@+id/busQuestionButton"
+	         style="@style/QuestionButton" />    
+		<TextView
+		    android:id="@+id/busLabel"
+			style="@style/DiagLabel"
+			android:text="@string/bus_label"/>
+		<EditText
+		    android:id="@+id/busInput"
+		    style="@style/DiagInputText"
+		    android:inputType="number" />
+		<Button
+             android:id="@+id/idQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/idLabel"
+		    style="@style/DiagLabel"
+		    android:text="@string/id_label"/>		
+		<EditText
+		    android:id="@+id/idInput"
+			style="@style/DiagInputText"
+			android:inputType="number"/>	
+		
+	</LinearLayout>
+		     
+    <LinearLayout style="@style/DiagRow">
+		
+        <Button
+             android:id="@+id/modeQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/modeLabel"
+			style="@style/DiagLabel"
+			android:text="@string/mode_label"/>
+		<EditText
+		    android:id="@+id/modeInput"
+		    style="@style/DiagInputText"
+		    android:inputType="number"/>
+		<Button
+             android:id="@+id/pidQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/pidLabel"
+		    style="@style/DiagLabel"
+		    android:text="@string/pid_label"/>
+		<EditText
+		    android:id="@+id/pidInput"
+			style="@style/DiagInputText"
+			android:inputType="number"/>	
+		         
+	</LinearLayout>
+		     
+    <LinearLayout style="@style/DiagRow">
+		
+        <Button
+             android:id="@+id/payloadQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/payloadLabel"
+			style="@style/DiagLabel"
+			android:text="@string/payload_label" />
+		<EditText
+		    android:id="@+id/payloadInput"
+		    style="@style/DiagInputText"
+		    android:inputType="number"/>
+		<Button
+             android:id="@+id/factorQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/factorLabel"
+		    style="@style/DiagLabel"
+		             android:text="@string/factor_label"/>
+		<EditText
+		             android:id="@+id/factorInput"
+			style="@style/DiagInputText"
+			android:inputType="numberDecimal"/>	
+		         
+    </LinearLayout>
+		     
+    <LinearLayout style="@style/DiagRow">
+		
+        <Button
+             android:id="@+id/offsetQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/offsetLabel"
+			style="@style/DiagLabel"
+			android:text="@string/offset_label"/>
+		<EditText
+		    android:id="@+id/offsetInput"
+		    style="@style/DiagInputText"
+		    android:inputType="numberDecimal"/>
+		<Button
+             android:id="@+id/nameQuestionButton"
+             style="@style/QuestionButton" />
+		<TextView
+		    android:id="@+id/nameLabel"
+		    style="@style/DiagLabel"
+		             android:text="@string/name_label"/>
+		<EditText
+		    android:id="@+id/nameInput"
+			style="@style/DiagInputText"
+			android:inputType="text"/>	
+		         
+	</LinearLayout>
+		
+	<LinearLayout style="@style/DiagRow" >
+		
+		<Button style = "@style/RequestButton"
+		    android:id="@+id/sendRequestButton"
+		    android:text="@string/requestButtonLabel" />
+		
+    </LinearLayout>
+                
 </LinearLayout>
