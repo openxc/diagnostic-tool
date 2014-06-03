@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -169,10 +168,6 @@ public class DiagnosticActivity extends Activity {
         });
     }
 
-    private void setKeyboardGoneDefault() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
     private void setAllCursorsGone() {
         for (int i = 0; i < textFields.size(); i++) {
             textFields.get(i).setCursorVisible(false);
@@ -232,7 +227,6 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle dashboard created");
 
-        setKeyboardGoneDefault();
         initButtons();
         initTextFields();
     }
