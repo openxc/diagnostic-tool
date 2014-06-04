@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -69,7 +68,7 @@ public class DiagnosticActivity extends Activity {
     private EditText mFactorInputText;
     private EditText mOffsetInputText;
     private EditText mNameInputText;
-    private List<View> outputChildren = new ArrayList<>();
+    private List<View> responseRows = new ArrayList<>();
     private List<EditText> textFields = new ArrayList<>();
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
@@ -90,16 +89,27 @@ public class DiagnosticActivity extends Activity {
         // change. This is a workaround to add them back
         LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
         outputRows.removeAllViews();
-        for (int i = 0; i < outputChildren.size(); i++) {
-            View child = outputChildren.get(i);
-            outputRows.addView(child);
+        for (int i = 0; i < responseRows.size(); i++) {
+            View row = responseRows.get(i);
+            outputRows.addView(row);
         }
     }
 
     private void outputResponse(DiagnosticResponse response) {
 
-        LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
-        TextView output = (TextView) getLayoutInflater().inflate(R.layout.createoutputtexttemplate, null);
+        final LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
+        LinearLayout row = (LinearLayout) getLayoutInflater().inflate(R.layout.createsingleoutputrow, null);
+        TextView output = (TextView) row.getChildAt(0);
+
+        final Button deleteButton = (Button) row.getChildAt(1);
+        deleteButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View row = (View) deleteButton.getParent();
+                outputRows.removeView(row);
+                responseRows.remove(row);
+            }
+        });
 
         Utilities.writeLine(output, "bus : "
                 + String.valueOf(response.getCanBus()));
@@ -117,14 +127,8 @@ public class DiagnosticActivity extends Activity {
                     + response.getNegativeResponseCode().toString());
         }
 
-        View separator = new View(this);
-        separator.setLayoutParams(new LayoutParams(0, 5));
-        separator.setBackgroundColor(getResources().getColor(R.color.black));
-
-        outputRows.addView(output, 0);
-        outputRows.addView(separator, 0);
-        outputChildren.add(0, output);
-        outputChildren.add(0, separator);
+        outputRows.addView(row, 0);
+        responseRows.add(0, row);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {

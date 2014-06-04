@@ -56,6 +56,14 @@
         <item name="android:gravity">fill_horizontal</item> >
     </style>
     
+    <style name="DiagOutputRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:gravity">fill_horizontal</item> >
+    </style>
+    
     <style name="DiagOutputText">
          <item name="android:layout_width">match_parent</item>
          <item name="android:layout_height">wrap_content</item>
@@ -64,10 +72,20 @@
          <item name="android:padding">10dp</item>
          <item name="android:background">@color/white</item> 
          <item name="android:textColor">@color/darkRed</item>
+         <item name="android:layout_weight">1</item>
     </style>
     
+    <style name="OutputClearButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/clear_button_selector</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:state_pressed">false</item>
+    </style>   
+    
     <style name="DiagLabel">
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item> 
         <item name="android:textColor">@color/lightBlue</item>
@@ -111,14 +129,6 @@
         <item name="android:state_pressed">false</item>
         <item name="android:layout_margin">5dp</item>
     </style>    
-    
-    <style name="ResponseText">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">#ED1C1C</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>   
 
     <style name="ItemData" parent="ItemText">
         <item name="android:layout_width">0dip</item>
