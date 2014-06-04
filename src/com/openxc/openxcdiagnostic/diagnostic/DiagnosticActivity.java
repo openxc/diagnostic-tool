@@ -282,6 +282,7 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mBusInputText);
 
         mIdInputText = (EditText) findViewById(R.id.idInput);
+        mIdInputText.setHint("#");
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) findViewById(R.id.modeInput);
@@ -290,6 +291,7 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) findViewById(R.id.pidInput);
+        mPidInputText.setHint("#");
         textFields.add(mPidInputText);
 
         mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
@@ -297,13 +299,14 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mPayloadInputText);
 
         mFactorInputText = (EditText) findViewById(R.id.factorInput);
+        mFactorInputText.setHint("1.0");
         textFields.add(mFactorInputText);
 
         mOffsetInputText = (EditText) findViewById(R.id.offsetInput);
+        mOffsetInputText.setHint("0");
         textFields.add(mOffsetInputText);
 
         mNameInputText = (EditText) findViewById(R.id.nameInput);
-        mNameInputText.setHint("Lorem Ipsum");
         textFields.add(mNameInputText);
 
         for (int i = 0; i < textFields.size(); i++) {
