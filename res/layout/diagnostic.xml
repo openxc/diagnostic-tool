@@ -23,7 +23,7 @@
     
     </LinearLayout>
         
-	<LinearLayout style="@style/DiagRow">
+	<LinearLayout style="@style/DiagInputRow">
 	       
 	    <Button
 	         android:id="@+id/busQuestionButton"
@@ -52,7 +52,7 @@
 		
 	</LinearLayout>
 		     
-    <LinearLayout style="@style/DiagRow">
+    <LinearLayout style="@style/DiagInputRow">
 		
         <Button
              android:id="@+id/modeQuestionButton"
@@ -81,7 +81,7 @@
 		         
 	</LinearLayout>
 		     
-    <LinearLayout style="@style/DiagRow">
+    <LinearLayout style="@style/DiagInputRow">
 		
         <Button
              android:id="@+id/payloadQuestionButton"
@@ -110,7 +110,7 @@
 		         
     </LinearLayout>
 		     
-    <LinearLayout style="@style/DiagRow">
+    <LinearLayout style="@style/DiagInputRow">
 		
         <Button
              android:id="@+id/offsetQuestionButton"
@@ -139,7 +139,7 @@
 		         
 	</LinearLayout>
 		
-	<LinearLayout style="@style/DiagRow" >
+	<LinearLayout style="@style/DiagInputRow" >
 		
 		<Button style = "@style/RequestButton"
 		    android:id="@+id/sendRequestButton"
@@ -152,10 +152,14 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	
-		<TextView
-	        android:id="@+id/responseText"
-	        style="@style/ResponseText"
-	        android:textIsSelectable="true" />
+        <LinearLayout
+             android:id="@+id/outputRows"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@color/black">
+            
+        </LinearLayout>
 	
 	</ScrollView>
 	

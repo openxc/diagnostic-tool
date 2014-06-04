@@ -22,10 +22,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -79,7 +81,10 @@ public class DiagnosticActivity extends Activity {
     };
 
     private void outputResponse(DiagnosticResponse response) {
-        TextView output = (TextView) findViewById(R.id.responseText);
+
+        LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
+        TextView output = (TextView) getLayoutInflater().inflate(R.layout.createoutputtexttemplate, null);
+
         Utilities.writeLine(output, "bus : "
                 + String.valueOf(response.getCanBus()));
         Utilities.writeLine(output, "id : " + String.valueOf(response.getId()));
@@ -90,12 +95,18 @@ public class DiagnosticActivity extends Activity {
         if (success) {
             Utilities.writeLine(output, "payload : "
                     + String.valueOf(response.getPayload()));
-            Utilities.writeLine(output, "value : "
-                    + String.valueOf(response.getValue()));
+            output.append("value : " + String.valueOf(response.getValue()));
         } else {
-            Utilities.writeLine(output, "negative_response_code"
+            output.append("negative_response_code"
                     + response.getNegativeResponseCode().toString());
         }
+
+        View separator = new View(this);
+        separator.setLayoutParams(new LayoutParams(0, 5));
+        separator.setBackgroundColor(getResources().getColor(R.color.black));
+
+        outputRows.addView(output);
+        outputRows.addView(separator);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
