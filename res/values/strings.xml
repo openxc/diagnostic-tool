@@ -27,12 +27,12 @@
     <string name ="idInfo">The CAN arbitration ID for the request.</string>
     <string name="modeInfo">The OBD-II mode of the request - 1 through 15 (1 through 9 are the standardized modes).</string>
     <string name="pidInfo">(Optional) The PID for the request, if applicable.</string>
-    <string name="payloadInfo">(Optional) Ip to 7 bytes of data for the request\'s payload represented as a hexidecimal number in a string. Each byte in the string must be represented with 2 characters, e.g. 0x1 is 0x01 - the complete string must have an even number of characters.</string>
+    <string name="payloadInfo">(Optional) Up to 7 bytes of data for the request\'s payload represented as a hexidecimal number in a string. Each byte in the string must be represented with 2 characters, e.g. 0x1 is 0x01 - the complete string must have an even number of characters.</string>
     <string name="nameInfo">(Optional) A human readable, string name for this request. If provided, the response will have a name field (much like a normal translated message) with this value in place of bus, id, mode and pid.</string>
     <string name="multipleResponsesInfo">If checked, the request will stay active for a full 100ms, even after receiving a diagnostic response message</string>
     <string name="frequencyInfo">(Optional, defaults to 0) The frequency in Hz to send this request. To send a single non-recurring request, set this to 0 or leave it out.</string>
-    <string name="factorInfo">TODO</string>
-    <string name="offsetInfo">TODO</string>
+    <string name="factorInfo">TODO (add some factor info)</string>
+    <string name="offsetInfo">TODO (add some offset info)</string>
     
     
     <!-- Vehicle Dashboard Strings -->

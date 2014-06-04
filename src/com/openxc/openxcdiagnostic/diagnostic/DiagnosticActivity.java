@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
@@ -54,7 +56,7 @@ public class DiagnosticActivity extends Activity {
     private Button mFactorInfoButton;
     private Button mOffsetInfoButton;
     private Button mNameInfoButton;
-    private Map<Button, String> infoButtons = new HashMap<>();
+    private Map<Button, String> buttonInfo = new HashMap<>();
     private EditText mBusInputText;
     private EditText mIdInputText;
     private EditText mModeInputText;
@@ -214,47 +216,52 @@ public class DiagnosticActivity extends Activity {
     private void initInfoButtons() {
 
         Resources res = getResources();
+        final BiMap<String, String> infoMap = HashBiMap.create();
 
         mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
-        infoButtons.put(mBusInfoButton, res.getString(R.string.busInfo));
+        buttonInfo.put(mBusInfoButton, res.getString(R.string.busInfo));
+        infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.busInfo));
 
         mIdInfoButton = (Button) findViewById(R.id.idQuestionButton);
-        infoButtons.put(mIdInfoButton, res.getString(R.string.idInfo));
+        buttonInfo.put(mIdInfoButton, res.getString(R.string.idInfo));
+        infoMap.put(res.getString(R.string.id_label), res.getString(R.string.idInfo));
 
         mModeInfoButton = (Button) findViewById(R.id.modeQuestionButton);
-        infoButtons.put(mModeInfoButton, res.getString(R.string.modeInfo));
+        buttonInfo.put(mModeInfoButton, res.getString(R.string.modeInfo));
+        infoMap.put(res.getString(R.string.mode_label), res.getString(R.string.modeInfo));
 
         mPidInfoButton = (Button) findViewById(R.id.pidQuestionButton);
-        infoButtons.put(mPidInfoButton, res.getString(R.string.pidInfo));
+        buttonInfo.put(mPidInfoButton, res.getString(R.string.pidInfo));
+        infoMap.put(res.getString(R.string.pid_label), res.getString(R.string.pidInfo));
 
         mPayloadInfoButton = (Button) findViewById(R.id.payloadQuestionButton);
-        infoButtons.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
+        buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
+        infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payloadInfo));
 
         mFactorInfoButton = (Button) findViewById(R.id.factorQuestionButton);
-        infoButtons.put(mFactorInfoButton, res.getString(R.string.factorInfo));
+        buttonInfo.put(mFactorInfoButton, res.getString(R.string.factorInfo));
+        infoMap.put(res.getString(R.string.factor_label), res.getString(R.string.factorInfo));
 
         mOffsetInfoButton = (Button) findViewById(R.id.offsetQuestionButton);
-        infoButtons.put(mOffsetInfoButton, res.getString(R.string.offsetInfo));
+        buttonInfo.put(mOffsetInfoButton, res.getString(R.string.offsetInfo));
+        infoMap.put(res.getString(R.string.offset_label), res.getString(R.string.offsetInfo));
 
         mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
-        infoButtons.put(mNameInfoButton, res.getString(R.string.nameInfo));
+        buttonInfo.put(mNameInfoButton, res.getString(R.string.nameInfo));
+        infoMap.put(res.getString(R.string.name_label), res.getString(R.string.nameInfo));
 
-        for (final Button button : infoButtons.keySet()) {
+        for (final Button button : buttonInfo.keySet()) {
             button.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DiagnosticActivity.this.getApplicationContext());
-
-                    builder.setMessage(infoButtons.get(button)).setTitle("idk");
-
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DiagnosticActivity.this);
+                    String info = buttonInfo.get(button);
+                    builder.setMessage(info).setTitle(infoMap.inverse().get(info));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // User clicked OK button
                         }
                     });
-
-                    AlertDialog dialog = builder.create();
-
+                    builder.create().show();
                 }
             });
         }
