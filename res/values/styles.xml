@@ -101,6 +101,14 @@
         <item name="android:state_pressed">false</item>
         <item name="android:layout_margin">5dp</item>
     </style>    
+    
+    <style name="ResponseText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#ED1C1C</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>   
 
     <style name="ItemData" parent="ItemText">
         <item name="android:layout_width">0dip</item>

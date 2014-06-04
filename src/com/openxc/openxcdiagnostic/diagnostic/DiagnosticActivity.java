@@ -38,6 +38,7 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
+import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
@@ -76,6 +77,26 @@ public class DiagnosticActivity extends Activity {
             });
         }
     };
+
+    private void outputResponse(DiagnosticResponse response) {
+        TextView output = (TextView) findViewById(R.id.responseText);
+        Utilities.writeLine(output, "bus : "
+                + String.valueOf(response.getCanBus()));
+        Utilities.writeLine(output, "id : " + String.valueOf(response.getId()));
+        Utilities.writeLine(output, "mode: "
+                + String.valueOf(response.getMode()));
+        boolean success = response.getSuccess();
+        Utilities.writeLine(output, "success : " + String.valueOf(success));
+        if (success) {
+            Utilities.writeLine(output, "payload : "
+                    + String.valueOf(response.getPayload()));
+            Utilities.writeLine(output, "value : "
+                    + String.valueOf(response.getValue()));
+        } else {
+            Utilities.writeLine(output, "negative_response_code"
+                    + response.getNegativeResponseCode().toString());
+        }
+    }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void
@@ -195,7 +216,8 @@ public class DiagnosticActivity extends Activity {
                 getCurrentFocus().clearFocus();
                 DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                 if (request != null) {
-                    mVehicleManager.request(request);
+                    DiagnosticResponse response = mVehicleManager.request(request);
+                    outputResponse(response);
                 }
             }
         });

@@ -31,7 +31,8 @@
 		<TextView
 		    android:id="@+id/busLabel"
 			style="@style/DiagLabel"
-			android:text="@string/bus_label"/>
+			android:text="@string/bus_label"
+			android:labelFor="@+id/busInput" />
 		<EditText
 		    android:id="@+id/busInput"
 		    style="@style/DiagInputText"
@@ -42,7 +43,8 @@
 		<TextView
 		    android:id="@+id/idLabel"
 		    style="@style/DiagLabel"
-		    android:text="@string/id_label"/>		
+		    android:text="@string/id_label"
+		    android:labelFor="@+id/idInput"/>		
 		<EditText
 		    android:id="@+id/idInput"
 			style="@style/DiagInputText"
@@ -58,7 +60,8 @@
 		<TextView
 		    android:id="@+id/modeLabel"
 			style="@style/DiagLabel"
-			android:text="@string/mode_label"/>
+			android:text="@string/mode_label"
+			android:labelFor="@+id/modeInput"/>
 		<EditText
 		    android:id="@+id/modeInput"
 		    style="@style/DiagInputText"
@@ -69,7 +72,8 @@
 		<TextView
 		    android:id="@+id/pidLabel"
 		    style="@style/DiagLabel"
-		    android:text="@string/pid_label"/>
+		    android:text="@string/pid_label"
+		    android:labelFor="@+id/pidInput"/>
 		<EditText
 		    android:id="@+id/pidInput"
 			style="@style/DiagInputText"
@@ -85,7 +89,8 @@
 		<TextView
 		    android:id="@+id/payloadLabel"
 			style="@style/DiagLabel"
-			android:text="@string/payload_label" />
+			android:text="@string/payload_label"
+			android:labelFor="@+id/payloadInput"/>
 		<EditText
 		    android:id="@+id/payloadInput"
 		    style="@style/DiagInputText"
@@ -96,7 +101,8 @@
 		<TextView
 		    android:id="@+id/factorLabel"
 		    style="@style/DiagLabel"
-		             android:text="@string/factor_label"/>
+		    android:text="@string/factor_label"
+		    android:labelFor="@+id/factorInput"/>
 		<EditText
 		             android:id="@+id/factorInput"
 			style="@style/DiagInputText"
@@ -112,7 +118,8 @@
 		<TextView
 		    android:id="@+id/offsetLabel"
 			style="@style/DiagLabel"
-			android:text="@string/offset_label"/>
+			android:text="@string/offset_label"
+			android:labelFor="@+id/offsetInput"/>
 		<EditText
 		    android:id="@+id/offsetInput"
 		    style="@style/DiagInputText"
@@ -123,7 +130,8 @@
 		<TextView
 		    android:id="@+id/nameLabel"
 		    style="@style/DiagLabel"
-		             android:text="@string/name_label"/>
+		    android:text="@string/name_label"
+		    android:labelFor="@+id/nameInput"/>
 		<EditText
 		    android:id="@+id/nameInput"
 			style="@style/DiagInputText"
@@ -138,5 +146,17 @@
 		    android:text="@string/requestButtonLabel" />
 		
     </LinearLayout>
-                
+    
+    <ScrollView 
+	    android:id="@+id/responseScroll"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	
+		<TextView
+	        android:id="@+id/responseText"
+	        style="@style/ResponseText"
+	        android:textIsSelectable="true" />
+	
+	</ScrollView>
+	
 </LinearLayout>
