@@ -124,6 +124,19 @@ public class DiagnosticActivity extends Activity {
         }
     };
 
+    /**
+     * Method to ensure that null is returned by
+     * generateDiagnosticRequestFromInputFields() when it should be. There are
+     * so many fail points in that method that it's safer to always return a
+     * call to this method than to match up a "return null" statement everywhere
+     * there should be a fail and a Toast. If the Toast happens when it should,
+     * the fail must too.
+     */
+    private DiagnosticRequest failAndToastError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        return null;
+    }
+
     private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
 
         Map<String, Object> map = new HashMap<>();
@@ -134,19 +147,16 @@ public class DiagnosticActivity extends Activity {
                     && bus >= (int) DiagnosticRequest.BUS_RANGE.getMin()) {
                 map.put(DiagnosticRequest.BUS_KEY, bus);
             } else {
-                Toast.makeText(this, "Invalid Bus entry. Did you mean 1 or 2?", Toast.LENGTH_LONG).show();
-                return null;
+                return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered Bus does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered Bus does not appear to be an integer.");
         }
         try {
             int id = Integer.parseInt(mIdInputText.getText().toString());
             map.put(DiagnosticRequest.ID_KEY, id);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered ID does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered ID does not appear to be an integer.");
         }
         try {
             int mode = Integer.parseInt(mModeInputText.getText().toString());
@@ -154,12 +164,10 @@ public class DiagnosticActivity extends Activity {
                     && mode >= (int) DiagnosticRequest.MODE_RANGE.getMin()) {
                 map.put(DiagnosticRequest.MODE_KEY, mode);
             } else {
-                Toast.makeText(this, "Invalid mode entry.  Mode must be 0 < Mode < 16", Toast.LENGTH_LONG).show();
-                return null;
+                return failAndToastError("Invalid mode entry.  Mode must be 0 < Mode < 16");
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered Mode does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered Mode does not appear to be an integer.");
         }
         try {
             String pidInput = mPidInputText.getText().toString();
@@ -169,8 +177,7 @@ public class DiagnosticActivity extends Activity {
                 map.put(DiagnosticRequest.PID_KEY, pid);
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered PID does not appear to be an integer.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered PID does not appear to be an integer.");
         }
 
         String payloadString = mPayloadInputText.getText().toString();
@@ -179,10 +186,10 @@ public class DiagnosticActivity extends Activity {
                 if (payloadString.length() % 2 == 0) {
                     map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString);
                 } else {
-                    Toast.makeText(this, "Payload must have an even number of digits.", Toast.LENGTH_LONG).show();
+                    return failAndToastError("Payload must have an even number of digits.");
                 }
             } else {
-                Toast.makeText(this, "Payload can only be up to 7 bytes, i.e. 14 digits", Toast.LENGTH_LONG).show();
+                return failAndToastError("Payload can only be up to 7 bytes, i.e. 14 digits");
             }
         }
 
@@ -194,8 +201,7 @@ public class DiagnosticActivity extends Activity {
                 map.put(DiagnosticRequest.FACTOR_KEY, factor);
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered Factor does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered Factor does not appear to be a decimal number.");
         }
         try {
             String offsetInput = mOffsetInputText.getText().toString();
@@ -205,8 +211,7 @@ public class DiagnosticActivity extends Activity {
                 map.put(DiagnosticRequest.OFFSET_KEY, offset);
             }
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Entered Offset does not appear to be a decimal number.", Toast.LENGTH_LONG).show();
-            return null;
+            return failAndToastError("Entered Offset does not appear to be a decimal number.");
         }
 
         String name = mNameInputText.getText().toString();
