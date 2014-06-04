@@ -121,10 +121,10 @@ public class DiagnosticActivity extends Activity {
         separator.setLayoutParams(new LayoutParams(0, 5));
         separator.setBackgroundColor(getResources().getColor(R.color.black));
 
-        outputRows.addView(output);
-        outputRows.addView(separator);
-        outputChildren.add(output);
-        outputChildren.add(separator);
+        outputRows.addView(output, 0);
+        outputRows.addView(separator, 0);
+        outputChildren.add(0, output);
+        outputChildren.add(0, separator);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
