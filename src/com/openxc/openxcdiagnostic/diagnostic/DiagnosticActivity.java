@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -68,6 +69,7 @@ public class DiagnosticActivity extends Activity {
     private EditText mFactorInputText;
     private EditText mOffsetInputText;
     private EditText mNameInputText;
+    private List<View> outputChildren = new ArrayList<>();
     private List<EditText> textFields = new ArrayList<>();
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
@@ -79,6 +81,20 @@ public class DiagnosticActivity extends Activity {
             });
         }
     };
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        // Programmatically added views in the output disappear on orientation
+        // change. This is a workaround to add them back
+        LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
+        outputRows.removeAllViews();
+        for (int i = 0; i < outputChildren.size(); i++) {
+            View child = outputChildren.get(i);
+            outputRows.addView(child);
+        }
+    }
 
     private void outputResponse(DiagnosticResponse response) {
 
@@ -107,6 +123,8 @@ public class DiagnosticActivity extends Activity {
 
         outputRows.addView(output);
         outputRows.addView(separator);
+        outputChildren.add(output);
+        outputChildren.add(separator);
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
