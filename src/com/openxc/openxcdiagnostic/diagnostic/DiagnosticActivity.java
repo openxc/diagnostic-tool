@@ -223,7 +223,7 @@ public class DiagnosticActivity extends Activity {
                 DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                 if (request != null) {
                     DiagnosticResponse response = mVehicleManager.request(request);
-                    mOutputTable.AddRow(request, response);
+                    mOutputTable.addRow(request, response);
                 }
             }
         });
