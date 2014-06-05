@@ -9,19 +9,62 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <LinearLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:background="@color/black"
+    <LinearLayout     
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:gravity="right">
+        android:layout_margin="5dp"
+        android:gravity="fill_horizontal" >
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:orientation="horizontal">
+            
+	       <Button
+	             android:id="@+id/frequencyQuestionButton"
+	             style="@style/QuestionButton" />    
+	       <TextView
+	            android:id="@+id/frequencyLabel"
+	            style="@style/BareDiagLabel"
+	            android:layout_width="100dp"
+	            android:text="@string/frequency_label"
+	            android:labelFor="@+id/frequencyInput" />
+	       <EditText
+	            android:id="@+id/frequencyInput"
+	            style="@style/BareDiagInputText"
+	            android:layout_width="100dp"
+	            android:inputType="number"/>
+	    
+	   </LinearLayout>
+	   
+        <View 
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/lightBlue">
+        </View>
+        
+	   <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:gravity="right">
 
-        <Button
-            android:id="@+id/clearButton"
-            style="@style/ClearButton" />
-    
+	       <Button 
+	           style="@style/ClearButton"
+	           android:id="@+id/clearButton"/>
+       </LinearLayout>
+	           
     </LinearLayout>
+    
+    <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightBlue">
+    </View>
         
 	<LinearLayout style="@style/DiagInputRow">
 	       

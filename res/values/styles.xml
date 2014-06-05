@@ -31,6 +31,90 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Diagnostic Styles -->
+    
+    <style name="ClearButton" >
+        <item name="android:background">@drawable/clear_button_selector</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:state_pressed">false</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+    
+    <style name="DiagInputRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:gravity">fill_horizontal</item>
+        <item name="android:weightSum">1</item>
+    </style>
+    
+    <style name="QuestionButton" >
+        <item name="android:background">@drawable/question_button_selector</item>
+        <item name="android:state_pressed">false</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
+   
+    <style name ="BareDiagLabel" >
+        <item name="android:textColor">@color/lightBlue</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textIsSelectable">false</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="DiagLabel" parent="BareDiagLabel">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:minWidth">150dp</item> 
+    </style>
+    
+    <style name ="BareDiagInputText" >
+        <item name="android:ems">10</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    
+    <style name="DiagInputText" parent="BareDiagInputText">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">.25</item>
+        
+    </style>
+    
+    <style name="RequestButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/request_button_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:state_pressed">false</item>
+    </style>
+    
+    <style name="DiagOutputRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:gravity">fill_horizontal</item>
+    </style>
+    
+    <style name="DiagOutputText">
+         <item name="android:layout_width">match_parent</item>
+         <item name="android:layout_height">wrap_content</item>
+         <item name="android:orientation">horizontal</item>
+         <item name="android:layout_margin">5dp</item>
+         <item name="android:padding">10dp</item>
+         <item name="android:background">@color/white</item> 
+         <item name="android:textColor">@color/darkRed</item>
+         <item name="android:layout_weight">1</item>
+    </style>
+    
     <style name="ItemRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,88 +131,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>      
     </style>
-    
-    <style name="DiagInputRow">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:gravity">fill_horizontal</item> >
-    </style>
-    
-    <style name="DiagOutputRow">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">15dp</item>
-        <item name="android:gravity">fill_horizontal</item> >
-    </style>
-    
-    <style name="DiagOutputText">
-         <item name="android:layout_width">match_parent</item>
-         <item name="android:layout_height">wrap_content</item>
-         <item name="android:orientation">horizontal</item>
-         <item name="android:layout_margin">5dp</item>
-         <item name="android:padding">10dp</item>
-         <item name="android:background">@color/white</item> 
-         <item name="android:textColor">@color/darkRed</item>
-         <item name="android:layout_weight">1</item>
-    </style>
-    
-    <style name="OutputClearButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/clear_button_selector</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-    </style>   
-    
-    <style name="DiagLabel">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item> 
-        <item name="android:textColor">@color/lightBlue</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textIsSelectable">false</item>
-    </style>
-    
-    <style name="DiagInputText">
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_width">180dp</item>
-		<item name="android:layout_height">match_parent</item>
-		<item name="android:background">@color/white</item>
-		<item name="android:ems">10</item>
-		<item name="android:imeOptions">actionDone</item>
-		<item name="android:gravity">center</item>
-		<item name="android:ems">10</item>	
-		<item name="android:layout_margin">5dp</item>
-    </style>
-    
-    <style name="RequestButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/request_button_selector</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-    </style>
-    
-    <style name="ClearButton">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/clear_button_selector</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-    </style>    
-    
-    <style name="QuestionButton">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
-        <item name="android:background">@drawable/question_button_selector</item>
-        <item name="android:state_pressed">false</item>
-        <item name="android:layout_margin">5dp</item>
-    </style>    
 
     <style name="ItemData" parent="ItemText">
         <item name="android:layout_width">0dip</item>

@@ -51,6 +51,7 @@ public class DiagnosticActivity extends Activity {
     private final Handler mHandler = new Handler();
     private Button sendRequestButton;
     private Button clearButton;
+    private Button mFrequencyInfoButton;
     private Button mBusInfoButton;
     private Button mIdInfoButton;
     private Button mModeInfoButton;
@@ -60,6 +61,7 @@ public class DiagnosticActivity extends Activity {
     private Button mOffsetInfoButton;
     private Button mNameInfoButton;
     private Map<Button, String> buttonInfo = new HashMap<>();
+    private EditText mFrequencyInputText;
     private EditText mBusInputText;
     private EditText mIdInputText;
     private EditText mModeInputText;
@@ -163,6 +165,14 @@ public class DiagnosticActivity extends Activity {
 
         Map<String, Object> map = new HashMap<>();
 
+        try {
+            int freq = Integer.parseInt(mFrequencyInputText.getText().toString());
+            if (freq > 0) {
+                map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
+            }
+        } catch (NumberFormatException e) {
+            return failAndToastError("Enter frequency does not appear to be a number.");
+        }
         try {
             int bus = Integer.parseInt(mBusInputText.getText().toString());
             if (bus <= (int) DiagnosticRequest.BUS_RANGE.getMax()
@@ -278,6 +288,10 @@ public class DiagnosticActivity extends Activity {
         Resources res = getResources();
         final BiMap<String, String> infoMap = HashBiMap.create();
 
+        mFrequencyInfoButton = (Button) findViewById(R.id.frequencyQuestionButton);
+        buttonInfo.put(mFrequencyInfoButton, res.getString(R.string.frequencyInfo));
+        infoMap.put(res.getString(R.string.frequency_label), res.getString(R.string.frequencyInfo));
+
         mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
         buttonInfo.put(mBusInfoButton, res.getString(R.string.busInfo));
         infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.busInfo));
@@ -336,6 +350,10 @@ public class DiagnosticActivity extends Activity {
     }
 
     private void initTextFields() {
+
+        mFrequencyInputText = (EditText) findViewById(R.id.frequencyInput);
+        mFrequencyInputText.setHint("0");
+        textFields.add(mFrequencyInputText);
 
         mBusInputText = (EditText) findViewById(R.id.busInput);
         mBusInputText.setHint("Likely 1 or 2");
