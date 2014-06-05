@@ -186,7 +186,7 @@
 		
 		<Button style = "@style/RequestButton"
 		    android:id="@+id/sendRequestButton"
-		    android:text="@string/requestButtonLabel" />
+		    android:text="@string/request_button_label" />
 		
     </LinearLayout>
     

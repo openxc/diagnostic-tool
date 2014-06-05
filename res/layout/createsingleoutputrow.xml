@@ -3,8 +3,26 @@
         style="@style/DiagOutputRow">
         
     <TextView 
-        style="@style/DiagOutputText">
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@color/white" 
+        android:textColor="@color/darkRed"
+        android:layout_weight="0.9" >
     </TextView>
+    
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/getDetailsButton"
+        android:text="@string/details_button_label"
+        android:background="@drawable/details_button_selector"
+        android:layout_margin="5dp"
+        android:state_pressed="false" >    
+    </Button>
      
     <Button
         style="@style/ClearButton">

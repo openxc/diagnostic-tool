@@ -27,7 +27,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -40,7 +39,6 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
-import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
@@ -70,8 +68,8 @@ public class DiagnosticActivity extends Activity {
     private EditText mFactorInputText;
     private EditText mOffsetInputText;
     private EditText mNameInputText;
-    private List<View> responseRows = new ArrayList<>();
     private List<EditText> textFields = new ArrayList<>();
+    private DiagnosticOutputTable mOutputTable;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         public void receive(DiagnosticResponse response) {
@@ -86,51 +84,7 @@ public class DiagnosticActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        // Programmatically added views in the output disappear on orientation
-        // change. This is a workaround to add them back
-        LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
-        outputRows.removeAllViews();
-        for (int i = 0; i < responseRows.size(); i++) {
-            View row = responseRows.get(i);
-            outputRows.addView(row);
-        }
-    }
-
-    private void outputResponse(DiagnosticResponse response) {
-
-        final LinearLayout outputRows = (LinearLayout) findViewById(R.id.outputRows);
-        LinearLayout row = (LinearLayout) getLayoutInflater().inflate(R.layout.createsingleoutputrow, null);
-        TextView output = (TextView) row.getChildAt(0);
-
-        final Button deleteButton = (Button) row.getChildAt(1);
-        deleteButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View row = (View) deleteButton.getParent();
-                outputRows.removeView(row);
-                responseRows.remove(row);
-            }
-        });
-
-        Utilities.writeLine(output, "bus : "
-                + String.valueOf(response.getCanBus()));
-        Utilities.writeLine(output, "id : " + String.valueOf(response.getId()));
-        Utilities.writeLine(output, "mode: "
-                + String.valueOf(response.getMode()));
-        boolean success = response.getSuccess();
-        Utilities.writeLine(output, "success : " + String.valueOf(success));
-        if (success) {
-            Utilities.writeLine(output, "payload : "
-                    + String.valueOf(response.getPayload()));
-            output.append("value : " + String.valueOf(response.getValue()));
-        } else {
-            output.append("negative_response_code"
-                    + response.getNegativeResponseCode().toString());
-        }
-
-        outputRows.addView(row, 0);
-        responseRows.add(0, row);
+        mOutputTable.respondToConfigurationChange();
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -269,7 +223,7 @@ public class DiagnosticActivity extends Activity {
                 DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                 if (request != null) {
                     DiagnosticResponse response = mVehicleManager.request(request);
-                    outputResponse(response);
+                    mOutputTable.AddRow(request, response);
                 }
             }
         });
@@ -280,6 +234,8 @@ public class DiagnosticActivity extends Activity {
             public void onClick(View v) {
                 for (int i = 0; i < textFields.size(); i++) {
                     textFields.get(i).setText("");
+                    hideKeyboard();
+                    getCurrentFocus().clearFocus();
                 }
             }
         });
@@ -415,6 +371,7 @@ public class DiagnosticActivity extends Activity {
 
         initButtons();
         initTextFields();
+        mOutputTable = new DiagnosticOutputTable(this);
     }
 
     @Override
