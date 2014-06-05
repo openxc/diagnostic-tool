@@ -166,7 +166,7 @@ public class DiagnosticActivity extends Activity {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            int freq = Integer.parseInt(mFrequencyInputText.getText().toString());
+            float freq = Float.parseFloat(mFrequencyInputText.getText().toString());
             if (freq > 0) {
                 map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
             }
