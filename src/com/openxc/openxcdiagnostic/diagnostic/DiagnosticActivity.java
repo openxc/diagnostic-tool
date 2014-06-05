@@ -166,9 +166,13 @@ public class DiagnosticActivity extends Activity {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            float freq = Float.parseFloat(mFrequencyInputText.getText().toString());
-            if (freq > 0) {
-                map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
+            String freqInput = mFrequencyInputText.getText().toString();
+            // frequency is optional, ok if empty
+            if (!freqInput.equals("")) {
+                float freq = Float.parseFloat(freqInput);
+                if (freq > 0) {
+                    map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
+                }
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Enter frequency does not appear to be a number.");
