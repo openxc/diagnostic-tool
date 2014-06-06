@@ -84,7 +84,6 @@
     <style name="DiagInputText" parent="BareDiagInputText">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">.25</item>
-        
     </style>
     
     <style name="RequestButton">
@@ -96,12 +95,52 @@
         <item name="android:state_pressed">false</item>
     </style>
     
+    <style name="DiagOutputText"> 
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@color/white</item> 
+        <item name="android:textColor">@color/darkRed</item>
+        <item name="android:layout_weight">0.9</item> 
+    </style>
+    
+    <style name="DiagOutputMoreButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:id">@+id/getDetailsButton</item>
+        <item name="android:text">@string/details_button_label</item>
+        <item name="android:background">@drawable/details_button_selector</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:state_pressed">false</item>
+    </style>
+    
     <style name="DiagOutputRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_margin">15dp</item>
         <item name="android:gravity">fill_horizontal</item>
+    </style>
+    
+    <style name="DetailsAlert">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:gravity">fill_horizontal</item>
+    </style>
+    
+    <style name="DiagAlertTextStyle"> 
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/darkRed</item>
+        <item name="android:layout_weight">0.5</item> 
     </style>
     
     <!-- Dashboard styles -->

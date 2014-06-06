@@ -23,7 +23,7 @@ public class DiagnosticOutputRow {
             DiagnosticRequest req, DiagnosticResponse resp) {
 
         mTable = table;
-        mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.createsingleoutputrow, null);
+        mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.singleoutputrow, null);
         initButtons(context, table, req, resp);
         TextView outputText = (TextView) mView.getChildAt(0);
         outputText.setText(Utilities.getOutputString(resp));
@@ -38,9 +38,13 @@ public class DiagnosticOutputRow {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Request :\n"
-                        + Utilities.getOutputString(req) + "Response :\n"
-                        + Utilities.getOutputString(resp)).setTitle(context.getResources().getString(R.string.details_button_label));
+                LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertlayout, null);
+                builder.setView(alertLayout);
+                ((TextView) alertLayout.findViewById(R.id.diagAlertRequestOutput)).setText("REQUEST\n"
+                        + Utilities.getOutputString(req));
+                ((TextView) alertLayout.findViewById(R.id.diagAlertResponseOutput)).setText("RESPONSE\n"
+                        + Utilities.getOutputString(resp));
+                builder.setTitle(context.getResources().getString(R.string.details_button_label));
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }

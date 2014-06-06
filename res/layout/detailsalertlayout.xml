@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/DetailsAlert">
+        
+    <TextView 
+        style="@style/DiagAlertTextStyle"
+        android:id="@+id/diagAlertRequestOutput" >
+    </TextView>
+    
+    <TextView 
+        style="@style/DiagAlertTextStyle"
+        android:id="@+id/diagAlertResponseOutput" >
+    </TextView>    
+    
+</LinearLayout>
