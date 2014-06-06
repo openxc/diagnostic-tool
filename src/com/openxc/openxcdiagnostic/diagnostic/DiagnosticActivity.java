@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -72,20 +71,15 @@ public class DiagnosticActivity extends Activity {
     private DiagnosticOutputTable mOutputTable;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
-        public void receive(final DiagnosticRequest request, final DiagnosticResponse response) {
+        public void receive(final DiagnosticRequest request,
+                final DiagnosticResponse response) {
             mHandler.post(new Runnable() {
                 public void run() {
-                    mOutputTable.addRow(request, response); 
+                    mOutputTable.addRow(request, response);
                 }
             });
         }
     };
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mOutputTable.respondToConfigurationChange();
-    }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void
