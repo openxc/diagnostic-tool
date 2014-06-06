@@ -72,10 +72,10 @@ public class DiagnosticActivity extends Activity {
     private DiagnosticOutputTable mOutputTable;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
-        public void receive(DiagnosticResponse response) {
+        public void receive(final DiagnosticRequest request, final DiagnosticResponse response) {
             mHandler.post(new Runnable() {
                 public void run() {
-
+                    mOutputTable.addRow(request, response); 
                 }
             });
         }
@@ -222,8 +222,7 @@ public class DiagnosticActivity extends Activity {
                 getCurrentFocus().clearFocus();
                 DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                 if (request != null) {
-                    DiagnosticResponse response = mVehicleManager.request(request);
-                    mOutputTable.addRow(request, response);
+                    mVehicleManager.request(request, mResponseListener);
                 }
             }
         });
