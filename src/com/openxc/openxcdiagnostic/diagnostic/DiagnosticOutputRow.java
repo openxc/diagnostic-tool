@@ -40,10 +40,8 @@ public class DiagnosticOutputRow {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertlayout, null);
                 builder.setView(alertLayout);
-                ((TextView) alertLayout.findViewById(R.id.diagAlertRequestOutput)).setText("REQUEST\n"
-                        + Utilities.getOutputString(req));
-                ((TextView) alertLayout.findViewById(R.id.diagAlertResponseOutput)).setText("RESPONSE\n"
-                        + Utilities.getOutputString(resp));
+                ((TextView) alertLayout.findViewById(R.id.diagAlertRequestOutput)).setText(Utilities.getOutputString(req));
+                ((TextView) alertLayout.findViewById(R.id.diagAlertResponseOutput)).setText(Utilities.getOutputString(resp));
                 builder.setTitle(context.getResources().getString(R.string.details_button_label));
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DetailsAlert">
-        
-    <TextView 
-        style="@style/DiagAlertTextStyle"
-        android:id="@+id/diagAlertRequestOutput" >
-    </TextView>
+        style="@style/DetailsAlert"
+        android:baselineAligned="false">
+               
+    <LinearLayout 
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:layout_weight="0.5">
+	    
+        <TextView 
+            style="@style/DiagAlertText"
+            android:text="@string/alert_request_header"
+            android:layout_gravity="center"/>            
+	    
+	    <TextView 
+	        style="@style/DiagAlertText"
+	        android:id="@+id/diagAlertRequestOutput" >
+	    </TextView>
     
-    <TextView 
-        style="@style/DiagAlertTextStyle"
-        android:id="@+id/diagAlertResponseOutput" >
-    </TextView>    
+    </LinearLayout>
+    
+    <View 
+            android:layout_height="fill_parent"
+            android:layout_width="1dp"
+            android:background="@color/lightBlue"/>
+    
+    <LinearLayout 
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="0.5">
+        	    
+         <TextView 
+            style="@style/DiagAlertText"
+            android:text="@string/alert_response_header"
+            android:layout_gravity="center"/>            
+        
+	    <TextView 
+	        style="@style/DiagAlertText"
+	        android:id="@+id/diagAlertResponseOutput" >
+	    </TextView> 
+    
+    </LinearLayout>
     
 </LinearLayout>

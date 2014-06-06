@@ -68,7 +68,7 @@
     <style name="DiagLabel" parent="BareDiagLabel">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">0.2</item>
-        <item name="android:minWidth">150dp</item> 
+        <item name="android:minWidth">150dp</item>
     </style>
     
     <style name ="BareDiagInputText" >
@@ -133,14 +133,18 @@
         <item name="android:gravity">fill_horizontal</item>
     </style>
     
-    <style name="DiagAlertTextStyle"> 
-        <item name="android:layout_width">0dip</item>
+    <style name="DiagAlertText" >
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
         <item name="android:layout_margin">5dp</item>
+    </style>
+    
+    <style name="DiagAlertContentText" parent="DiagAlertText">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:padding">10dp</item>
-        <item name="android:textColor">@color/darkRed</item>
-        <item name="android:layout_weight">0.5</item> 
     </style>
     
     <!-- Dashboard styles -->

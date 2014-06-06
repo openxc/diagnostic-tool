@@ -23,6 +23,8 @@
     <string name="factor_label">Factor</string>
     <string name="offset_label">Offset</string>
     <string name="name_label">Name</string>
+    <string name="alert_request_header">REQUEST</string>
+    <string name="alert_response_header">RESPONSE</string>
     
     <!-- Info Strings -->
     <string name="busInfo">The numerical identifier of the CAN bus where this request should be sent, most likely 1 or 2 (for a vehicle interface with 2 CAN controllers).</string>
