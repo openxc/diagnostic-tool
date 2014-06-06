@@ -25,7 +25,7 @@ public class DiagnosticOutputRow {
         mTable = table;
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.singleoutputrow, null);
         initButtons(context, table, req, resp);
-        TextView outputText = (TextView) mView.getChildAt(0);
+        TextView outputText = (TextView) mView.findViewById(R.id.outputText);
         outputText.setText(Utilities.getOutputString(resp));
     }
 
@@ -33,7 +33,7 @@ public class DiagnosticOutputRow {
             DiagnosticOutputTable table, final DiagnosticRequest req,
             final DiagnosticResponse resp) {
 
-        Button moreButton = (Button) mView.getChildAt(1);
+        Button moreButton = (Button) mView.findViewById(R.id.outputMoreButton);
         moreButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +51,7 @@ public class DiagnosticOutputRow {
             }
         });
 
-        final Button deleteButton = (Button) mView.getChildAt(2);
+        final Button deleteButton = (Button) mView.findViewById(R.id.outputDeleteButton);
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

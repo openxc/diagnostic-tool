@@ -3,15 +3,27 @@
         style="@style/DiagOutputRow">
         
     <TextView 
-        style="@style/DiagOutputText" >
+        style="@style/DiagOutputText" 
+        android:id="@+id/outputText">
     </TextView>
     
-    <Button
-        style="@style/DiagOutputMoreButton" >
-    </Button>
-     
-    <Button
-        style="@style/ClearButton">
-    </Button>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    
+	    <Button
+	        style="@style/DiagOutputMoreButton"
+	        android:id="@+id/outputMoreButton"
+	        android:layout_gravity="center_vertical">
+	    </Button>
+	     
+	    <Button
+	        style="@style/ClearButton"
+	        android:id="@+id/outputDeleteButton"
+	        android:layout_gravity="center_vertical">
+	    </Button>
+    
+    </LinearLayout>
     
 </LinearLayout>
