@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="2dp">
+
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/busLabel"
+              android:text="bus"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/bus"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/idLabel"
+              android:text="id"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/id"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+      
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/modeLabel"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/mode"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+      
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/pidLabel"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/pid"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+      
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/successLabel"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/success"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+      
+      <TableRow style="@style/ItemRow">
+          <TextView
+              android:id="@+id/codeLabel"
+              style="@style/ItemLabel" />
+          <TextView
+              android:id="@+id/code"
+              style="@style/ItemData" />
+      </TableRow>
+      
+      <View 
+          android:layout_height="1dp"
+          android:background="@color/black"/>
+
+  </TableLayout>
