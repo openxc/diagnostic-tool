@@ -26,6 +26,7 @@ public class DiagnosticOutputRow {
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.singleoutputrow, null);
         initButtons(context, table, req, resp);
         TextView outputText = (TextView) mView.findViewById(R.id.outputText);
+        outputText.setTextColor(Utilities.getOutputColor(context, resp));
         outputText.setText(Utilities.getOutputString(resp));
     }
 
@@ -41,7 +42,10 @@ public class DiagnosticOutputRow {
                 LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertlayout, null);
                 builder.setView(alertLayout);
                 ((TextView) alertLayout.findViewById(R.id.diagAlertRequestOutput)).setText(Utilities.getOutputString(req));
-                ((TextView) alertLayout.findViewById(R.id.diagAlertResponseOutput)).setText(Utilities.getOutputString(resp));
+                TextView alertResponseOutput = (TextView) alertLayout.findViewById(R.id.diagAlertResponseOutput);
+                alertResponseOutput.setText(Utilities.getOutputString(resp));
+                alertResponseOutput.setTextColor(Utilities.getOutputColor(context, resp));
+                
                 builder.setTitle(context.getResources().getString(R.string.details_button_label));
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

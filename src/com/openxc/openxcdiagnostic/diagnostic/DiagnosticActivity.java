@@ -42,6 +42,7 @@ import com.openxc.messages.NamedVehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
+import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
@@ -221,7 +222,11 @@ public class DiagnosticActivity extends Activity {
                 getCurrentFocus().clearFocus();
                 try {
                     DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
-                    mVehicleManager.request(request);
+                    if (request != null) {
+                        //mVehicleManager.request(request);
+                        //TODO JUST FOR TESTING!
+                        mOutputTable.addRow(request, Utilities.generateRandomFakeResponse(request));
+                    }
                 } catch (InvalidMessageFieldsException e) {
                     Log.w(TAG, "InvalidMessageFields Exception Thrown!");
                 }
