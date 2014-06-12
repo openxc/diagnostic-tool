@@ -33,8 +33,12 @@ import android.widget.Toast;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
+import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.InvalidMessageFieldsException;
+import com.openxc.messages.KeyMatcher;
+import com.openxc.messages.NamedVehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
@@ -86,6 +90,7 @@ public class DiagnosticActivity extends Activity {
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
             mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
+            mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
             mIsBound = true;
         }
 
@@ -109,7 +114,7 @@ public class DiagnosticActivity extends Activity {
         return null;
     }
 
-    private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
+    private DiagnosticRequest generateDiagnosticRequestFromInputFields() throws InvalidMessageFieldsException {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -129,7 +134,7 @@ public class DiagnosticActivity extends Activity {
             int bus = Integer.parseInt(mBusInputText.getText().toString());
             if (bus <= (int) DiagnosticRequest.BUS_RANGE.getMax()
                     && bus >= (int) DiagnosticRequest.BUS_RANGE.getMin()) {
-                map.put(DiagnosticRequest.BUS_KEY, bus);
+                map.put(DiagnosticMessage.BUS_KEY, bus);
             } else {
                 return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
             }
@@ -138,7 +143,7 @@ public class DiagnosticActivity extends Activity {
         }
         try {
             int id = Integer.parseInt(mIdInputText.getText().toString());
-            map.put(DiagnosticRequest.ID_KEY, id);
+            map.put(DiagnosticMessage.ID_KEY, id);
         } catch (NumberFormatException e) {
             return failAndToastError("Entered ID does not appear to be an integer.");
         }
@@ -200,7 +205,7 @@ public class DiagnosticActivity extends Activity {
 
         String name = mNameInputText.getText().toString();
         if (!name.equals("")) {
-            map.put(DiagnosticRequest.NAME_KEY, name);
+            map.put(NamedVehicleMessage.NAME_KEY, name);
         }
 
         return new DiagnosticRequest(map);
@@ -214,9 +219,11 @@ public class DiagnosticActivity extends Activity {
             public void onClick(View v) {
                 hideKeyboard();
                 getCurrentFocus().clearFocus();
-                DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
-                if (request != null) {
-                    mVehicleManager.request(request, mResponseListener);
+                try {
+                    DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
+                    mVehicleManager.request(request);
+                } catch (InvalidMessageFieldsException e) {
+                    Log.w(TAG, "InvalidMessageFields Exception Thrown!");
                 }
             }
         });

@@ -10,7 +10,7 @@ public class Utilities {
 
     public static String getOutputString(DiagnosticRequest req) {
         String result = new String();
-        result = result + "bus : " + req.getCanBus() + "\n";
+        result = result + "bus : " + req.getBusId() + "\n";
         result = result + "id : " + req.getId() + "\n";
         result = result + "mode: " + req.getMode() + "\n";
         result = result + "pid : " + (req.getPid() == 0 ? "N/A" : req.getPid())
@@ -29,7 +29,7 @@ public class Utilities {
 
     public static String getOutputString(DiagnosticResponse resp) {
         String result = new String();
-        result = result + "bus : " + resp.getCanBus() + "\n";
+        result = result + "bus : " + resp.getBusId() + "\n";
         result = result + "id : " + resp.getId() + "\n";
         result = result + "mode: " + resp.getMode() + "\n";
         result = result + "pid : "
