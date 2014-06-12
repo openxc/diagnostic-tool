@@ -174,7 +174,7 @@ public class DiagnosticActivity extends Activity {
         if (!payloadString.equals("")) {
             if (payloadString.length() <= DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
-                    map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString);
+                    map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString.getBytes());
                 } else {
                     return failAndToastError("Payload must have an even number of digits.");
                 }

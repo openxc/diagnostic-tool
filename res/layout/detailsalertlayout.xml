@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/DetailsAlert"
-        android:baselineAligned="false">
+        style="@style/DiagDetailsAlert"
+        android:baselineAligned="true">
                
     <LinearLayout 
 	    android:layout_width="0dp"
@@ -10,12 +10,12 @@
 	    android:layout_weight="0.5">
 	    
         <TextView 
-            style="@style/DiagAlertText"
+            style="@style/DiagDetailsAlertText"
             android:text="@string/alert_request_header"
             android:layout_gravity="center"/>            
 	    
 	    <TextView 
-	        style="@style/DiagAlertText"
+	        style="@style/DiagAlertContentText"
 	        android:id="@+id/diagAlertRequestOutput" >
 	    </TextView>
     
@@ -33,12 +33,12 @@
         android:layout_weight="0.5">
         	    
          <TextView 
-            style="@style/DiagAlertText"
+            style="@style/DiagDetailsAlertText"
             android:text="@string/alert_response_header"
             android:layout_gravity="center"/>            
         
 	    <TextView 
-	        style="@style/DiagAlertText"
+	        style="@style/DiagAlertContentText"
 	        android:id="@+id/diagAlertResponseOutput" >
 	    </TextView> 
     

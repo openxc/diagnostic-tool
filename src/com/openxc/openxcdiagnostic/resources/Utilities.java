@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
@@ -17,6 +16,8 @@ import com.openxc.openxcdiagnostic.R;
 
 public class Utilities {
 
+    private static Random rnd = new Random();
+    
     private Utilities() {
     };
     
@@ -58,8 +59,9 @@ public class Utilities {
                             : String.valueOf(resp.getPayload())) + "\n";
             result = result + "value : " + String.valueOf(resp.getValue());
         } else {
-            result = result + "negative_response_code : "
-                    + resp.getNegativeResponseCode().toString();
+            DiagnosticResponse.NegativeResponseCode code = resp.getNegativeResponseCode();
+            result = result + "code : "
+                    + code.toDocumentationString() + " (" + code.hexCodeString() + ")";
         }
         return result;
     }
@@ -70,7 +72,6 @@ public class Utilities {
     }
     
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {
-        Random rnd = new Random();
         Map<String, Object> map = new HashMap<>();
         map.put(DiagnosticResponse.BUS_KEY, request.getBusId());
         map.put(DiagnosticResponse.ID_KEY, request.getId());

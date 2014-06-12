@@ -125,15 +125,14 @@
         <item name="android:gravity">fill_horizontal</item>
     </style>
     
-    <style name="DetailsAlert">
-        <item name="android:layout_width">match_parent</item>
+    <style name="DiagDetailsAlert">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">15dp</item>
         <item name="android:gravity">fill_horizontal</item>
     </style>
     
-    <style name="DiagAlertText" >
+    <style name="DiagDetailsAlertText" >
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">23sp</item>
         <item name="android:layout_width">wrap_content</item>
@@ -141,7 +140,7 @@
         <item name="android:layout_margin">5dp</item>
     </style>
     
-    <style name="DiagAlertContentText" parent="DiagAlertText">
+    <style name="DiagAlertContentText" parent="DiagDetailsAlertText">
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:padding">10dp</item>
