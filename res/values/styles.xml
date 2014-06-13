@@ -17,7 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-        <style name="DefaultFont" parent="@android:style/TextAppearance.Medium">
+    <style name="DefaultFont" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">25sp</item>
@@ -125,13 +125,6 @@
         <item name="android:gravity">fill_horizontal</item>
     </style>
     
-    <style name="DiagDetailsAlert">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">fill_horizontal</item>
-    </style>
-    
     <style name="DiagDetailsAlertText" >
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">23sp</item>
@@ -141,10 +134,40 @@
     </style>
     
     <style name="DiagAlertContentText" parent="DiagDetailsAlertText">
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">10dp</item>
         <item name="android:padding">10dp</item>
     </style>
+    
+    <style name="DiagDetailsAlert">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">fill</item>
+        
+    </style>
+    
+    <style name="DiagAlertItemRow">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:gravity">fill_horizontal</item>
+    </style>
+    
+    <style name="DiagAlertItemLabel" parent="DiagAlertContentText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left</item>    
+        </style>
+    
+    <style name="DiagAlertItemData" parent="DiagAlertContentText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">right</item>    
+        </style>
     
     <!-- Dashboard styles -->
     
