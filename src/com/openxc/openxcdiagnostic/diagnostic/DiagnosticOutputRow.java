@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,7 +86,7 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, requestTable, "bus", String.valueOf(req.getBusId()));
         createAndAddRow(context, requestTable, "id", String.valueOf(req.getId()));
         createAndAddRow(context, requestTable, "mode", String.valueOf(req.getMode()));
-        createAndAddRow(context, requestTable, "pid", req.getPid() == -1 ? "N/A" : String.valueOf(req.getPid()));
+        createAndAddRow(context, requestTable, "pid", req.hasPid() ? String.valueOf(req.getPid()) : "N/A");
         createAndAddRow(context, requestTable, "payload", (req.getPayload() == null ? "N/A"
                 : String.valueOf(req.getPayload())));
         createAndAddRow(context, requestTable, "factor", String.valueOf(req.getFactor()));
@@ -118,7 +117,7 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, responseTable, "bus", String.valueOf(resp.getBusId()));
         createAndAddRow(context, responseTable, "id", String.valueOf(resp.getId()));
         createAndAddRow(context, responseTable, "mode", String.valueOf(resp.getMode()));
-        createAndAddRow(context, responseTable, "pid", resp.getPid() == -1 ? "N/A" : String.valueOf(resp.getPid()));
+        createAndAddRow(context, responseTable, "pid", resp.hasPid() ? String.valueOf(resp.getPid()) : "N/A");
         createAndAddRow(context, responseTable, "success", String.valueOf(resp.getSuccess()));
         createAndAddRow(context, responseTable, "payload", resp.getPayload() == null ? "N/A"
                 : String.valueOf(resp.getPayload()));
@@ -133,7 +132,7 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, responseTable, "bus", String.valueOf(resp.getBusId()));
         createAndAddRow(context, responseTable, "id", String.valueOf(resp.getId()));
         createAndAddRow(context, responseTable, "mode", String.valueOf(resp.getMode()));
-        createAndAddRow(context, responseTable, "pid", resp.getPid() == -1 ? "N/A" : String.valueOf(resp.getPid()));
+        createAndAddRow(context, responseTable, "pid", resp.hasPid() ? String.valueOf(resp.getPid()) : "N/A");
         createAndAddRow(context, responseTable, "success",String.valueOf(resp.getSuccess()));
         NegativeResponseCode code = resp.getNegativeResponseCode(); 
         createAndAddRow(context, responseTable, "code", String.valueOf(code.code()));

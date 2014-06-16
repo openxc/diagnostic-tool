@@ -29,7 +29,7 @@ public class Utilities {
         result = result + "bus : " + req.getBusId() + "\n";
         result = result + "id : " + req.getId() + "\n";
         result = result + "mode: " + req.getMode() + "\n";
-        result = result + "pid : " + (req.getPid() == 0 ? "N/A" : req.getPid())
+        result = result + "pid : " + (req.hasPid() ? req.getPid() : "N/A")
                 + "\n";
         result = result
                 + "payload : "
@@ -49,7 +49,7 @@ public class Utilities {
         result = result + "id : " + resp.getId() + "\n";
         result = result + "mode: " + resp.getMode() + "\n";
         result = result + "pid : "
-                + (resp.getPid() == -1 ? "N/A" : resp.getPid()) + "\n";
+                + (resp.hasPid() ? resp.getPid() : "N/A") + "\n" ;
         boolean success = resp.getSuccess();
         result = result + "success : " + success + "\n";
         if (success) {

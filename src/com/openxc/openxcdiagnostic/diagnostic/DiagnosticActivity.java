@@ -226,10 +226,10 @@ public class DiagnosticActivity extends Activity {
                         //mVehicleManager.request(request);
                         //TODO JUST FOR TESTING! should be 
                         //mVehicleManager.request(request);
-                        mOutputTable.addRow(request, Utilities.generateRandomFakeResponse(request));
+                        mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
                     }
                 } catch (InvalidMessageFieldsException e) {
-                    Log.w(TAG, "InvalidMessageFields Exception Thrown!");
+                    Log.w(TAG, "Exception Thrown trying to generate request from input fields.");
                 }
             }
         });
