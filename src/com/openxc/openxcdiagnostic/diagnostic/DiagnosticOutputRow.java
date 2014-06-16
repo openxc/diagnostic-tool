@@ -58,12 +58,7 @@ public class DiagnosticOutputRow {
         LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertlayout, null);
                 
         fillRequestTable(alertLayout, context, req);
-        
-        if (resp.getSuccess()) {
-            fillSuccessfulResponseTable(alertLayout, context, resp);
-        } else {
-            fillNegativeResponseTable(alertLayout, context, resp);
-        }
+        fillResponseTable(alertLayout, context, resp);
         
         builder.setView(alertLayout);
 
@@ -110,30 +105,32 @@ public class DiagnosticOutputRow {
         parent.addView(headerRow);
     }
     
-    private void fillSuccessfulResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
-        LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable);
-        
+    private void fillResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
+        LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         createAndAddHeaderRow(context, responseTable, "RESPONSE");
+        
         createAndAddRow(context, responseTable, "bus", String.valueOf(resp.getBusId()));
         createAndAddRow(context, responseTable, "id", String.valueOf(resp.getId()));
         createAndAddRow(context, responseTable, "mode", String.valueOf(resp.getMode()));
         createAndAddRow(context, responseTable, "pid", resp.hasPid() ? String.valueOf(resp.getPid()) : "N/A");
-        createAndAddRow(context, responseTable, "success", String.valueOf(resp.getSuccess()));
+        boolean responseSuccess = resp.getSuccess();
+        createAndAddRow(context, responseTable, "success", String.valueOf(responseSuccess));
+        if (responseSuccess) {
+            fillTableWithSuccessDetails(responseTable, context, resp);
+        } else {
+            fillTableWithResponseDetails(responseTable, context, resp);
+        }
+    }
+    
+    private void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+          
         createAndAddRow(context, responseTable, "payload", resp.getPayload() == null ? "N/A"
                 : String.valueOf(resp.getPayload()));
         createAndAddRow(context, responseTable, "value", String.valueOf(resp.getValue()));
     }
     
-    private void fillNegativeResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
+    private void fillTableWithResponseDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         
-        LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable);
-        
-        createAndAddHeaderRow(context, responseTable, "RESPONSE");
-        createAndAddRow(context, responseTable, "bus", String.valueOf(resp.getBusId()));
-        createAndAddRow(context, responseTable, "id", String.valueOf(resp.getId()));
-        createAndAddRow(context, responseTable, "mode", String.valueOf(resp.getMode()));
-        createAndAddRow(context, responseTable, "pid", resp.hasPid() ? String.valueOf(resp.getPid()) : "N/A");
-        createAndAddRow(context, responseTable, "success",String.valueOf(resp.getSuccess()));
         NegativeResponseCode code = resp.getNegativeResponseCode(); 
         createAndAddRow(context, responseTable, "code", String.valueOf(code.code()));
     }
