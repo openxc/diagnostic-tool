@@ -74,6 +74,7 @@ public class DiagnosticActivity extends Activity {
     private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<>();
     private DiagnosticOutputTable mOutputTable;
+    private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticMessage.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         public void receive(final DiagnosticRequest request,
@@ -172,7 +173,7 @@ public class DiagnosticActivity extends Activity {
 
         String payloadString = mPayloadInputText.getText().toString();
         if (!payloadString.equals("")) {
-            if (payloadString.length() <= DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_CHARS) {
+            if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
                     map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString.getBytes());
                 } else {
