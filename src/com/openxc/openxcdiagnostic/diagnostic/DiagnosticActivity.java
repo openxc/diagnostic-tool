@@ -33,7 +33,6 @@ import android.widget.Toast;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
-import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.InvalidMessageFieldsException;
@@ -74,7 +73,7 @@ public class DiagnosticActivity extends Activity {
     private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<>();
     private DiagnosticOutputTable mOutputTable;
-    private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticMessage.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
+    private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         public void receive(final DiagnosticRequest request,
@@ -136,7 +135,7 @@ public class DiagnosticActivity extends Activity {
             int bus = Integer.parseInt(mBusInputText.getText().toString());
             if (bus <= (int) DiagnosticRequest.BUS_RANGE.getMax()
                     && bus >= (int) DiagnosticRequest.BUS_RANGE.getMin()) {
-                map.put(DiagnosticMessage.BUS_KEY, bus);
+                map.put(DiagnosticRequest.BUS_KEY, bus);
             } else {
                 return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
             }
@@ -145,7 +144,7 @@ public class DiagnosticActivity extends Activity {
         }
         try {
             int id = Integer.parseInt(mIdInputText.getText().toString());
-            map.put(DiagnosticMessage.ID_KEY, id);
+            map.put(DiagnosticRequest.ID_KEY, id);
         } catch (NumberFormatException e) {
             return failAndToastError("Entered ID does not appear to be an integer.");
         }
@@ -225,7 +224,8 @@ public class DiagnosticActivity extends Activity {
                     DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                     if (request != null) {
                         //mVehicleManager.request(request);
-                        //TODO JUST FOR TESTING!
+                        //TODO JUST FOR TESTING! should be 
+                        //mVehicleManager.request(request);
                         mOutputTable.addRow(request, Utilities.generateRandomFakeResponse(request));
                     }
                 } catch (InvalidMessageFieldsException e) {

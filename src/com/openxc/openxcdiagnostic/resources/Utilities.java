@@ -73,14 +73,14 @@ public class Utilities {
     
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {
         Map<String, Object> map = new HashMap<>();
-        map.put(DiagnosticResponse.BUS_KEY, request.getBusId());
-        map.put(DiagnosticResponse.ID_KEY, request.getId());
-        map.put(DiagnosticResponse.MODE_KEY, request.getMode());
+        map.put(DiagnosticRequest.BUS_KEY, request.getBusId());
+        map.put(DiagnosticRequest.ID_KEY, request.getId());
+        map.put(DiagnosticRequest.MODE_KEY, request.getMode());
         boolean success = rnd.nextBoolean();
         map.put(DiagnosticResponse.SUCCESS_KEY, success);
         if (success) {
             if (request.getPayload() != null) {
-                map.put(DiagnosticResponse.PAYLOAD_KEY, request.getPayload());
+                map.put(DiagnosticRequest.PAYLOAD_KEY, request.getPayload());
             }
             map.put(DiagnosticResponse.VALUE_KEY, rnd.nextFloat());
         } else {
