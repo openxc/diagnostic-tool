@@ -26,9 +26,10 @@ public class DiagnosticOutputRow {
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         initButtons(context, req, resp);
         
-        TextView outputText = (TextView) mView.findViewById(R.id.outputText);
-        outputText.setTextColor(getOutputColor(context, resp));
-        outputText.setText(Utilities.getOutputString(resp));
+        LinearLayout outputTextLayout = (LinearLayout) mView.findViewById(R.id.outputTextLayout);
+        fillOutputResponseTable(context, outputTextLayout, resp);
+        //outputText.setTextColor(getOutputColor(context, resp));
+        //outputText.setText(Utilities.getOutputString(resp));
         
         ((TextView) mView.findViewById(R.id.outputRowNumberText)).setText(String.valueOf(rowNumber));
     }
@@ -84,6 +85,21 @@ public class DiagnosticOutputRow {
         return mView;
     }
     
+    private void fillOutputResponseTable(DiagnosticActivity context, LinearLayout responseTable, DiagnosticResponse resp) {
+        
+        createAndAddRowToOutput(context, responseTable, "bus", Utilities.getBusOutput(resp));
+        createAndAddRowToOutput(context, responseTable, "id", Utilities.getIdOutput(resp));
+        createAndAddRowToOutput(context, responseTable, "mode", Utilities.getModeOutput(resp));
+        createAndAddRowToOutput(context, responseTable, "pid", Utilities.getPidOutput(resp));
+        boolean responseSuccess = resp.getSuccess();
+        createAndAddRowToOutput(context, responseTable, "success", Utilities.getSuccessOutput(resp));
+        if (responseSuccess) {
+            fillOutputTableWithSuccessDetails(responseTable, context, resp);
+        } else {
+            fillOutputTableWithFailureDetails(responseTable, context, resp);
+        }
+    }
+    
     private void fillRequestTable(LinearLayout alertLayout, Activity context, DiagnosticRequest req) {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
@@ -102,6 +118,14 @@ public class DiagnosticOutputRow {
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         ((TextView) row.findViewById(R.id.alertRowValue)).setText(value);
+        parent.addView(row);
+    }
+    
+    private void createAndAddRowToOutput(Activity context, LinearLayout parent, String label, String value) {
+        
+        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.outputresponsetablerow, null);
+        ((TextView) row.findViewById(R.id.outputTableRowLabel)).setText(label);
+        ((TextView) row.findViewById(R.id.outputTableRowValue)).setText(value);
         parent.addView(row);
     }
     
@@ -134,8 +158,17 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, responseTable, "value", Utilities.getValueOutput(resp));
     }
     
+    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "payload", Utilities.getPayloadOutput(resp));
+        createAndAddRowToOutput(context, responseTable, "value", Utilities.getValueOutput(resp));
+    }
+    
     private void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         createAndAddRow(context, responseTable, "code", Utilities.getResponseCodeOutput(resp));
+    }
+    
+    private void fillOutputTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "code", Utilities.getResponseCodeOutput(resp));
     }
     
     private static int getOutputColor(Activity context, DiagnosticResponse resp) {

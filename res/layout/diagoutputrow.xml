@@ -18,16 +18,15 @@
         android:background="@color/white" >    
     </TextView>
     
-    <TextView 
-        android:id="@+id/outputText"
-        android:layout_width="0dip"
+    <LinearLayout 
+        android:id="@+id/outputTextLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:background="@color/white" 
-        android:layout_weight="0.9" >    
-    </TextView>
+        android:background="@color/white" >    
+    </LinearLayout>
         
     <Button
         style="@style/ResendButton"

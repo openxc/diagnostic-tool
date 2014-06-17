@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+    
+    <LinearLayout   
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:gravity="fill_horizontal" >
+          
+          <TextView
+              android:id="@+id/outputTableRowLabel"
+              style="@style/DiagOutputTableRowLabel" />
+          
+          <TextView
+              android:id="@+id/outputTableRowValue"
+              style="@style/DiagOutputTableRowValue" />
+    
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+          
+</LinearLayout>
+      
