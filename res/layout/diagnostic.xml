@@ -138,49 +138,21 @@
 		    android:id="@+id/payloadInput"
 		    style="@style/DiagInputText"
 		    android:inputType="number"/>
-		<Button
-             android:id="@+id/factorQuestionButton"
-             style="@style/QuestionButton" />
-		<TextView
-		    android:id="@+id/factorLabel"
-		    style="@style/DiagInputLabel"
-		    android:text="@string/factor_label"
-		    android:labelFor="@+id/factorInput"/>
-		<EditText
-		             android:id="@+id/factorInput"
-			style="@style/DiagInputText"
-			android:inputType="numberDecimal"/>	
 		         
-    </LinearLayout>
-		     
-    <LinearLayout style="@style/DiagInputRow">
-		
         <Button
-             android:id="@+id/offsetQuestionButton"
-             style="@style/QuestionButton" />
-		<TextView
-		    android:id="@+id/offsetLabel"
-			style="@style/DiagInputLabel"
-			android:text="@string/offset_label"
-			android:labelFor="@+id/offsetInput"/>
-		<EditText
-		    android:id="@+id/offsetInput"
-		    style="@style/DiagInputText"
-		    android:inputType="numberDecimal"/>
-		<Button
              android:id="@+id/nameQuestionButton"
              style="@style/QuestionButton" />
-		<TextView
-		    android:id="@+id/nameLabel"
-		    style="@style/DiagInputLabel"
-		    android:text="@string/name_label"
-		    android:labelFor="@+id/nameInput"/>
-		<EditText
-		    android:id="@+id/nameInput"
-			style="@style/DiagInputText"
-			android:inputType="text"/>	
-		         
-	</LinearLayout>
+        <TextView
+            android:id="@+id/nameLabel"
+            style="@style/DiagInputLabel"
+            android:text="@string/name_label"
+            android:labelFor="@+id/nameInput"/>
+        <EditText
+            android:id="@+id/nameInput"
+            style="@style/DiagInputText"
+            android:inputType="text"/>  
+   
+    </LinearLayout>
 		
 	<LinearLayout style="@style/DiagInputRow" >
 		

@@ -84,8 +84,6 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, requestTable, "pid", req.hasPid() ? String.valueOf(req.getPid()) : "N/A");
         createAndAddRow(context, requestTable, "payload", (req.getPayload() == null ? "N/A"
                 : String.valueOf(req.getPayload())));
-        //createAndAddRow(context, requestTable, "factor", String.valueOf(req.getFactor()));
-        //createAndAddRow(context, requestTable, "offset", String.valueOf(req.getOffset()));
         createAndAddRow(context, requestTable, "frequency", String.valueOf(req.getFrequency()));
         createAndAddRow(context, requestTable, "name", req.getName() == null ? "N/A" : req.getName());
     }

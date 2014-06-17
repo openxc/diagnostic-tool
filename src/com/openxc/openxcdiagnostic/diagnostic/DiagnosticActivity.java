@@ -58,8 +58,6 @@ public class DiagnosticActivity extends Activity {
     private Button mModeInfoButton;
     private Button mPidInfoButton;
     private Button mPayloadInfoButton;
-    private Button mFactorInfoButton;
-    private Button mOffsetInfoButton;
     private Button mNameInfoButton;
     private Map<Button, String> buttonInfo = new HashMap<>();
     private EditText mFrequencyInputText;
@@ -68,8 +66,6 @@ public class DiagnosticActivity extends Activity {
     private EditText mModeInputText;
     private EditText mPidInputText;
     private EditText mPayloadInputText;
-    private EditText mFactorInputText;
-    private EditText mOffsetInputText;
     private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<>();
     private DiagnosticOutputTable mOutputTable;
@@ -183,27 +179,6 @@ public class DiagnosticActivity extends Activity {
             }
         }
 
-        /*try {
-            String factorInput = mFactorInputText.getText().toString();
-            // factor is optional, ok if empty
-            if (!factorInput.equals("")) {
-                double factor = Double.parseDouble(mFactorInputText.getText().toString());
-                map.put(DiagnosticRequest.FACTOR_KEY, factor);
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered Factor does not appear to be a decimal number.");
-        }
-        try {
-            String offsetInput = mOffsetInputText.getText().toString();
-            // factor is optional, ok if empty
-            if (!offsetInput.equals("")) {
-                double offset = Double.parseDouble(offsetInput);
-                map.put(DiagnosticRequest.OFFSET_KEY, offset);
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered Offset does not appear to be a decimal number.");
-        }*/
-
         String name = mNameInputText.getText().toString();
         if (!name.equals("")) {
             map.put(NamedVehicleMessage.NAME_KEY, name);
@@ -278,14 +253,6 @@ public class DiagnosticActivity extends Activity {
         buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
         infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payloadInfo));
 
-        mFactorInfoButton = (Button) findViewById(R.id.factorQuestionButton);
-        buttonInfo.put(mFactorInfoButton, res.getString(R.string.factorInfo));
-        infoMap.put(res.getString(R.string.factor_label), res.getString(R.string.factorInfo));
-
-        mOffsetInfoButton = (Button) findViewById(R.id.offsetQuestionButton);
-        buttonInfo.put(mOffsetInfoButton, res.getString(R.string.offsetInfo));
-        infoMap.put(res.getString(R.string.offset_label), res.getString(R.string.offsetInfo));
-
         mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
         buttonInfo.put(mNameInfoButton, res.getString(R.string.nameInfo));
         infoMap.put(res.getString(R.string.name_label), res.getString(R.string.nameInfo));
@@ -341,14 +308,6 @@ public class DiagnosticActivity extends Activity {
         mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
         mPayloadInputText.setHint("e.g. 0x1234");
         textFields.add(mPayloadInputText);
-
-        mFactorInputText = (EditText) findViewById(R.id.factorInput);
-        mFactorInputText.setHint("1.0");
-        textFields.add(mFactorInputText);
-
-        mOffsetInputText = (EditText) findViewById(R.id.offsetInput);
-        mOffsetInputText.setHint("0");
-        textFields.add(mOffsetInputText);
 
         mNameInputText = (EditText) findViewById(R.id.nameInput);
         textFields.add(mNameInputText);

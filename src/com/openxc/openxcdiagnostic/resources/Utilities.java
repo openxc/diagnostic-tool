@@ -34,8 +34,6 @@ public class Utilities {
                 + "payload : "
                 + (req.getPayload() == null ? "N/A"
                         : String.valueOf(req.getPayload())) + "\n";
-        //result = result + "factor : " + req.getFactor() + "\n";
-        //result = result + "offset : " + req.getOffset() + "\n";
         result = result + "frequency : " + req.getFrequency() + "\n";
         result = result + "name : "
                 + (req.getName() == null ? "N/A" : req.getName());
