@@ -5,7 +5,18 @@
         android:orientation="horizontal"
         android:layout_margin="15dp"
         android:gravity="fill_horizontal" >
-        
+    
+    <TextView 
+        android:id="@+id/outputRowNumberText"
+        android:layout_width="wrap_content"
+        android:minWidth="33dp"
+        android:layout_height="33dp"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textSize="23sp"
+        android:background="@color/white" >    
+    </TextView>
+    
     <TextView 
         android:id="@+id/outputText"
         android:layout_width="0dip"

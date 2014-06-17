@@ -20,14 +20,17 @@ public class DiagnosticOutputRow {
     private DiagnosticOutputTable mTable;
 
     public DiagnosticOutputRow(DiagnosticActivity context, DiagnosticOutputTable table,
-            DiagnosticRequest req, DiagnosticResponse resp) {
+            DiagnosticRequest req, DiagnosticResponse resp, int rowNumber) {
 
         mTable = table;
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         initButtons(context, req, resp);
+        
         TextView outputText = (TextView) mView.findViewById(R.id.outputText);
         outputText.setTextColor(getOutputColor(context, resp));
         outputText.setText(Utilities.getOutputString(resp));
+        
+        ((TextView) mView.findViewById(R.id.outputRowNumberText)).setText(String.valueOf(rowNumber));
     }
 
     private void initButtons(final DiagnosticActivity context, final DiagnosticRequest req,

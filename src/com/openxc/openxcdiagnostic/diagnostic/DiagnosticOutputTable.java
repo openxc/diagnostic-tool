@@ -14,6 +14,7 @@ public class DiagnosticOutputTable {
     private DiagnosticActivity mContext;
     private List<DiagnosticOutputRow> rows = new ArrayList<>();
     private LinearLayout mView;
+    private int rowNumber = 1;
 
     public DiagnosticOutputTable(DiagnosticActivity context) {
         mContext = context;
@@ -22,7 +23,7 @@ public class DiagnosticOutputTable {
 
     public void addRow(DiagnosticRequest req, DiagnosticResponse resp) {
 
-        DiagnosticOutputRow row = new DiagnosticOutputRow(mContext, this, req, resp);
+        DiagnosticOutputRow row = new DiagnosticOutputRow(mContext, this, req, resp, rowNumber++);
         rows.add(0, row);
         mView.addView(row.getView(), 0);
     }
