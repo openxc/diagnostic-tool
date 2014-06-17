@@ -145,12 +145,14 @@ public class DiagnosticActivity extends Activity {
             return failAndToastError("Entered ID does not appear to be an integer.");
         }
         try {
-            int mode = Integer.parseInt(mModeInputText.getText().toString());
+            int mode = Integer.parseInt(mModeInputText.getText().toString(), 16);
             if (mode <= (int) DiagnosticRequest.MODE_RANGE.getMax()
                     && mode >= (int) DiagnosticRequest.MODE_RANGE.getMin()) {
                 map.put(DiagnosticRequest.MODE_KEY, mode);
             } else {
-                return failAndToastError("Invalid mode entry.  Mode must be 0 < Mode < 16");
+                return failAndToastError("Invalid mode entry.  Mode must be " + 
+                        "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMin()) 
+                        + " <= Mode <= " + "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMax()));
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Mode does not appear to be an integer.");
@@ -289,7 +291,7 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mFrequencyInputText);
 
         mBusInputText = (EditText) findViewById(R.id.busInput);
-        mBusInputText.setHint("Likely 1 or 2");
+        mBusInputText.setHint("1 or 2");
         textFields.add(mBusInputText);
 
         mIdInputText = (EditText) findViewById(R.id.idInput);
@@ -297,8 +299,8 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) findViewById(R.id.modeInput);
-        mModeInputText.setHint(DiagnosticRequest.MODE_RANGE.getMin() + " - "
-                + DiagnosticRequest.MODE_RANGE.getMax());
+        mModeInputText.setHint("0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMin()) + " - "
+                + "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMax()));
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) findViewById(R.id.pidInput);

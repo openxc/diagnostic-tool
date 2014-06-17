@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -25,42 +26,93 @@ public class Utilities {
 
     public static String getOutputString(DiagnosticRequest req) {
         String result = new String();
-        result = result + "bus : " + req.getBusId() + "\n";
-        result = result + "id : " + req.getId() + "\n";
-        result = result + "mode: " + req.getMode() + "\n";
-        result = result + "pid : " + (req.hasPid() ? req.getPid() : "N/A")
-                + "\n";
-        result = result
-                + "payload : "
-                + (req.getPayload() == null ? "N/A"
-                        : String.valueOf(req.getPayload())) + "\n";
-        result = result + "frequency : " + req.getFrequency() + "\n";
-        result = result + "name : "
-                + (req.getName() == null ? "N/A" : req.getName());
+        result = result + "bus : " + getBusOutput(req) + "\n";
+        result = result + "id : " + getIdOutput(req) + "\n";
+        result = result + "mode: " + getModeOutput(req) + "\n";
+        result = result + "pid : " + getPidOutput(req) + "\n";
+        result = result + "payload : " + getPayloadOutput(req) + "\n";
+        result = result + "frequency : " + getFrequencyOutput(req) + "\n";
+        result = result + "name : " + getNameOutput(req);
         return result;
     }
 
     public static String getOutputString(DiagnosticResponse resp) {
         String result = new String();
-        result = result + "bus : " + resp.getBusId() + "\n";
-        result = result + "id : " + resp.getId() + "\n";
-        result = result + "mode: " + resp.getMode() + "\n";
-        result = result + "pid : "
-                + (resp.hasPid() ? resp.getPid() : "N/A") + "\n" ;
+        result = result + "bus : " + getBusOutput(resp) + "\n";
+        result = result + "id : " + getIdOutput(resp) + "\n";
+        result = result + "mode: " + getModeOutput(resp) + "\n";
+        result = result + "pid : " + getPidOutput(resp) + "\n";
+        result = result + "success : " + getSuccessOutput(resp) + "\n";
         boolean success = resp.getSuccess();
-        result = result + "success : " + success + "\n";
         if (success) {
-            result = result
-                    + "payload : "
-                    + (resp.getPayload() == null ? "N/A"
-                            : String.valueOf(resp.getPayload())) + "\n";
-            result = result + "value : " + String.valueOf(resp.getValue());
+            result = result + "payload : " + getPayloadOutput(resp) + "\n";
+            result = result + "value : " + getValueOutput(resp);
         } else {
             DiagnosticResponse.NegativeResponseCode code = resp.getNegativeResponseCode();
             result = result + "code : "
                     + code.toDocumentationString() + " (" + code.hexCodeString() + ")";
         }
         return result;
+    }
+    
+    public static String getBusOutput(DiagnosticRequest req) {
+        return String.valueOf(req.getBusId());
+    }
+    
+    public static String getBusOutput(DiagnosticResponse resp) {
+        return String.valueOf(resp.getBusId());
+    }
+    
+    public static String getIdOutput(DiagnosticRequest req) {
+        return String.valueOf(req.getId());
+    }
+    
+    public static String getIdOutput(DiagnosticResponse resp) {
+        return String.valueOf(resp.getId());
+    }
+    
+    public static String getModeOutput(DiagnosticRequest req) {
+        return "0x" + Integer.toHexString(req.getMode()).toUpperCase(Locale.US);
+    }
+    
+    public static String getModeOutput(DiagnosticResponse resp) {
+        return "0x" + Integer.toHexString(resp.getMode()).toUpperCase(Locale.US);
+    }
+    
+    public static String getPidOutput(DiagnosticRequest req) {
+        return req.getPid() == null ? "" : String.valueOf(req.getPayload());
+    }
+    
+    public static String getPidOutput(DiagnosticResponse resp) {
+        return resp.getPid() == null ? "" : String.valueOf(resp.getPayload());
+    }
+    
+    public static String getPayloadOutput(DiagnosticRequest req) {
+        return req.getPayload() == null ? "" : String.valueOf(req.getPayload());
+    }
+    
+    public static String getPayloadOutput(DiagnosticResponse resp) {
+        return resp.getPayload() == null ? "" : String.valueOf(resp.getPayload());
+    }
+    
+    public static String getSuccessOutput(DiagnosticResponse resp) {
+        return String.valueOf(resp.getSuccess());
+    }
+    
+    public static String getValueOutput(DiagnosticResponse resp) {
+        return String.valueOf(resp.getValue());
+    }    
+    
+    public static String getFrequencyOutput(DiagnosticRequest req) {
+        return req.getFrequency() == null ? "" : String.valueOf(req.getFrequency());
+    }
+    
+    public static String getNameOutput(DiagnosticRequest req) {
+        return req.getName() == null ? "" : String.valueOf(req.getName());
+    }
+    
+    public static String getResponseCodeOutput(DiagnosticResponse resp) {
+        return resp.getNegativeResponseCode().hexCodeString().toUpperCase(Locale.US);
     }
     
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {

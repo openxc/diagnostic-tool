@@ -108,7 +108,9 @@
 		<EditText
 		    android:id="@+id/modeInput"
 		    style="@style/DiagInputText"
-		    android:inputType="number"/>
+		    android:digits="0123456789ABCDEF"
+		    android:inputType="textCapCharacters|textNoSuggestions"
+		    android:maxLength="2"/>
 		<Button
              android:id="@+id/pidQuestionButton"
              style="@style/QuestionButton" />
@@ -136,9 +138,10 @@
 			android:labelFor="@+id/payloadInput"/>
 		<EditText
 		    android:id="@+id/payloadInput"
-		    style="@style/DiagInputText"
-		    android:inputType="number"/>
-		         
+            style="@style/DiagInputText"
+            android:digits="0123456789ABCDEF"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="14"/>		         
         <Button
              android:id="@+id/nameQuestionButton"
              style="@style/QuestionButton" />

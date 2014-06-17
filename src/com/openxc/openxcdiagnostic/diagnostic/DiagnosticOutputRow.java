@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
-import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.resources.Utilities;
 
@@ -78,14 +77,13 @@ public class DiagnosticOutputRow {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
         createAndAddHeaderRow(context, requestTable, "REQUEST");
-        createAndAddRow(context, requestTable, "bus", String.valueOf(req.getBusId()));
-        createAndAddRow(context, requestTable, "id", String.valueOf(req.getId()));
-        createAndAddRow(context, requestTable, "mode", String.valueOf(req.getMode()));
-        createAndAddRow(context, requestTable, "pid", req.hasPid() ? String.valueOf(req.getPid()) : "N/A");
-        createAndAddRow(context, requestTable, "payload", (req.getPayload() == null ? "N/A"
-                : String.valueOf(req.getPayload())));
-        createAndAddRow(context, requestTable, "frequency", String.valueOf(req.getFrequency()));
-        createAndAddRow(context, requestTable, "name", req.getName() == null ? "N/A" : req.getName());
+        createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req));
+        createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req));
+        createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req));
+        createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req));
+        createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req));
+        createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req));
+        createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req));
     }
     
     private void createAndAddRow(Activity context, LinearLayout parent, String label, String value) {
@@ -106,30 +104,27 @@ public class DiagnosticOutputRow {
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         createAndAddHeaderRow(context, responseTable, "RESPONSE");
         
-        createAndAddRow(context, responseTable, "bus", String.valueOf(resp.getBusId()));
-        createAndAddRow(context, responseTable, "id", String.valueOf(resp.getId()));
-        createAndAddRow(context, responseTable, "mode", String.valueOf(resp.getMode()));
-        createAndAddRow(context, responseTable, "pid", resp.hasPid() ? String.valueOf(resp.getPid()) : "N/A");
+        createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp));
+        createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp));
+        createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp));
+        createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp));
         boolean responseSuccess = resp.getSuccess();
-        createAndAddRow(context, responseTable, "success", String.valueOf(responseSuccess));
+        createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp));
         if (responseSuccess) {
             fillTableWithSuccessDetails(responseTable, context, resp);
         } else {
-            fillTableWithResponseDetails(responseTable, context, resp);
+            fillTableWithFailureDetails(responseTable, context, resp);
         }
     }
     
     private void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
           
-        createAndAddRow(context, responseTable, "payload", resp.getPayload() == null ? "N/A"
-                : String.valueOf(resp.getPayload()));
-        createAndAddRow(context, responseTable, "value", String.valueOf(resp.getValue()));
+        createAndAddRow(context, responseTable, "payload", Utilities.getPayloadOutput(resp));
+        createAndAddRow(context, responseTable, "value", Utilities.getValueOutput(resp));
     }
     
-    private void fillTableWithResponseDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
-        
-        NegativeResponseCode code = resp.getNegativeResponseCode(); 
-        createAndAddRow(context, responseTable, "code", code.hexCodeString());
+    private void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+        createAndAddRow(context, responseTable, "code", Utilities.getResponseCodeOutput(resp));
     }
     
     private static int getOutputColor(Activity context, DiagnosticResponse resp) {
