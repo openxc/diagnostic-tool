@@ -24,10 +24,10 @@ public class DiagnosticOutputRow {
             DiagnosticRequest req, DiagnosticResponse resp) {
 
         mTable = table;
-        mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.singleoutputrow, null);
+        mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         initButtons(context, req, resp);
         TextView outputText = (TextView) mView.findViewById(R.id.outputText);
-        outputText.setTextColor(Utilities.getOutputColor(context, resp));
+        outputText.setTextColor(getOutputColor(context, resp));
         outputText.setText(Utilities.getOutputString(resp));
     }
 
@@ -55,7 +55,7 @@ public class DiagnosticOutputRow {
     private void showDetailAlert(Activity context, DiagnosticRequest req, DiagnosticResponse resp) {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertlayout, null);
+        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertlayout, null);
                 
         fillRequestTable(alertLayout, context, req);
         fillResponseTable(alertLayout, context, resp);
@@ -84,23 +84,22 @@ public class DiagnosticOutputRow {
         createAndAddRow(context, requestTable, "pid", req.hasPid() ? String.valueOf(req.getPid()) : "N/A");
         createAndAddRow(context, requestTable, "payload", (req.getPayload() == null ? "N/A"
                 : String.valueOf(req.getPayload())));
-        createAndAddRow(context, requestTable, "factor", String.valueOf(req.getFactor()));
-        createAndAddRow(context, requestTable, "offset", String.valueOf(req.getOffset()));
+        //createAndAddRow(context, requestTable, "factor", String.valueOf(req.getFactor()));
+        //createAndAddRow(context, requestTable, "offset", String.valueOf(req.getOffset()));
         createAndAddRow(context, requestTable, "frequency", String.valueOf(req.getFrequency()));
         createAndAddRow(context, requestTable, "name", req.getName() == null ? "N/A" : req.getName());
     }
     
     private void createAndAddRow(Activity context, LinearLayout parent, String label, String value) {
         
-        //parent.addView(context.getLayoutInflater().inflate(R.layout.horizontalline, null));
-        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.detailsalertrow, null);
+        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         ((TextView) row.findViewById(R.id.alertRowValue)).setText(value);
         parent.addView(row);
     }
     
     private void createAndAddHeaderRow(Activity context, LinearLayout parent, String header) {
-        LinearLayout headerRow = (LinearLayout) context.getLayoutInflater().inflate(R.layout.alertrowheader, null);
+        LinearLayout headerRow = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertheaderrow, null);
         ((TextView) headerRow.findViewById(R.id.alertHeaderLabel)).setText(header);
         parent.addView(headerRow);
     }
@@ -132,7 +131,12 @@ public class DiagnosticOutputRow {
     private void fillTableWithResponseDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         
         NegativeResponseCode code = resp.getNegativeResponseCode(); 
-        createAndAddRow(context, responseTable, "code", String.valueOf(code.code()));
+        createAndAddRow(context, responseTable, "code", code.hexCodeString());
+    }
+    
+    private static int getOutputColor(Activity context, DiagnosticResponse resp) {
+        int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
+        return context.getResources().getColor(color);
     }
     
 }

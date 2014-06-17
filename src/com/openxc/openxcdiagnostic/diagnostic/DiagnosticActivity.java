@@ -123,7 +123,7 @@ public class DiagnosticActivity extends Activity {
             String freqInput = mFrequencyInputText.getText().toString();
             // frequency is optional, ok if empty
             if (!freqInput.equals("")) {
-                float freq = Float.parseFloat(freqInput);
+                double freq = Double.parseDouble(freqInput);
                 if (freq > 0) {
                     map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
                 }
@@ -183,11 +183,11 @@ public class DiagnosticActivity extends Activity {
             }
         }
 
-        try {
+        /*try {
             String factorInput = mFactorInputText.getText().toString();
             // factor is optional, ok if empty
             if (!factorInput.equals("")) {
-                float factor = Float.parseFloat(mFactorInputText.getText().toString());
+                double factor = Double.parseDouble(mFactorInputText.getText().toString());
                 map.put(DiagnosticRequest.FACTOR_KEY, factor);
             }
         } catch (NumberFormatException e) {
@@ -197,12 +197,12 @@ public class DiagnosticActivity extends Activity {
             String offsetInput = mOffsetInputText.getText().toString();
             // factor is optional, ok if empty
             if (!offsetInput.equals("")) {
-                float offset = Float.parseFloat(offsetInput);
+                double offset = Double.parseDouble(offsetInput);
                 map.put(DiagnosticRequest.OFFSET_KEY, offset);
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Offset does not appear to be a decimal number.");
-        }
+        }*/
 
         String name = mNameInputText.getText().toString();
         if (!name.equals("")) {

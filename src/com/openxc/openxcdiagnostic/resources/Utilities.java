@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import android.app.Activity;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.InvalidMessageFieldsException;
-import com.openxc.openxcdiagnostic.R;
 
 public class Utilities {
 
@@ -21,6 +19,7 @@ public class Utilities {
     private Utilities() {
     };
     
+    //TODO this contains NegativeResponseCode.None, but ok because it's just for testing anyway
     private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes = 
             Collections.unmodifiableList(Arrays.asList(DiagnosticResponse.NegativeResponseCode.values()));
 
@@ -35,8 +34,8 @@ public class Utilities {
                 + "payload : "
                 + (req.getPayload() == null ? "N/A"
                         : String.valueOf(req.getPayload())) + "\n";
-        result = result + "factor : " + req.getFactor() + "\n";
-        result = result + "offset : " + req.getOffset() + "\n";
+        //result = result + "factor : " + req.getFactor() + "\n";
+        //result = result + "offset : " + req.getOffset() + "\n";
         result = result + "frequency : " + req.getFrequency() + "\n";
         result = result + "name : "
                 + (req.getName() == null ? "N/A" : req.getName());
@@ -66,11 +65,6 @@ public class Utilities {
         return result;
     }
     
-    public static int getOutputColor(Activity context, DiagnosticResponse resp) {
-        int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
-        return context.getResources().getColor(color);
-    }
-    
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {
         Map<String, Object> map = new HashMap<>();
         map.put(DiagnosticRequest.BUS_KEY, request.getBusId());
@@ -90,7 +84,6 @@ public class Utilities {
         try {
             return new DiagnosticResponse(map);
         } catch (InvalidMessageFieldsException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         

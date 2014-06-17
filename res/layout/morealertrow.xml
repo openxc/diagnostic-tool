@@ -5,15 +5,20 @@
     android:layout_height="wrap_content" >
     
     <LinearLayout   
-      style="@style/DiagAlertItemRow">
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:gravity="fill_horizontal" >
           
           <TextView
               android:id="@+id/alertRowLabel"
-              style="@style/DiagAlertItemLabel" />
+              style="@style/DiagMoreAlertRowLabel" />
           
           <TextView
               android:id="@+id/alertRowValue"
-              style="@style/DiagAlertItemData" />
+              style="@style/DiagMoreAlertRowValue" />
+    
     </LinearLayout>
     
     <include layout="@layout/horizontalline" />

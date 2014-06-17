@@ -58,20 +58,20 @@
         <item name="android:layout_height">30dp</item>
     </style>
    
-    <style name ="BareDiagLabel" >
+    <style name ="BaseDiagInputLabel" >
         <item name="android:textColor">@color/lightBlue</item>
         <item name="android:gravity">center</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
     
-    <style name="DiagLabel" parent="BareDiagLabel">
+    <style name="DiagInputLabel" parent="BaseDiagInputLabel">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">0.2</item>
         <item name="android:minWidth">150dp</item>
     </style>
     
-    <style name ="BareDiagInputText" >
+    <style name ="BaseDiagInputText" >
         <item name="android:ems">10</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:gravity">center</item>
@@ -81,7 +81,7 @@
         <item name="android:layout_height">match_parent</item>
     </style>
     
-    <style name="DiagInputText" parent="BareDiagInputText">
+    <style name="DiagInputText" parent="BaseDiagInputText">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">.25</item>
     </style>
@@ -95,79 +95,28 @@
         <item name="android:state_pressed">false</item>
     </style>
     
-    <style name="DiagOutputText"> 
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:background">@color/white</item> 
-        <item name="android:textColor">@color/darkRed</item>
-        <item name="android:layout_weight">0.9</item> 
-    </style>
-    
-    <style name="DiagOutputMoreButton">
-        <item name="android:layout_width">60dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:id">@+id/getDetailsButton</item>
-        <item name="android:text">@string/details_button_label</item>
-        <item name="android:background">@drawable/details_button_selector</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-    </style>
-    
-    <style name="DiagOutputRow">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">15dp</item>
-        <item name="android:gravity">fill_horizontal</item>
-    </style>
-    
-    <style name="DiagDetailsAlertText" >
+    <style name="DiagMoreAlertContentText" >
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">23sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">5dp</item>
-    </style>
-    
-    <style name="DiagAlertContentText" parent="DiagDetailsAlertText">
         <item name="android:padding">10dp</item>
     </style>
-    
-    <style name="DiagDetailsAlert">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_gravity">right</item>
-        <item name="android:gravity">fill</item>
-        
-    </style>
-    
-    <style name="DiagAlertItemRow">
-        <item name="android:orientation">horizontal</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">1dp</item>
-        <item name="android:gravity">fill_horizontal</item>
-    </style>
-    
-    <style name="DiagAlertItemLabel" parent="DiagAlertContentText">
+   
+    <style name="DiagMoreAlertRowLabel" parent="DiagMoreAlertContentText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">left</item>    
         </style>
     
-    <style name="DiagAlertItemData" parent="DiagAlertContentText">
+    <style name="DiagMoreAlertRowValue" parent="DiagMoreAlertContentText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_gravity">right</item>
         <item name="android:gravity">right</item>    
-        </style>
+    </style>
     
     <!-- Dashboard styles -->
     
