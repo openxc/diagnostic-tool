@@ -12,6 +12,7 @@
         android:minWidth="33dp"
         android:layout_height="33dp"
         android:layout_margin="10dp"
+        android:layout_gravity="top"
         android:gravity="center"
         android:textSize="23sp"
         android:background="@color/white" >    
@@ -22,7 +23,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:padding="10dp"
         android:background="@color/white" 
         android:layout_weight="0.9" >    
