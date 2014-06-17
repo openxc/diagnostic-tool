@@ -80,11 +80,11 @@ public class Utilities {
     }
     
     public static String getPidOutput(DiagnosticRequest req) {
-        return req.getPid() == null ? "" : String.valueOf(req.getPayload());
+        return req.getPid() == null ? "" : String.valueOf(req.getPid());
     }
     
     public static String getPidOutput(DiagnosticResponse resp) {
-        return resp.getPid() == null ? "" : String.valueOf(resp.getPayload());
+        return resp.getPid() == null ? "" : String.valueOf(resp.getPid());
     }
     
     public static String getPayloadOutput(DiagnosticRequest req) {
