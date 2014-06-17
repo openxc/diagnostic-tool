@@ -22,6 +22,12 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
     
+        <Button
+            style="@style/ResendButton"
+            android:id="@+id/outputResendButton"
+            android:layout_gravity="center_vertical">
+        </Button>
+        
 	    <Button
 	        style="@android:attr/buttonBarButtonStyle"
 	        android:id="@+id/outputMoreButton"
@@ -40,7 +46,7 @@
 	        android:id="@+id/outputDeleteButton"
 	        android:layout_gravity="center_vertical">
 	    </Button>
-    
+	    
     </LinearLayout>
     
 </LinearLayout>

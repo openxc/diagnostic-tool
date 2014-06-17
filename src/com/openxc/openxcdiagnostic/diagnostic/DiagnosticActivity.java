@@ -200,10 +200,7 @@ public class DiagnosticActivity extends Activity {
                 try {
                     DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
                     if (request != null) {
-                        //mVehicleManager.request(request);
-                        //TODO JUST FOR TESTING! should be 
-                        //mVehicleManager.request(request);
-                        mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
+                        sendRequest(request);
                     }
                 } catch (InvalidMessageFieldsException e) {
                     Log.w(TAG, "Exception Thrown trying to generate request from input fields.");
@@ -224,6 +221,12 @@ public class DiagnosticActivity extends Activity {
         });
 
         initInfoButtons();
+    }
+    
+    public void sendRequest(DiagnosticRequest request) {
+        //TODO JUST FOR TESTING! should be 
+        //mVehicleManager.request(request);
+        mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
     }
 
     private void initInfoButtons() {

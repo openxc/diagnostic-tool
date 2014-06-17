@@ -3,7 +3,6 @@ package com.openxc.openxcdiagnostic.diagnostic;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.widget.LinearLayout;
 
 import com.openxc.messages.DiagnosticRequest;
@@ -12,11 +11,11 @@ import com.openxc.openxcdiagnostic.R;
 
 public class DiagnosticOutputTable {
 
-    private Activity mContext;
+    private DiagnosticActivity mContext;
     private List<DiagnosticOutputRow> rows = new ArrayList<>();
     private LinearLayout mView;
 
-    public DiagnosticOutputTable(Activity context) {
+    public DiagnosticOutputTable(DiagnosticActivity context) {
         mContext = context;
         mView = (LinearLayout) context.findViewById(R.id.outputRows);
     }

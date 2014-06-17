@@ -19,7 +19,7 @@ public class DiagnosticOutputRow {
     private LinearLayout mView;
     private DiagnosticOutputTable mTable;
 
-    public DiagnosticOutputRow(Activity context, DiagnosticOutputTable table,
+    public DiagnosticOutputRow(DiagnosticActivity context, DiagnosticOutputTable table,
             DiagnosticRequest req, DiagnosticResponse resp) {
 
         mTable = table;
@@ -30,7 +30,7 @@ public class DiagnosticOutputRow {
         outputText.setText(Utilities.getOutputString(resp));
     }
 
-    private void initButtons(final Activity context, final DiagnosticRequest req,
+    private void initButtons(final DiagnosticActivity context, final DiagnosticRequest req,
             final DiagnosticResponse resp) {
 
         Button moreButton = (Button) mView.findViewById(R.id.outputMoreButton);
@@ -46,6 +46,14 @@ public class DiagnosticOutputRow {
             @Override
             public void onClick(View v) {
                 mTable.removeRow(DiagnosticOutputRow.this);
+            }
+        });
+        
+        Button resendButton = (Button) mView.findViewById(R.id.outputResendButton);
+        resendButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.sendRequest(req);
             }
         });
 

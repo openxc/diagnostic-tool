@@ -41,6 +41,14 @@
         <item name="android:layout_height">40dp</item>
     </style>
     
+    <style name="ResendButton" >
+        <item name="android:background">@drawable/resend_button_selector</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:state_pressed">false</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+    
     <style name="DiagInputRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
