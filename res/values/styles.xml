@@ -41,14 +41,6 @@
         <item name="android:layout_height">40dp</item>
     </style>
     
-    <style name="ResendButton" >
-        <item name="android:background">@drawable/resend_button_selector</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-    </style>
-    
     <style name="DiagInputRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -106,51 +98,43 @@
     <style name="DiagMoreAlertContentText" >
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">23sp</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:padding">10dp</item>
-    </style>
-    
-    <style name="DiagOutputTableContentText" >
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:padding">10dp</item>
     </style>
    
     <style name="DiagMoreAlertRowLabel" parent="DiagMoreAlertContentText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
         </style>
     
     <style name="DiagMoreAlertRowValue" parent="DiagMoreAlertContentText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">right</item>    
         <item name="android:textStyle">italic</item>
     </style>
     
-    <style name="DiagOutputTableRowLabel" parent="DiagOutputTableContentText">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="DiagOutputTableContentText" >
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    
+    <style name="DiagOutputTableRowLabel" parent="DiagOutputTableContentText">
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
         </style>
     
     <style name="DiagOutputTableRowValue" parent="DiagOutputTableContentText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">right</item>    
         <item name="android:textStyle">italic</item>
     </style>
-    
     
     <!-- Dashboard styles -->
     
