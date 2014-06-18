@@ -45,6 +45,7 @@ public class DiagnosticActivity extends Activity {
 
     private static String TAG = "VehicleDashboard";
 
+    private Toast mToast;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
@@ -105,8 +106,22 @@ public class DiagnosticActivity extends Activity {
      * the fail must too.
      */
     private DiagnosticRequest failAndToastError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        showToast(message, Toast.LENGTH_LONG);
         return null;
+    }
+    
+    private void showToast(String message, int length) {
+        
+        if (mToast != null && toastIsDisplaying()) {
+            mToast.cancel();
+        }
+            
+        mToast = Toast.makeText(this, message, length);
+        mToast.show(); 
+    }
+    
+    private boolean toastIsDisplaying() {
+        return mToast.getView().getWindowVisibility() == View.VISIBLE;
     }
     
     private DiagnosticRequest generateRequestFromRequiredInputFields() {
