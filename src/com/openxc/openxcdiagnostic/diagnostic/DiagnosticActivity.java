@@ -26,6 +26,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ public class DiagnosticActivity extends Activity {
             mHandler.post(new Runnable() {
                 public void run() {
                     mOutputTable.addRow(request, response);
+                    scrollOutputToTop();
                 }
             });
         }
@@ -221,6 +223,10 @@ public class DiagnosticActivity extends Activity {
         request.setMultipleResponses(false);
  
         return request;
+    }
+    
+    private void scrollOutputToTop() {
+        ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(ScrollView.FOCUS_UP);
     }
 
     private void initButtons() {
