@@ -2,10 +2,8 @@ package com.openxc.openxcdiagnostic.resources;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 
@@ -13,7 +11,6 @@ import android.app.Activity;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
-import com.openxc.messages.InvalidMessageFieldsException;
 import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
 import com.openxc.openxcdiagnostic.R;
 
