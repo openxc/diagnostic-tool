@@ -37,8 +37,8 @@
        android:gravity="fill_vertical" >
 
 	   <Button
-           style="@style/ClearButton"
-           android:id="@+id/outputDeleteButton"
+           style="@style/ResponseDeleteButton"
+           android:id="@+id/responseDeleteButton"
            android:layout_gravity="center_horizontal">
        </Button>   
       
@@ -74,8 +74,8 @@
            android:background="@drawable/resend_button_selector"
            android:layout_margin="5dp"
            android:state_pressed="false"
-           android:layout_width="40dp"
-           android:layout_height="40dp" 
+           android:layout_width="55dp"
+           android:layout_height="55dp" 
            android:layout_gravity="center_horizontal">
        </Button>
     

@@ -40,7 +40,7 @@ public class DiagnosticOutputRow {
             }
         });
 
-        final Button deleteButton = (Button) mView.findViewById(R.id.outputDeleteButton);
+        final Button deleteButton = (Button) mView.findViewById(R.id.responseDeleteButton);
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
