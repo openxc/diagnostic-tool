@@ -12,6 +12,7 @@ import java.util.Random;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.InvalidMessageFieldsException;
+import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
 
 public class Utilities {
 
@@ -116,27 +117,42 @@ public class Utilities {
     }
     
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(DiagnosticRequest.BUS_KEY, request.getBusId());
-        map.put(DiagnosticRequest.ID_KEY, request.getId());
-        map.put(DiagnosticRequest.MODE_KEY, request.getMode());
+        int bus = request.getBusId();
+        int id = request.getId();
+        int mode = request.getMode();
+        int pid = rnd.nextInt(5);
         boolean success = rnd.nextBoolean();
-        map.put(DiagnosticResponse.SUCCESS_KEY, success);
+        float value = 0;
+        NegativeResponseCode responseCode = NegativeResponseCode.NONE;
         if (success) {
-            if (request.getPayload() != null) {
-                map.put(DiagnosticRequest.PAYLOAD_KEY, request.getPayload());
-            }
-            map.put(DiagnosticResponse.VALUE_KEY, rnd.nextFloat());
+            value = rnd.nextFloat();
         } else {
-            map.put(DiagnosticResponse.NEGATIVE_RESPONSE_CODE_KEY, 
-                    negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size())));
-        }
-        try {
-            return new DiagnosticResponse(map);
-        } catch (InvalidMessageFieldsException e) {
-            e.printStackTrace();
+            responseCode = negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size()));
         }
         
-        return null;
+        return new DiagnosticResponse(bus, id, mode, pid, 
+                request.getPayload(), success, responseCode, value, null);
+    }
+    
+    public static DiagnosticRequest getDiagnositcRequest(int busId, int id, int mode, Integer pid, 
+            byte[] payload, Boolean multipleResponses, Double frequency, String name) {
+        
+        if (name != null && frequency != null && multipleResponses != null 
+                && payload != null && pid!= null) {
+            return new DiagnosticRequest(busId, id, mode, pid, payload, multipleResponses,
+                    frequency, name);
+        }
+        else if (pid != null) {
+            if (payload != null) {
+                return new DiagnosticRequest(busId, id, mode, pid, payload);
+            } else {
+                return new DiagnosticRequest(busId, id, mode, pid);
+            }
+        }
+        else if (payload != null) {
+            return new DiagnosticRequest(busId, id, mode, payload);
+        }      
+        
+        return new DiagnosticRequest(busId, id, mode);
     }
 }
