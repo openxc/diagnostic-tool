@@ -35,9 +35,7 @@ import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
-import com.openxc.messages.InvalidMessageFieldsException;
 import com.openxc.messages.KeyMatcher;
-import com.openxc.messages.NamedVehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
@@ -110,31 +108,11 @@ public class DiagnosticActivity extends Activity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         return null;
     }
-
-    private DiagnosticRequest generateDiagnosticRequestFromInputFields() throws InvalidMessageFieldsException {
-
-        Map<String, Object> map = new HashMap<>();
-
-        int busId = -1, id = -1, mode = -1;
-        Integer pid = null;
-        byte[] payload = null;
-        //TODO don't retrieve this value from UI yet
-        Boolean multipleResponses = null;
-        Double frequency = null;
-        String name = null;
+    
+    private DiagnosticRequest generateRequestFromRequiredInputFields() {
         
-        try {
-            String freqInput = mFrequencyInputText.getText().toString();
-            // frequency is optional, ok if empty
-            if (!freqInput.equals("")) {
-                frequency = Double.parseDouble(freqInput);
-                if (frequency < 0) {
-                    return failAndToastError("Frequency cannot be negative.");
-                }
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Enter frequency does not appear to be a number.");
-        }
+        Integer busId, id, mode;
+
         try {
             busId = Integer.parseInt(mBusInputText.getText().toString());
             if (busId < (int) DiagnosticRequest.BUS_RANGE.getMin()
@@ -163,12 +141,41 @@ public class DiagnosticActivity extends Activity {
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Mode does not appear to be an integer.");
         }
+        
+        return new DiagnosticRequest(busId, id, mode);
+    }
+
+    private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
+        
+        DiagnosticRequest request = generateRequestFromRequiredInputFields();
+        if (request == null) {
+            return null;
+        }
+        
+        try {
+            String freqInput = mFrequencyInputText.getText().toString();
+            // frequency is optional, ok if empty
+            if (!freqInput.equals("")) {
+                double frequency = Double.parseDouble(freqInput);
+                if (frequency > 0) {
+                    request.setFrequency(frequency);
+                } else {
+                    return failAndToastError("Frequency cannot be negative.");
+                }
+            }
+        } catch (NumberFormatException e) {
+            return failAndToastError("Enter frequency does not appear to be a number.");
+        }
+        
         try {
             String pidInput = mPidInputText.getText().toString();
             // pid is optional, ok if empty
             if (!pidInput.equals("")) {
-                pid = Integer.parseInt(pidInput);
-                if (pid < 0) {
+                int pid = Integer.parseInt(pidInput);
+                if (pid > 0) {
+                    request.setPid(pid);
+                }
+                else {
                     return failAndToastError("Pid cannot be negative.");
                 }
             }
@@ -180,9 +187,8 @@ public class DiagnosticActivity extends Activity {
         if (!payloadString.equals("")) {
             if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
-                    payload = new byte[payloadString.getBytes().length];
-                    System.arraycopy(payloadString.getBytes(), 0, payload, 0, 
-                            payloadString.getBytes().length);
+                    //TODO these can't be the right bytes but idk
+                    request.setPayload(payloadString.getBytes());
                 } else {
                     return failAndToastError("Payload must have an even number of digits.");
                 }
@@ -191,13 +197,15 @@ public class DiagnosticActivity extends Activity {
             }
         }
 
-        name = mNameInputText.getText().toString();
-        if (!name.equals("")) {
-            map.put(NamedVehicleMessage.NAME_KEY, name);
+        String name = mNameInputText.getText().toString();
+        if (!name.trim().equals("")) {
+            request.setName(name);
         }
-
-        return Utilities.getDiagnositcRequest(busId, id, mode, pid, payload, multipleResponses,
-                frequency, name);
+        
+        //TODO not retrieving this value from UI yet
+        request.setMultipleResponses(false);
+ 
+        return request;
     }
 
     private void initButtons() {
@@ -208,13 +216,9 @@ public class DiagnosticActivity extends Activity {
             public void onClick(View v) {
                 hideKeyboard();
                 getCurrentFocus().clearFocus();
-                try {
-                    DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
-                    if (request != null) {
-                        sendRequest(request);
-                    }
-                } catch (InvalidMessageFieldsException e) {
-                    Log.w(TAG, "Exception Thrown trying to generate request from input fields.");
+                DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
+                if (request != null) {
+                    sendRequest(request);
                 }
             }
         });

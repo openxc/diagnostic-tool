@@ -134,28 +134,6 @@ public class Utilities {
                 request.getPayload(), success, responseCode, value, null);
     }
     
-    public static DiagnosticRequest getDiagnositcRequest(int busId, int id, int mode, Integer pid, 
-            byte[] payload, Boolean multipleResponses, Double frequency, String name) {
-        
-        if (name != null && frequency != null && multipleResponses != null 
-                && payload != null && pid!= null) {
-            return new DiagnosticRequest(busId, id, mode, pid, payload, multipleResponses,
-                    frequency, name);
-        }
-        else if (pid != null) {
-            if (payload != null) {
-                return new DiagnosticRequest(busId, id, mode, pid, payload);
-            } else {
-                return new DiagnosticRequest(busId, id, mode, pid);
-            }
-        }
-        else if (payload != null) {
-            return new DiagnosticRequest(busId, id, mode, payload);
-        }      
-        
-        return new DiagnosticRequest(busId, id, mode);
-    }
-    
     public static int getOutputColor(Activity context, DiagnosticResponse resp) {
         int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
         return context.getResources().getColor(color);
