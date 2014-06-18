@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
@@ -37,25 +38,24 @@ public class DiagnosticAlertManager {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
         createAndAddHeaderRow(context, requestTable, "REQUEST");
-        createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req));
-        createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req));
-        createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req));
-        createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req));
-        createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req));
-        createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req));
-        createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req));
+        createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req), req);
+        createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req), req);
+        createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req), req);
+        createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req), req);
+        createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req), req);
+        createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req), req);
+        createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
     }
     
     private static void fillResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         createAndAddHeaderRow(context, responseTable, "RESPONSE");
-        
-        createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp));
-        createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp));
-        createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp));
-        createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp));
+        createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp), resp);
+        createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp), resp);
+        createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp), resp);
+        createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp), resp);
         boolean responseSuccess = resp.getSuccess();
-        createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp));
+        createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp), resp);
         if (responseSuccess) {
             fillTableWithSuccessDetails(responseTable, context, resp);
         } else {
@@ -65,19 +65,26 @@ public class DiagnosticAlertManager {
     
     private static void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         
-        createAndAddRow(context, responseTable, "payload", Utilities.getPayloadOutput(resp));
-        createAndAddRow(context, responseTable, "value", Utilities.getValueOutput(resp));
+        createAndAddRow(context, responseTable, "payload", Utilities.getPayloadOutput(resp), resp);
+        createAndAddRow(context, responseTable, "value", Utilities.getValueOutput(resp), resp);
     }
     
     private static void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
-        createAndAddRow(context, responseTable, "code", Utilities.getResponseCodeOutput(resp));
+        createAndAddRow(context, responseTable, "code", Utilities.getResponseCodeOutput(resp), 
+                resp);
     }
 
-    private static void createAndAddRow(Activity context, LinearLayout parent, String label, String value) {
+    private static void createAndAddRow(Activity context, LinearLayout parent, String label, 
+            String value, DiagnosticMessage msg) {
     
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
-        ((TextView) row.findViewById(R.id.alertRowValue)).setText(value);
+        TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
+        valueText.setText(value);
+        if (msg instanceof DiagnosticResponse) {
+            valueText.setTextColor(Utilities.getOutputColor(context, 
+                    (DiagnosticResponse) msg));
+        }
         parent.addView(row);
     }
     

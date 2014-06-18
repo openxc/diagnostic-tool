@@ -9,10 +9,13 @@ import java.util.Map;
 import java.util.Random;
 
 
+import android.app.Activity;
+
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.InvalidMessageFieldsException;
 import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
+import com.openxc.openxcdiagnostic.R;
 
 public class Utilities {
 
@@ -154,5 +157,10 @@ public class Utilities {
         }      
         
         return new DiagnosticRequest(busId, id, mode);
+    }
+    
+    public static int getOutputColor(Activity context, DiagnosticResponse resp) {
+        int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
+        return context.getResources().getColor(color);
     }
 }

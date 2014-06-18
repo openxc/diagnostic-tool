@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
@@ -24,11 +25,7 @@ public class DiagnosticOutputRow {
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         
         initButtons(context, req, resp);
-        
-        fillOutputResponseTable(context, resp);
-        //outputText.setTextColor(getOutputColor(context, resp));
-        //outputText.setText(Utilities.getOutputString(resp));
-        
+        fillOutputResponseTable(context, resp);        
         ((TextView) mView.findViewById(R.id.outputRowNumberText)).setText(String.valueOf(rowNumber));
     }
 
@@ -61,24 +58,30 @@ public class DiagnosticOutputRow {
 
     }
     
-    private void createAndAddRowToOutput(Activity context, LinearLayout parent, String label, String value) {
+    private void createAndAddRowToOutput(Activity context, LinearLayout parent, String label, 
+            String value, DiagnosticMessage msg) {
         
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.outputresponsetablerow, null);
         ((TextView) row.findViewById(R.id.outputTableRowLabel)).setText(label);
-        ((TextView) row.findViewById(R.id.outputTableRowValue)).setText(value);
+        
+        TextView valueText =  (TextView) row.findViewById(R.id.outputTableRowValue);
+        valueText.setText(value);
+        if (msg instanceof DiagnosticResponse) {
+            valueText.setTextColor(Utilities.getOutputColor(context, (DiagnosticResponse) msg));
+        }
         parent.addView(row);
     }
     
     private void fillOutputResponseTable(DiagnosticActivity context, DiagnosticResponse resp) {
         
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-
-        createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp));
-        createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp));
-        createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp));
-        createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp));
+        
+        createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp), resp);
+        createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
+        createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
+        createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp), resp);
         boolean responseSuccess = resp.getSuccess();
-        createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp));
+        createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp), resp);
         if (responseSuccess) {
             fillOutputTableWithSuccessDetails(infoTable, context, resp);
         } else {
@@ -86,18 +89,18 @@ public class DiagnosticOutputRow {
         }
     }    
     
-    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "payload", Utilities.getPayloadOutput(resp));
-        createAndAddRowToOutput(context, responseTable, "value", Utilities.getValueOutput(resp));
+    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable, 
+            Activity context, DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "payload", 
+                Utilities.getPayloadOutput(resp), resp);
+        createAndAddRowToOutput(context, responseTable, "value", 
+                Utilities.getValueOutput(resp), resp);
     }
     
-    private void fillOutputTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "code", Utilities.getResponseCodeOutput(resp));
-    }
-    
-    private static int getOutputColor(Activity context, DiagnosticResponse resp) {
-        int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
-        return context.getResources().getColor(color);
+    private void fillOutputTableWithFailureDetails(LinearLayout responseTable, Activity context, 
+            DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "code", Utilities.getResponseCodeOutput(resp), 
+                resp);
     }
 
     public LinearLayout getView() {
