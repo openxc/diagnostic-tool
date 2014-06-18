@@ -115,41 +115,47 @@ public class DiagnosticActivity extends Activity {
 
         Map<String, Object> map = new HashMap<>();
 
+        int busId = -1, id = -1, mode = -1;
+        Integer pid = null;
+        byte[] payload = null;
+        //TODO don't retrieve this value from UI yet
+        Boolean multipleResponses = null;
+        Double frequency = null;
+        String name = null;
+        
         try {
             String freqInput = mFrequencyInputText.getText().toString();
             // frequency is optional, ok if empty
             if (!freqInput.equals("")) {
-                double freq = Double.parseDouble(freqInput);
-                if (freq > 0) {
-                    map.put(DiagnosticRequest.FREQUENCY_KEY, freq);
+                frequency = Double.parseDouble(freqInput);
+                if (frequency < 0) {
+                    return failAndToastError("Frequency cannot be negative.");
                 }
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Enter frequency does not appear to be a number.");
         }
         try {
-            int bus = Integer.parseInt(mBusInputText.getText().toString());
-            if (bus <= (int) DiagnosticRequest.BUS_RANGE.getMax()
-                    && bus >= (int) DiagnosticRequest.BUS_RANGE.getMin()) {
-                map.put(DiagnosticRequest.BUS_KEY, bus);
-            } else {
+            busId = Integer.parseInt(mBusInputText.getText().toString());
+            if (busId < (int) DiagnosticRequest.BUS_RANGE.getMin()
+                    || busId > (int) DiagnosticRequest.BUS_RANGE.getMax()) {
                 return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Bus does not appear to be an integer.");
         }
         try {
-            int id = Integer.parseInt(mIdInputText.getText().toString());
-            map.put(DiagnosticRequest.ID_KEY, id);
+            id = Integer.parseInt(mIdInputText.getText().toString());
+            if (id < 0) {
+                return failAndToastError("Id cannot be negative.");
+            }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered ID does not appear to be an integer.");
         }
         try {
-            int mode = Integer.parseInt(mModeInputText.getText().toString(), 16);
-            if (mode <= (int) DiagnosticRequest.MODE_RANGE.getMax()
-                    && mode >= (int) DiagnosticRequest.MODE_RANGE.getMin()) {
-                map.put(DiagnosticRequest.MODE_KEY, mode);
-            } else {
+            mode = Integer.parseInt(mModeInputText.getText().toString(), 16);
+            if (mode < (int) DiagnosticRequest.MODE_RANGE.getMin()
+                    || mode > (int) DiagnosticRequest.MODE_RANGE.getMax()) {
                 return failAndToastError("Invalid mode entry.  Mode must be " + 
                         "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMin()) 
                         + " <= Mode <= " + "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMax()));
@@ -161,8 +167,10 @@ public class DiagnosticActivity extends Activity {
             String pidInput = mPidInputText.getText().toString();
             // pid is optional, ok if empty
             if (!pidInput.equals("")) {
-                int pid = Integer.parseInt(pidInput);
-                map.put(DiagnosticRequest.PID_KEY, pid);
+                pid = Integer.parseInt(pidInput);
+                if (pid < 0) {
+                    return failAndToastError("Pid cannot be negative.");
+                }
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered PID does not appear to be an integer.");
@@ -172,7 +180,9 @@ public class DiagnosticActivity extends Activity {
         if (!payloadString.equals("")) {
             if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
-                    map.put(DiagnosticRequest.PAYLOAD_KEY, payloadString.getBytes());
+                    payload = new byte[payloadString.getBytes().length];
+                    System.arraycopy(payloadString.getBytes(), 0, payload, 0, 
+                            payloadString.getBytes().length);
                 } else {
                     return failAndToastError("Payload must have an even number of digits.");
                 }
@@ -181,12 +191,13 @@ public class DiagnosticActivity extends Activity {
             }
         }
 
-        String name = mNameInputText.getText().toString();
+        name = mNameInputText.getText().toString();
         if (!name.equals("")) {
             map.put(NamedVehicleMessage.NAME_KEY, name);
         }
 
-        return new DiagnosticRequest(map);
+        return Utilities.getDiagnositcRequest(busId, id, mode, pid, payload, multipleResponses,
+                frequency, name);
     }
 
     private void initButtons() {
