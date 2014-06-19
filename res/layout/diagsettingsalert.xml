@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+        <TableRow style="@style/SettingsRow">
+            <TextView
+                style="@style/SettingsItemLabel"
+                android:text="@string/sniffing_label" 
+                android:textIsSelectable="false"/>
+            <CheckBox
+                style="@style/SettingsItemButton"
+                android:layout_gravity="right"/>
+        </TableRow>
+        
+        <View 
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+        
+        <TableRow style="@style/SettingsRow">
+            <TextView
+                style="@style/SettingsItemLabel"
+                android:text="@string/delete_all_responses_label" 
+                android:textIsSelectable="false"/>
+            <Button
+                style="@style/SettingsItemButton" 
+                android:background="@color/darkRed"
+                android:text="@string/delete_all_responses_button_text" />
+        </TableRow>
+        
+        <View 
+            android:layout_height="1dp"
+            android:background="@color/black"/>       
+
+    </TableLayout>

@@ -36,7 +36,7 @@ public class DiagnosticOutputRow {
         detailsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticAlertManager.show(context, req, resp);
+                DiagnosticResponseDetailsAlertManager.show(context, req, resp);
             }
         });
 

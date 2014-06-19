@@ -52,6 +52,7 @@ public class DiagnosticActivity extends Activity {
     private final Handler mHandler = new Handler();
     private Button sendRequestButton;
     private Button clearButton;
+    private Button settingsButton;
     private Button mFrequencyInfoButton;
     private Button mBusInfoButton;
     private Button mIdInfoButton;
@@ -253,6 +254,14 @@ public class DiagnosticActivity extends Activity {
                     hideKeyboard();
                     getCurrentFocus().clearFocus();
                 }
+            }
+        });
+        
+        settingsButton = (Button) findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DiagnosticSettingsManager.showAlert(DiagnosticActivity.this);
             }
         });
 

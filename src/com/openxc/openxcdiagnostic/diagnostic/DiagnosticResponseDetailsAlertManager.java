@@ -12,14 +12,14 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.resources.Utilities;
 
-public class DiagnosticAlertManager {
+public class DiagnosticResponseDetailsAlertManager {
 
-    private DiagnosticAlertManager() { }
+    private DiagnosticResponseDetailsAlertManager() { }
     
     public static void show(Activity context, DiagnosticRequest req, DiagnosticResponse resp) {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalertlayout, null);
+        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
                 
         fillRequestTable(alertLayout, context, req);
         fillResponseTable(alertLayout, context, resp);

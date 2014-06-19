@@ -7,8 +7,15 @@
     <string name="menu_label">OpenXC Menu</string>
     <string name="request_button_label">Send Request</string>
     <string name="details_button_label">Details</string>
-        
-    <string name="action_settings">Settings</string>
+    
+    <!-- Settings Strings -->
+    <string name="settings_alert_label">Settings</string>
+    <string name="delete_all_responses_label">Delete all responses?</string>
+    <string name="delete_all_responses_button_text">Delete</string>
+    <string name="sniffing_label">Enable response sniffing</string>
+    
+    
+    <!-- Menu Tab Strings -->
     <string name="dashboard">Dash</string>
     <string name="diagnostic">Diagnostic</string>
     <string name="menu">Menu</string>
