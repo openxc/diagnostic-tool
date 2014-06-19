@@ -54,8 +54,12 @@
             android:gravity="right">
 
 	       <Button 
-	           style="@style/ClearButton"
-	           android:id="@+id/clearButton" >
+                android:id="@+id/clearButton"
+                android:background="@drawable/clear_button_selector"
+                android:layout_margin="5dp"
+                android:state_pressed="false"
+                android:layout_width="40dp"
+                android:layout_height="40dp" >
 	       </Button>
 	       
 	       <!-- Horizontal space filler -->
@@ -64,6 +68,24 @@
 	           android:layout_height="0dp"
 	           android:layout_weight="1" >
 	       </View>
+	       
+	       <Button 
+                android:id="@+id/favoritesButton"
+                android:background="@drawable/favorites_button_selector"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:state_pressed="false"
+                android:text="@string/favorites_button_label"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" >
+           </Button>
+	       
+	       <!-- Horizontal space filler -->
+           <View 
+               android:layout_width="0dp"
+               android:layout_height="0dp"
+               android:layout_weight="1" >
+           </View>
 	       
 	       <Button 
                style="@style/SettingsButton"

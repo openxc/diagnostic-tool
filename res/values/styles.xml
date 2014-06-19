@@ -33,14 +33,6 @@
 
     <!-- Diagnostic Styles -->
     
-    <style name="ClearButton" >
-        <item name="android:background">@drawable/clear_button_selector</item>
-        <item name="android:layout_margin">5dp</item>
-        <item name="android:state_pressed">false</item>
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
-    </style>
-    
     <style name="SettingsButton" >
         <item name="android:background">@drawable/settings_button_selector</item>
         <item name="android:layout_margin">5dp</item>

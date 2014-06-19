@@ -48,19 +48,11 @@ public class DiagnosticActivity extends Activity {
 
     private Toast mToast;
     private DiagnosticSettingsManager mSettingsManager;
+    private DiagnosticFavoritesManager mFavoritesManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
-    private Button sendRequestButton;
-    private Button clearButton;
-    private Button settingsButton;
     private Button mFrequencyInfoButton;
-    private Button mBusInfoButton;
-    private Button mIdInfoButton;
-    private Button mModeInfoButton;
-    private Button mPidInfoButton;
-    private Button mPayloadInfoButton;
-    private Button mNameInfoButton;
     private Map<Button, String> buttonInfo = new HashMap<>();
     private EditText mFrequencyInputText;
     private EditText mBusInputText;
@@ -236,7 +228,7 @@ public class DiagnosticActivity extends Activity {
 
     private void initButtons() {
 
-        sendRequestButton = (Button) findViewById(R.id.sendRequestButton);
+        Button sendRequestButton = (Button) findViewById(R.id.sendRequestButton);
         sendRequestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,7 +241,7 @@ public class DiagnosticActivity extends Activity {
             }
         });
 
-        clearButton = (Button) findViewById(R.id.clearButton);
+        Button clearButton = (Button) findViewById(R.id.clearButton);
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,7 +253,15 @@ public class DiagnosticActivity extends Activity {
             }
         });
         
-        settingsButton = (Button) findViewById(R.id.settingsButton);
+        Button favoritesButton = (Button) findViewById(R.id.favoritesButton);
+        favoritesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFavoritesManager.showAlert();
+            }
+        }); 
+        
+        Button settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,27 +312,27 @@ public class DiagnosticActivity extends Activity {
         buttonInfo.put(mFrequencyInfoButton, res.getString(R.string.frequencyInfo));
         infoMap.put(res.getString(R.string.frequency_label), res.getString(R.string.frequencyInfo));
 
-        mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
+        Button mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
         buttonInfo.put(mBusInfoButton, res.getString(R.string.busInfo));
         infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.busInfo));
 
-        mIdInfoButton = (Button) findViewById(R.id.idQuestionButton);
+        Button mIdInfoButton = (Button) findViewById(R.id.idQuestionButton);
         buttonInfo.put(mIdInfoButton, res.getString(R.string.idInfo));
         infoMap.put(res.getString(R.string.id_label), res.getString(R.string.idInfo));
 
-        mModeInfoButton = (Button) findViewById(R.id.modeQuestionButton);
+        Button mModeInfoButton = (Button) findViewById(R.id.modeQuestionButton);
         buttonInfo.put(mModeInfoButton, res.getString(R.string.modeInfo));
         infoMap.put(res.getString(R.string.mode_label), res.getString(R.string.modeInfo));
 
-        mPidInfoButton = (Button) findViewById(R.id.pidQuestionButton);
+        Button mPidInfoButton = (Button) findViewById(R.id.pidQuestionButton);
         buttonInfo.put(mPidInfoButton, res.getString(R.string.pidInfo));
         infoMap.put(res.getString(R.string.pid_label), res.getString(R.string.pidInfo));
 
-        mPayloadInfoButton = (Button) findViewById(R.id.payloadQuestionButton);
+        Button mPayloadInfoButton = (Button) findViewById(R.id.payloadQuestionButton);
         buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
         infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payloadInfo));
 
-        mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
+        Button mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
         buttonInfo.put(mNameInfoButton, res.getString(R.string.nameInfo));
         infoMap.put(res.getString(R.string.name_label), res.getString(R.string.nameInfo));
 
@@ -414,6 +414,7 @@ public class DiagnosticActivity extends Activity {
         Log.i(TAG, "Vehicle diagnostic created");
 
         mSettingsManager = new DiagnosticSettingsManager(this);
+        mFavoritesManager = new DiagnosticFavoritesManager(this);
         initButtons();
         initTextFields();
         mOutputTable = new DiagnosticOutputTable(this);

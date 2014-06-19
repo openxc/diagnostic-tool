@@ -61,7 +61,7 @@ public class DiagnosticSettingsManager {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage("Are you sure you want to delete all responses?");
+                builder.setMessage(mContext.getResources().getString(R.string.delete_responses_verification));
                 builder.setTitle("Delete Responses");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
