@@ -8,15 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.TableLayout;
+import android.widget.LinearLayout;
 
 import com.openxc.openxcdiagnostic.R;
 
-/**
- * 
- * Singleton class for managing Diagnostic Settings
- *
- */
 public class DiagnosticSettingsManager {
 
     private SharedPreferences mPreferences;
@@ -30,7 +25,7 @@ public class DiagnosticSettingsManager {
     public void showAlert() {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        TableLayout settingsLayout = (TableLayout) mContext.getLayoutInflater().inflate(R.layout.diagsettingsalert, null);
+        LinearLayout settingsLayout = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagsettingsalert, null);
                         
         builder.setView(settingsLayout);
 

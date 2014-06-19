@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="2dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="2dp">
 
-        <TableRow style="@style/SettingsRow">
-            <CheckedTextView 
-                style="@style/SettingsItemLabel"
-                android:id="@+id/sniffingCheckBox"
-                android:text="@string/sniffing_label" 
-                android:textIsSelectable="false" 
-                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-                android:checked="false"/>
-        </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
-        
-        <TableRow style="@style/SettingsRow">
-            <TextView
-                style="@style/SettingsItemLabel"
-                android:text="@string/delete_all_responses_label" 
-                android:textIsSelectable="false"/>
-            <Button
-                style="@style/SettingsItemButton"
-                android:id="@+id/deleteAllResponsesButton" 
-                android:background="@drawable/delete_all_responses_button_selector"
-                android:text="@string/delete_all_responses_button_text" />
-        </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>       
+    <LinearLayout style="@style/SettingsRow">
+        <CheckedTextView 
+            style="@style/SettingsItemLabel"
+            android:id="@+id/sniffingCheckBox"
+            android:text="@string/sniffing_label" 
+            android:textIsSelectable="false" 
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="false"/>
+    </LinearLayout>
+    
+    <View 
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"/>
+    
+    <LinearLayout style="@style/SettingsRow">
+        <TextView
+            style="@style/SettingsItemLabel"
+            android:text="@string/delete_all_responses_label" 
+            android:textIsSelectable="false"/>
+        <Button
+            style="@style/SettingsItemButton"
+            android:id="@+id/deleteAllResponsesButton" 
+            android:background="@drawable/delete_all_responses_button_selector"
+            android:text="@string/delete_all_responses_button_text" />
+    </LinearLayout>
+    
+    <View 
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"/> 
 
-    </TableLayout>
+</LinearLayout>
