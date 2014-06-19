@@ -261,11 +261,15 @@ public class DiagnosticActivity extends Activity {
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticSettingsManager.showAlert(DiagnosticActivity.this);
+                DiagnosticSettingsManager.getInstance().showAlert(DiagnosticActivity.this);
             }
         });
 
         initInfoButtons();
+    }
+    
+    public void deleteAllOutputResponses() {
+        mOutputTable.deleteAllRows();
     }
     
     public void sendRequest(DiagnosticRequest request) {

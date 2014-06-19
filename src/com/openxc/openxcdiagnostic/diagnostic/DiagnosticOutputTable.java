@@ -33,4 +33,9 @@ public class DiagnosticOutputTable {
         rows.remove(row);
     }
 
+    public void deleteAllRows() {
+        mView.removeAllViews();
+        rows.clear();
+    }
+    
 }
