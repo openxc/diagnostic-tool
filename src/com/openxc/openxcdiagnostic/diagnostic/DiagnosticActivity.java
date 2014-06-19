@@ -89,7 +89,6 @@ public class DiagnosticActivity extends Activity {
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
             mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
-            mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
             mIsBound = true;
         }
 
@@ -274,8 +273,21 @@ public class DiagnosticActivity extends Activity {
     
     public void sendRequest(DiagnosticRequest request) {
         //TODO JUST FOR TESTING! should be 
+        //registerForResponse(request);
         //mVehicleManager.request(request);
         mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
+    }
+    
+    public void registerForResponse(DiagnosticRequest request) {
+        mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
+    }
+    
+    public void registerForAllResponses() {
+        mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+    }
+    
+    public void stopListeningForAllResponses() {
+        mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
 
     private void initInfoButtons() {

@@ -1,6 +1,5 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
@@ -55,6 +54,11 @@ public class DiagnosticSettingsManager {
             @Override
             public void onClick(View v) {
                 sniffingCheckBox.setChecked(!sniffingCheckBox.isChecked());
+                if (sniffingCheckBox.isChecked()) {
+                    context.registerForAllResponses();
+                } else {
+                    context.stopListeningForAllResponses();
+                }
             }
         });
         
