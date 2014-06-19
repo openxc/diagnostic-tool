@@ -82,6 +82,7 @@
     <style name ="BaseDiagInputText" >
         <item name="android:ems">10</item>
         <item name="android:imeOptions">actionDone</item>
+        <item name="android:singleLine">true</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:background">@color/white</item>
