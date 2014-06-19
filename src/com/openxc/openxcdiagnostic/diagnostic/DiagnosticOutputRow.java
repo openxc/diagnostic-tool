@@ -99,8 +99,8 @@ public class DiagnosticOutputRow {
     
     private void fillOutputTableWithFailureDetails(LinearLayout responseTable, Activity context, 
             DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "code", Utilities.getResponseCodeOutput(resp), 
-                resp);
+        createAndAddRowToOutput(context, responseTable, "neg. resp. code", 
+                Utilities.getOutputTableResponseCodeOutput(resp), resp);
     }
 
     public LinearLayout getView() {

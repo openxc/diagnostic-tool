@@ -56,64 +56,75 @@ public class Utilities {
         return result;
     }
     
+    
+    //all these outputs are italicized so the space prevents them from being cut off
+    //at the end (mostly)
     public static String getBusOutput(DiagnosticRequest req) {
-        return String.valueOf(req.getBusId());
+        return String.valueOf(req.getBusId()) + " ";
     }
     
     public static String getBusOutput(DiagnosticResponse resp) {
-        return String.valueOf(resp.getBusId());
+        return String.valueOf(resp.getBusId()) + " ";
     }
     
     public static String getIdOutput(DiagnosticRequest req) {
-        return String.valueOf(req.getId());
+        return String.valueOf(req.getId()) + " ";
     }
     
     public static String getIdOutput(DiagnosticResponse resp) {
-        return String.valueOf(resp.getId());
+        return String.valueOf(resp.getId()) + " ";
     }
     
     public static String getModeOutput(DiagnosticRequest req) {
-        return "0x" + Integer.toHexString(req.getMode()).toUpperCase(Locale.US);
+        return "0x" + Integer.toHexString(req.getMode()).toUpperCase(Locale.US) + " ";
     }
     
     public static String getModeOutput(DiagnosticResponse resp) {
-        return "0x" + Integer.toHexString(resp.getMode()).toUpperCase(Locale.US);
+        return "0x" + Integer.toHexString(resp.getMode()).toUpperCase(Locale.US) + " ";
     }
     
     public static String getPidOutput(DiagnosticRequest req) {
-        return req.getPid() == null ? "" : String.valueOf(req.getPid());
+        return req.getPid() == null ? "" : String.valueOf(req.getPid()) + " ";
     }
     
     public static String getPidOutput(DiagnosticResponse resp) {
-        return resp.getPid() == null ? "" : String.valueOf(resp.getPid());
+        return resp.getPid() == null ? "" : String.valueOf(resp.getPid()) + " ";
     }
     
     public static String getPayloadOutput(DiagnosticRequest req) {
-        return req.getPayload() == null ? "" : String.valueOf(req.getPayload());
+        return req.getPayload() == null ? "" : String.valueOf(req.getPayload()) + " ";
     }
     
     public static String getPayloadOutput(DiagnosticResponse resp) {
-        return resp.getPayload() == null ? "" : String.valueOf(resp.getPayload());
+        return resp.getPayload() == null ? "" : String.valueOf(resp.getPayload()) + " ";
     }
     
     public static String getSuccessOutput(DiagnosticResponse resp) {
-        return String.valueOf(resp.getSuccess());
+        return String.valueOf(resp.getSuccess()) + " ";
     }
     
     public static String getValueOutput(DiagnosticResponse resp) {
-        return String.valueOf(resp.getValue());
+        return String.valueOf(resp.getValue()) + " ";
     }    
     
     public static String getFrequencyOutput(DiagnosticRequest req) {
-        return req.getFrequency() == null ? "" : String.valueOf(req.getFrequency());
+        return req.getFrequency() == null ? "" : String.valueOf(req.getFrequency()) + " ";
     }
     
     public static String getNameOutput(DiagnosticRequest req) {
-        return req.getName() == null ? "" : String.valueOf(req.getName());
+        return req.getName() == null ? "" : String.valueOf(req.getName()) + " ";
     }
     
     public static String getResponseCodeOutput(DiagnosticResponse resp) {
-        return resp.getNegativeResponseCode().hexCodeString().toUpperCase(Locale.US);
+        return resp.getNegativeResponseCode().hexCodeString() + " ";
+    }
+    
+    public static String getOutputTableResponseCodeOutput(DiagnosticResponse resp) {
+        return getDocumentationError(resp) + " : " + getResponseCodeOutput(resp) + " ";
+    }
+    
+    public static String getDocumentationError(DiagnosticResponse resp) {
+        return resp.getNegativeResponseCode().toDocumentationString() + " ";
     }
     
     public static DiagnosticResponse generateRandomFakeResponse(DiagnosticRequest request) {
