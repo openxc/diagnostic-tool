@@ -37,7 +37,11 @@
        android:gravity="fill_vertical" >
 
 	   <Button
-           style="@style/ResponseDeleteButton"
+	       android:background="@drawable/clear_button_selector"
+	       android:layout_margin="5dp"
+	       android:state_pressed="false"
+	       android:layout_width="55dp"
+	       android:layout_height="55dp"
            android:id="@+id/responseDeleteButton"
            android:layout_gravity="center_horizontal">
        </Button>   
@@ -52,10 +56,9 @@
 	   <Button
 	       style="@android:attr/buttonBarButtonStyle"
 	       android:id="@+id/outputMoreButton"
-	       android:layout_width="60dp"
-	       android:layout_height="wrap_content"
+	       android:layout_width="55dp"
+	       android:layout_height="55dp"
 	       android:gravity="center"
-	       android:text="@string/details_button_label"
 	       android:background="@drawable/details_button_selector"
 	       android:layout_margin="5dp"
 	       android:state_pressed="false"

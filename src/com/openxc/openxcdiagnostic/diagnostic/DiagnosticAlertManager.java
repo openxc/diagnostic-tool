@@ -19,7 +19,7 @@ public class DiagnosticAlertManager {
     public static void show(Activity context, DiagnosticRequest req, DiagnosticResponse resp) {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertlayout, null);
+        LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalertlayout, null);
                 
         fillRequestTable(alertLayout, context, req);
         fillResponseTable(alertLayout, context, resp);
@@ -77,7 +77,7 @@ public class DiagnosticAlertManager {
     private static void createAndAddRow(Activity context, LinearLayout parent, String label, 
             String value, DiagnosticMessage msg) {
     
-        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertrow, null);
+        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
         valueText.setText(value);
@@ -89,7 +89,7 @@ public class DiagnosticAlertManager {
     }
     
     private static void createAndAddHeaderRow(Activity context, LinearLayout parent, String header) {
-        LinearLayout headerRow = (LinearLayout) context.getLayoutInflater().inflate(R.layout.morealertheaderrow, null);
+        LinearLayout headerRow = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalertheaderrow, null);
         ((TextView) headerRow.findViewById(R.id.alertHeaderLabel)).setText(header);
         parent.addView(headerRow);
     }

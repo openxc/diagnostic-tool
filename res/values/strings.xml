@@ -6,7 +6,7 @@
     <string name="dash_label">OpenXC Dash</string>
     <string name="menu_label">OpenXC Menu</string>
     <string name="request_button_label">Send Request</string>
-    <string name="details_button_label">More</string>
+    <string name="details_button_label">Details</string>
         
     <string name="action_settings">Settings</string>
     <string name="dashboard">Dash</string>

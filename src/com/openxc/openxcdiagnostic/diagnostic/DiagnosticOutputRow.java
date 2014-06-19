@@ -32,8 +32,8 @@ public class DiagnosticOutputRow {
     private void initButtons(final DiagnosticActivity context, final DiagnosticRequest req,
             final DiagnosticResponse resp) {
 
-        Button moreButton = (Button) mView.findViewById(R.id.outputMoreButton);
-        moreButton.setOnClickListener(new OnClickListener() {
+        Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
+        detailsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 DiagnosticAlertManager.show(context, req, resp);
