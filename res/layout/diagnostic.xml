@@ -55,15 +55,28 @@
 
 	       <Button 
 	           style="@style/ClearButton"
-	           android:id="@+id/clearButton"/>
+	           android:id="@+id/clearButton" >
+	       </Button>
+	       
+	       <!-- Horizontal space filler -->
+	       <View 
+	           android:layout_width="0dp"
+	           android:layout_height="0dp"
+	           android:layout_weight="1" >
+	       </View>
+	       
+	       <Button 
+               style="@style/SettingsButton"
+               android:id="@+id/settingsButton" >
+           </Button>
        </LinearLayout>
 	           
     </LinearLayout>
     
     <View 
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightBlue">
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightBlue">
     </View>
         
 	<LinearLayout style="@style/DiagInputRow">
