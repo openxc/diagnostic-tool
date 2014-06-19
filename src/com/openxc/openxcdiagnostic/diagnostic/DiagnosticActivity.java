@@ -47,6 +47,7 @@ public class DiagnosticActivity extends Activity {
     private static String TAG = "VehicleDashboard";
 
     private Toast mToast;
+    private DiagnosticSettingsManager mSettingsManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
@@ -88,8 +89,12 @@ public class DiagnosticActivity extends Activity {
         public void
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
-            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
+            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();            
             mIsBound = true;
+            
+            if (mSettingsManager.shouldSniff()) {
+                registerForAllResponses();
+            }
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -260,7 +265,7 @@ public class DiagnosticActivity extends Activity {
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticSettingsManager.getInstance().showAlert(DiagnosticActivity.this);
+                mSettingsManager.showAlert();
             }
         });
 
@@ -282,10 +287,18 @@ public class DiagnosticActivity extends Activity {
         mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
     }
     
+    //TODO i'm thinking responses registered for individually will be received by the listener 
+    //twice because they will match the wildcard KeyMatcher and their exactMatcher...both
+    //will be pairs in the MessageListenerSink map
     public void registerForAllResponses() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
     
+    /**
+     * Stops the activity listening for all responses via the wildcard KeyMatcher.
+     * It DOES NOT stop the activity from listening for responses registered individually
+     * via KeyMatcher.buildExactMatcher(KeyedMessage)
+     */
     public void stopListeningForAllResponses() {
         mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
@@ -400,6 +413,7 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
 
+        mSettingsManager = new DiagnosticSettingsManager(this);
         initButtons();
         initTextFields();
         mOutputTable = new DiagnosticOutputTable(this);

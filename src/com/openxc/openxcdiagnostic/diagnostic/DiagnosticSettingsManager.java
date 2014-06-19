@@ -2,6 +2,8 @@ package com.openxc.openxcdiagnostic.diagnostic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,61 +19,58 @@ import com.openxc.openxcdiagnostic.R;
  */
 public class DiagnosticSettingsManager {
 
-    private CheckedTextView sniffingCheckBox;
-    private Button deleteAllResponsesButton;
+    private SharedPreferences mPreferences;
+    private DiagnosticActivity mContext;
     
-    private static DiagnosticSettingsManager instance = null; 
-    private DiagnosticSettingsManager() { }
-    
-    public static DiagnosticSettingsManager getInstance() {
-        if (instance == null) {
-            instance = new DiagnosticSettingsManager();
-        }
-        return instance;
+    public DiagnosticSettingsManager(DiagnosticActivity context) {
+        mContext = context;
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
         
-    public void showAlert(DiagnosticActivity context) {
+    public void showAlert() {
         
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        TableLayout settingsLayout = (TableLayout) context.getLayoutInflater().inflate(R.layout.diagsettingsalert, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        TableLayout settingsLayout = (TableLayout) mContext.getLayoutInflater().inflate(R.layout.diagsettingsalert, null);
                         
         builder.setView(settingsLayout);
 
-        builder.setTitle(context.getResources().getString(R.string.settings_alert_label));
+        builder.setTitle(mContext.getResources().getString(R.string.settings_alert_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
         });
         builder.create().show();
         
-        initButtons(context, settingsLayout);    
+        initButtons(settingsLayout);    
     }
     
-    private void initButtons(final DiagnosticActivity context, View layout) {
+    private void initButtons(View layout) {
         
-        sniffingCheckBox = (CheckedTextView) layout.findViewById(R.id.sniffingCheckBox);
+        final CheckedTextView sniffingCheckBox = (CheckedTextView) layout.findViewById(R.id.sniffingCheckBox);
+        sniffingCheckBox.setChecked(shouldSniff());
         sniffingCheckBox.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 sniffingCheckBox.setChecked(!sniffingCheckBox.isChecked());
+                setShouldSniff(sniffingCheckBox.isChecked());
                 if (sniffingCheckBox.isChecked()) {
-                    context.registerForAllResponses();
+                    mContext.registerForAllResponses();
                 } else {
-                    context.stopListeningForAllResponses();
+                    mContext.stopListeningForAllResponses();
                 }
             }
         });
         
-        deleteAllResponsesButton = (Button) layout.findViewById(R.id.deleteAllResponsesButton);
+        final Button deleteAllResponsesButton = (Button) layout.findViewById(R.id.deleteAllResponsesButton);
         deleteAllResponsesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setMessage("Are you sure you want to delete all responses?");
                 builder.setTitle("Delete Responses");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        context.deleteAllOutputResponses();
+                        mContext.deleteAllOutputResponses();
                     }
                 });
                 
@@ -84,4 +83,15 @@ public class DiagnosticSettingsManager {
         });
     }
     
+    public boolean shouldSniff() {
+        return mPreferences.getBoolean(mContext.getResources().getString(R.string.sniffing_checkbox_key), false);
+    }
+    
+    public void setShouldSniff(boolean shouldSniff) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(mContext.getResources().getString(R.string.sniffing_checkbox_key), 
+                shouldSniff);
+        editor.commit();
+    }
+
 }

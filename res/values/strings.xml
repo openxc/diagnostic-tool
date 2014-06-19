@@ -13,6 +13,7 @@
     <string name="delete_all_responses_label">Delete all responses?</string>
     <string name="delete_all_responses_button_text">Delete</string>
     <string name="sniffing_label">Enable response sniffing</string>
+    <string name="sniffing_checkbox_key">sniffing_checkbox_key</string>
     
     
     <!-- Menu Tab Strings -->
