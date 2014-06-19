@@ -36,6 +36,11 @@ public class DiagnosticOutputTable {
     public void deleteAllRows() {
         mView.removeAllViews();
         rows.clear();
+        resetRowCounter();
+    }
+    
+    private void resetRowCounter() {
+        rowNumber = 1;
     }
     
 }
