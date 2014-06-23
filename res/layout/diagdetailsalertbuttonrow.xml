@@ -11,7 +11,6 @@
         android:layout_height="40dp" 
         android:layout_margin="5dp"
         android:layout_gravity="center_vertical"
-        android:text="@string/add_to_favorites_button_label"
         android:background="@drawable/favorites_button_selector" >
     </Button>
           

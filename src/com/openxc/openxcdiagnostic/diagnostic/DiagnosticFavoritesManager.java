@@ -55,6 +55,10 @@ public class DiagnosticFavoritesManager {
         sFavorites = newFavorites;
     }
     
+    public static boolean containsFavorite(DiagnosticRequest req) {
+        return sFavorites.contains(req);
+    }
+    
     private static ArrayList<DiagnosticRequest> loadFavorites() {
         
         Type type = new TypeToken<List<DiagnosticRequest>>(){}.getType();

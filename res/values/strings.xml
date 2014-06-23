@@ -13,7 +13,9 @@
     <string name="favorites_alert_label">Favorites</string>
     <string name="diag_favorites_select_button_label">Select</string>
     <string name="diag_favorites_delete_button_label">Delete</string>
-    
+    <string name="remove_from_favorites_button_label">Remove From Favorites</string>
+    <string name="add_to_favorites_button_label">Add To Favorites</string>
+       
     <!-- Settings Strings -->
     <string name="settings_alert_label">Settings</string>
     <string name="delete_all_responses_label">Delete all responses?</string>
@@ -37,7 +39,6 @@
     <string name="name_label">Name</string>
     <string name="alert_request_header">REQUEST</string>
     <string name="alert_response_header">RESPONSE</string>
-    <string name="add_to_favorites_button_label">Add To Favorites</string>
     
     <!-- Info Strings -->
     <string name="busInfo">The numerical identifier of the CAN bus where this request should be sent, most likely 1 or 2 (for a vehicle interface with 2 CAN controllers).</string>

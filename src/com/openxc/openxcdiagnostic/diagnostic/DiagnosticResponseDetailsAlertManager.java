@@ -55,16 +55,35 @@ public class DiagnosticResponseDetailsAlertManager {
     private static void createAndAddButtonsRow(final Activity context, LinearLayout parent,
             final DiagnosticRequest req) {
         LinearLayout row = (LinearLayout) context.getLayoutInflater()
-                .inflate(R.layout.diagdetailsbuttonrow, null);
-        Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
+                .inflate(R.layout.diagdetailsalertbuttonrow, null);
+        final Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
+        
+        setFavoritesButtonText(context, addToFavoritesButton, req);
+        
         addToFavoritesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticFavoritesManager.addFavoriteRequest(req);
-                SimpleDialogLauncher.launchAlert(context, "Add to Favorites", "Request added to favorites");
+                if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+                    DiagnosticFavoritesManager.addFavoriteRequest(req);
+                    SimpleDialogLauncher.launchAlert(context, "Add to Favorites", "Request added to Favorites");
+                } else {
+                    DiagnosticFavoritesManager.removeFavoriteRequest(req);
+                    SimpleDialogLauncher.launchAlert(context, "Remove from Favorites", "Request removed from Favorites");
+                }
+                setFavoritesButtonText(context, addToFavoritesButton, req);
             }
         });
         parent.addView(row);
+    }
+    
+    private static void setFavoritesButtonText(Activity context, Button button, DiagnosticRequest req) {
+        String text;
+        if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+            text = context.getResources().getString(R.string.add_to_favorites_button_label);
+        } else {
+            text = context.getResources().getString(R.string.remove_from_favorites_button_label);
+        }
+        button.setText(text);
     }
     
     private static void fillResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
