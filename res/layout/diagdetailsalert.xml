@@ -16,7 +16,8 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
 	        android:layout_gravity="fill"
-	        android:padding="5dp">
+	        android:paddingLeft="5dp"
+	        android:paddingRight="5dp">
         </LinearLayout>
         
         <include layout="@layout/verticalline" />
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="fill"
-            android:padding="5dp">
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
         </LinearLayout>
     
 </LinearLayout>

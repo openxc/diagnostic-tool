@@ -3,6 +3,9 @@ package com.openxc.openxcdiagnostic.diagnostic;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,6 +48,21 @@ public class DiagnosticResponseDetailsAlertManager {
         createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req), req);
         createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req), req);
         createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
+        createAndAddButtonsRow(context, requestTable, req);
+    }
+    
+    private static void createAndAddButtonsRow(Activity context, LinearLayout parent,
+            final DiagnosticRequest req) {
+        LinearLayout row = (LinearLayout) context.getLayoutInflater()
+                .inflate(R.layout.diagdetailsbuttonrow, null);
+        Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
+        addToFavoritesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DiagnosticFavoritesManager.addFavoriteRequest(req);
+            }
+        });
+        parent.addView(row);
     }
     
     private static void fillResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {

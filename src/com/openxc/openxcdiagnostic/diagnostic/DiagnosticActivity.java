@@ -414,7 +414,7 @@ public class DiagnosticActivity extends Activity {
         Log.i(TAG, "Vehicle diagnostic created");
 
         mSettingsManager = new DiagnosticSettingsManager(this);
-        mFavoritesManager = new DiagnosticFavoritesManager(this);
+        DiagnosticFavoritesManager.initialize(this);
         initButtons();
         initTextFields();
         mOutputTable = new DiagnosticOutputTable(this);
