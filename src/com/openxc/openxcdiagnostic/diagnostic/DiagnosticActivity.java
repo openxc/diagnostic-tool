@@ -3,6 +3,7 @@ package com.openxc.openxcdiagnostic.diagnostic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
@@ -221,7 +222,7 @@ public class DiagnosticActivity extends Activity {
  
         return request;
     }
-    
+       
     private void scrollOutputToTop() {
         ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(ScrollView.FOCUS_UP);
     }
@@ -301,6 +302,23 @@ public class DiagnosticActivity extends Activity {
      */
     public void stopListeningForAllResponses() {
         mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+    }
+    
+    public void populateFields(DiagnosticRequest req) {
+        mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));
+        mBusInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getBusId())));
+        mIdInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getId())));
+        mModeInputText.setText(selfOrEmptyIfNull(Integer.toHexString(req.getMode()).toUpperCase(Locale.US)));
+        mPidInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPid())));
+        mPayloadInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPayload())));
+        mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
+    }
+    
+    private String selfOrEmptyIfNull(String st) {
+        if (st == null || st.toLowerCase(Locale.US).equals("null")) {
+            return "";
+        }
+        return st;
     }
 
     private void initInfoButtons() {

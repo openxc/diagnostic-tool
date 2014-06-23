@@ -19,13 +19,15 @@
           <Button
               style="@style/DiagFavoritesAlertRowButton" 
               android:id="@+id/favoritesRowDeleteButton"
-              android:text="@string/diag_favorites_delete_button_label" >
+              android:text="@string/diag_favorites_delete_button_label"
+              android:background="@drawable/delete_button_selector" >
           </Button>
           
           <Button
               style="@style/DiagFavoritesAlertRowButton" 
               android:id="@+id/favoritesRowSelectButton"
-              android:text="@string/diag_favorites_select_button_label" >
+              android:text="@string/diag_favorites_select_button_label"
+              android:background="@drawable/request_button_selector" >
           </Button>
     
     </LinearLayout>

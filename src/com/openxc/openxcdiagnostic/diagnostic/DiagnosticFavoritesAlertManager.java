@@ -59,14 +59,15 @@ public class DiagnosticFavoritesAlertManager {
     
     private void createAndAddRow(final LinearLayout favoritesLayout, final DiagnosticRequest req) {
         
-        LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.favoritestablerow, null);
+        LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritestablerow, null);
         ((TextView) row.findViewById(R.id.favoritesRowLabel)).setText(req.getName() == null ? "PLACEHOLDER" : req.getName());
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
         selectButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.sendRequest(req);
+                mAlert.cancel();
+                mContext.populateFields(req);
             }
         });
         

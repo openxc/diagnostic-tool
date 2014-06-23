@@ -28,7 +28,7 @@
         <Button
             style="@style/SettingsItemButton"
             android:id="@+id/deleteAllResponsesButton" 
-            android:background="@drawable/delete_all_responses_button_selector"
+            android:background="@drawable/delete_button_selector"
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
     
