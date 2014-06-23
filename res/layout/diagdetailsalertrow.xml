@@ -13,11 +13,11 @@
           
           <TextView
               android:id="@+id/alertRowLabel"
-              style="@style/DiagMoreAlertRowLabel" />
+              style="@style/DiagDetailsAlertRowLabel" />
           
           <TextView
               android:id="@+id/alertRowValue"
-              style="@style/DiagMoreAlertRowValue" />
+              style="@style/DiagDetailsAlertRowValue" />
     
     </LinearLayout>
     

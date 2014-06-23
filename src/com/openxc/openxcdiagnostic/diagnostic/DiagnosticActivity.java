@@ -48,7 +48,7 @@ public class DiagnosticActivity extends Activity {
 
     private Toast mToast;
     private DiagnosticSettingsManager mSettingsManager;
-    private DiagnosticFavoritesManager mFavoritesManager;
+    private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
@@ -257,7 +257,7 @@ public class DiagnosticActivity extends Activity {
         favoritesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFavoritesManager.showAlert();
+                mFavoritesAlertManager.showAlert();
             }
         }); 
         
@@ -412,11 +412,15 @@ public class DiagnosticActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
-
+        
+        //ick
+        DiagnosticFavoritesManager.init(this);
         mSettingsManager = new DiagnosticSettingsManager(this);
-        DiagnosticFavoritesManager.initialize(this);
+        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
+        
         initButtons();
         initTextFields();
+        
         mOutputTable = new DiagnosticOutputTable(this);
     }
 

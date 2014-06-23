@@ -13,11 +13,20 @@
           
           <TextView
               android:id="@+id/favoritesRowLabel"
-              style="@style/DiagMoreAlertRowLabel" />
+              style="@style/DiagFavoritesAlertRowLabel" >
+          </TextView>
           
           <Button
-              android:id="@+id/favoritesRowDetailsButton"
-              style="@style/DiagMoreAlertRowValue" />
+              style="@style/DiagFavoritesAlertRowButton" 
+              android:id="@+id/favoritesRowDeleteButton"
+              android:text="@string/diag_favorites_delete_button_label" >
+          </Button>
+          
+          <Button
+              style="@style/DiagFavoritesAlertRowButton" 
+              android:id="@+id/favoritesRowSelectButton"
+              android:text="@string/diag_favorites_select_button_label" >
+          </Button>
     
     </LinearLayout>
     

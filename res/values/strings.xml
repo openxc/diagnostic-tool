@@ -7,10 +7,12 @@
     <string name="menu_label">OpenXC Menu</string>
     <string name="request_button_label">Send Request</string>
     <string name="details_button_label">Details</string>
+    
+    <!-- Favorites Strings -->
     <string name="favorites_button_label">Favorites</string>
     <string name="favorites_alert_label">Favorites</string>
-    <string name="favorites_key">favorites_key</string>
-    
+    <string name="diag_favorites_select_button_label">Select</string>
+    <string name="diag_favorites_delete_button_label">Delete</string>
     
     <!-- Settings Strings -->
     <string name="settings_alert_label">Settings</string>
