@@ -13,6 +13,7 @@ import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.resources.SimpleDialogLauncher;
 import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticResponseDetailsAlertManager {
@@ -51,7 +52,7 @@ public class DiagnosticResponseDetailsAlertManager {
         createAndAddButtonsRow(context, requestTable, req);
     }
     
-    private static void createAndAddButtonsRow(Activity context, LinearLayout parent,
+    private static void createAndAddButtonsRow(final Activity context, LinearLayout parent,
             final DiagnosticRequest req) {
         LinearLayout row = (LinearLayout) context.getLayoutInflater()
                 .inflate(R.layout.diagdetailsbuttonrow, null);
@@ -60,6 +61,7 @@ public class DiagnosticResponseDetailsAlertManager {
             @Override
             public void onClick(View v) {
                 DiagnosticFavoritesManager.addFavoriteRequest(req);
+                SimpleDialogLauncher.launchAlert(context, "Add to Favorites", "Request added to favorites");
             }
         });
         parent.addView(row);
