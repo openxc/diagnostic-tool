@@ -29,7 +29,6 @@ public class DiagnosticResponseDetailsAlertManager {
         fillResponseTable(alertLayout, context, resp);
         
         builder.setView(alertLayout);
-
         builder.setTitle(context.getResources().getString(R.string.details_button_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
