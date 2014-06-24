@@ -14,6 +14,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.resources.SimpleDialogLauncher;
+import com.openxc.openxcdiagnostic.resources.Toaster;
 import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticResponseDetailsAlertManager {
@@ -64,19 +65,17 @@ public class DiagnosticResponseDetailsAlertManager {
             public void onClick(View v) {
                 if (!DiagnosticFavoritesManager.containsFavorite(req)) {
                     DiagnosticFavoritesManager.addFavoriteRequest(req);
-                    SimpleDialogLauncher.launchAlert(context, "Add to Favorites", 
-                            "Request added to Favorites");
+                    Toaster.showToast(context,  "Request added to Favorites");
                 } else {
                     DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                    SimpleDialogLauncher.launchAlert(context, "Remove from Favorites", 
-                            "Request removed from Favorites");
+                    Toaster.showToast(context, "Request removed from Favorites");
                 }
                 configureFavoritesButton(context, addToFavoritesButton, req);
             }
         });
         parent.addView(row);
     }
-    
+       
     private static void configureFavoritesButton(Activity context, Button button, 
             DiagnosticRequest req) {
         String text;

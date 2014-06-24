@@ -41,13 +41,13 @@ import com.openxc.messages.KeyMatcher;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
+import com.openxc.openxcdiagnostic.resources.Toaster;
 import com.openxc.openxcdiagnostic.resources.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
     private static String TAG = "VehicleDashboard";
 
-    private Toast mToast;
     private DiagnosticSettingsManager mSettingsManager;
     private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
@@ -106,22 +106,8 @@ public class DiagnosticActivity extends Activity {
      * the fail must too.
      */
     private DiagnosticRequest failAndToastError(String message) {
-        showToast(message, Toast.LENGTH_LONG);
+        Toaster.showToast(this, message);
         return null;
-    }
-    
-    private void showToast(String message, int length) {
-        
-        if (mToast != null && toastIsDisplaying()) {
-            mToast.cancel();
-        }
-            
-        mToast = Toast.makeText(this, message, length);
-        mToast.show(); 
-    }
-    
-    private boolean toastIsDisplaying() {
-        return mToast.getView().getWindowVisibility() == View.VISIBLE;
     }
     
     private DiagnosticRequest generateRequestFromRequiredInputFields() {
