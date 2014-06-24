@@ -12,6 +12,13 @@
         android:gravity="fill_horizontal" >
           
           <TextView
+              android:id="@+id/favoritesNameLabel"
+              style="@style/FavoriteBusLabel">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
               android:id="@+id/favoritesBusLabel"
 	          style="@style/FavoriteBusLabel">
           </TextView>

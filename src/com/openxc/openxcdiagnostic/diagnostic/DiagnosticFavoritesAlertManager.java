@@ -63,34 +63,30 @@ public class DiagnosticFavoritesAlertManager {
         
         final LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagfavoritesalertrow, null);
+                
+        String nameText = insertInBold("name") + "<br>" + insertInItalic(Utilities.getNameOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesNameLabel))
+            .setText(Html.fromHtml(nameText));
         
-        String rowLabel = req.getName();
-        if (rowLabel == null) {
-            
-            String busText = insertInBold("bus") + "<br>" + insertInItalic(Utilities.getBusOutput(req));
-            ((TextView) row.findViewById(R.id.favoritesBusLabel))
-                .setText(Html.fromHtml(busText));
-            
-            String idText = insertInBold("id") + "<br>" + insertInItalic(Utilities.getIdOutput(req));
-            ((TextView) row.findViewById(R.id.favoritesIdLabel))
-                .setText(Html.fromHtml(idText));
-            
-            String modeText = insertInBold("mode") + "<br>" + insertInItalic(Utilities.getModeOutput(req));
-            ((TextView) row.findViewById(R.id.favoritesModeLabel))
-                .setText(Html.fromHtml(modeText));
-            
-            String pidText = insertInBold("pid") + "<br>" + insertInItalic(Utilities.getPidOutput(req));
-            ((TextView) row.findViewById(R.id.favoritesPidLabel))
-                .setText(Html.fromHtml(pidText));
-            
-            String payloadText = insertInBold("payload") + "<br>" + insertInItalic(Utilities.getPayloadOutput(req));
-            ((TextView) row.findViewById(R.id.favoritesPayloadLabel))
-                .setText(Html.fromHtml(payloadText));
-            
-        } else {
-            rowLabel = insertInItalic(rowLabel);
-        }
-       
+        String busText = insertInBold("bus") + "<br>" + insertInItalic(Utilities.getBusOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesBusLabel))
+            .setText(Html.fromHtml(busText));
+        
+        String idText = insertInBold("id") + "<br>" + insertInItalic(Utilities.getIdOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesIdLabel))
+            .setText(Html.fromHtml(idText));
+        
+        String modeText = insertInBold("mode") + "<br>" + insertInItalic(Utilities.getModeOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesModeLabel))
+            .setText(Html.fromHtml(modeText));
+        
+        String pidText = insertInBold("pid") + "<br>" + insertInItalic(Utilities.getPidOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesPidLabel))
+            .setText(Html.fromHtml(pidText));
+        
+        String payloadText = insertInBold("payload") + "<br>" + insertInItalic(Utilities.getPayloadOutput(req));
+        ((TextView) row.findViewById(R.id.favoritesPayloadLabel))
+            .setText(Html.fromHtml(payloadText));
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
         selectButton.setOnClickListener(new OnClickListener() {

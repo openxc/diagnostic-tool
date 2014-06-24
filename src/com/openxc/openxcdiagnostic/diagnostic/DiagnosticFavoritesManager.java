@@ -33,7 +33,7 @@ public class DiagnosticFavoritesManager {
     
     public static void addFavoriteRequest(DiagnosticRequest req) {
         ArrayList<DiagnosticRequest> newFavorites = sFavorites;
-        newFavorites.add(req);
+        newFavorites.add(0, req);
         setFavorites(newFavorites);
     }
     
