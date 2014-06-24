@@ -37,14 +37,8 @@ public class DiagnosticFavoritesAlertManager {
         });
         builder.setView(favoritesLayout);
         mAlert = builder.create();
-        refreshLayout(favoritesLayout);
-        mAlert.show();
-    }
-    
-    private void refreshLayout(LinearLayout favoritesLayout) {
-        clearLayout(favoritesLayout);
         fillLayout(favoritesLayout);
-        mAlert.setView(favoritesLayout);
+        mAlert.show();
     }
     
     private void fillLayout(LinearLayout favoritesLayout) {
@@ -53,13 +47,9 @@ public class DiagnosticFavoritesAlertManager {
         }
     }
     
-    private void clearLayout(LinearLayout layout) {
-        layout.removeAllViews();
-    }
-    
     private void createAndAddRow(final LinearLayout favoritesLayout, final DiagnosticRequest req) {
         
-        LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritestablerow, null);
+        final LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritestablerow, null);
         ((TextView) row.findViewById(R.id.favoritesRowLabel)).setText(req.getName() == null ? "PLACEHOLDER" : req.getName());
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
@@ -76,7 +66,7 @@ public class DiagnosticFavoritesAlertManager {
             @Override
             public void onClick(View v) {
                 DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                refreshLayout(favoritesLayout);
+                favoritesLayout.removeView(row);
             }
         });
 
