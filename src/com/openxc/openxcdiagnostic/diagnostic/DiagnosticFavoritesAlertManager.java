@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
  * 
@@ -49,8 +50,20 @@ public class DiagnosticFavoritesAlertManager {
     
     private void createAndAddRow(final LinearLayout favoritesLayout, final DiagnosticRequest req) {
         
-        final LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritestablerow, null);
-        ((TextView) row.findViewById(R.id.favoritesRowLabel)).setText(req.getName() == null ? "PLACEHOLDER" : req.getName());
+        final LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
+                .inflate(R.layout.diagfavoritesalertrow, null);
+        
+        String rowLabel = req.getName();
+        
+        if (rowLabel == null) {
+            rowLabel = "bus:"  + Utilities.getBusOutput(req)
+                     + "id:"   + Utilities.getIdOutput(req)
+                     + "mode:" + Utilities.getModeOutput(req)
+                     + "pid:"  + Utilities.getModeOutput(req);
+        }
+        
+        ((TextView) row.findViewById(R.id.favoritesRowLabel))
+            .setText(rowLabel);
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
         selectButton.setOnClickListener(new OnClickListener() {
