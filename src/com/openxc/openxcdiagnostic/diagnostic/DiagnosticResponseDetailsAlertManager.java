@@ -65,10 +65,10 @@ public class DiagnosticResponseDetailsAlertManager {
             public void onClick(View v) {
                 if (!DiagnosticFavoritesManager.containsFavorite(req)) {
                     DiagnosticFavoritesManager.addFavoriteRequest(req);
-                    Toaster.showToast(context,  "Request added to Favorites");
+                    Toaster.showToast(context,  "Request Added to Favorites");
                 } else {
                     DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                    Toaster.showToast(context, "Request removed from Favorites");
+                    Toaster.showToast(context, "Request Removed from Favorites");
                 }
                 configureFavoritesButton(context, addToFavoritesButton, req);
             }

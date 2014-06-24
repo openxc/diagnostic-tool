@@ -2,10 +2,12 @@ package com.openxc.openxcdiagnostic.diagnostic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.openxc.messages.DiagnosticRequest;
@@ -28,7 +30,8 @@ public class DiagnosticFavoritesAlertManager {
         
     public void showAlert() {
 
-        LinearLayout favoritesLayout = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalert, null);
+        ScrollView favoritesLayoutScroll = (ScrollView) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalert, null);
+        LinearLayout favoritesLayout = (LinearLayout) favoritesLayoutScroll.findViewById(R.id.favoritesAlertTable);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getResources().getString(R.string.favorites_alert_label));
@@ -36,7 +39,7 @@ public class DiagnosticFavoritesAlertManager {
             public void onClick(DialogInterface dialog, int id) {
             }
         });
-        builder.setView(favoritesLayout);
+        builder.setView(favoritesLayoutScroll);
         mAlert = builder.create();
         fillLayout(favoritesLayout);
         mAlert.show();
@@ -48,22 +51,46 @@ public class DiagnosticFavoritesAlertManager {
         }
     }
     
+    private String insertInBold(String text) {
+        return "<b>" + text + "</b>";
+    }
+    
+    private String insertInItalic(String text) {
+        return "<i>" + text + "</i>";
+    }
+    
     private void createAndAddRow(final LinearLayout favoritesLayout, final DiagnosticRequest req) {
         
         final LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagfavoritesalertrow, null);
         
         String rowLabel = req.getName();
-        
         if (rowLabel == null) {
-            rowLabel = "bus:"  + Utilities.getBusOutput(req)
-                     + "id:"   + Utilities.getIdOutput(req)
-                     + "mode:" + Utilities.getModeOutput(req)
-                     + "pid:"  + Utilities.getModeOutput(req);
+            
+            String busText = insertInBold("bus") + "<br>" + insertInItalic(Utilities.getBusOutput(req));
+            ((TextView) row.findViewById(R.id.favoritesBusLabel))
+                .setText(Html.fromHtml(busText));
+            
+            String idText = insertInBold("id") + "<br>" + insertInItalic(Utilities.getIdOutput(req));
+            ((TextView) row.findViewById(R.id.favoritesIdLabel))
+                .setText(Html.fromHtml(idText));
+            
+            String modeText = insertInBold("mode") + "<br>" + insertInItalic(Utilities.getModeOutput(req));
+            ((TextView) row.findViewById(R.id.favoritesModeLabel))
+                .setText(Html.fromHtml(modeText));
+            
+            String pidText = insertInBold("pid") + "<br>" + insertInItalic(Utilities.getPidOutput(req));
+            ((TextView) row.findViewById(R.id.favoritesPidLabel))
+                .setText(Html.fromHtml(pidText));
+            
+            String payloadText = insertInBold("payload") + "<br>" + insertInItalic(Utilities.getPayloadOutput(req));
+            ((TextView) row.findViewById(R.id.favoritesPayloadLabel))
+                .setText(Html.fromHtml(payloadText));
+            
+        } else {
+            rowLabel = insertInItalic(rowLabel);
         }
-        
-        ((TextView) row.findViewById(R.id.favoritesRowLabel))
-            .setText(rowLabel);
+       
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
         selectButton.setOnClickListener(new OnClickListener() {

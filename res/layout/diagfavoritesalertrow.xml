@@ -12,10 +12,47 @@
         android:gravity="fill_horizontal" >
           
           <TextView
-              android:id="@+id/favoritesRowLabel"
-              style="@style/DiagFavoritesAlertRowLabel" >
+              android:id="@+id/favoritesBusLabel"
+	          style="@style/FavoriteBusLabel">
           </TextView>
           
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              android:id="@+id/favoritesIdLabel"
+              style="@style/FavoriteBusLabel">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              android:id="@+id/favoritesModeLabel"
+              style="@style/FavoriteBusLabel">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              android:id="@+id/favoritesPidLabel"
+              style="@style/FavoriteBusLabel">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              android:id="@+id/favoritesPayloadLabel"
+              style="@style/FavoriteBusLabel">
+          </TextView>
+    
+    </LinearLayout>
+    
+    <LinearLayout   
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:gravity="fill_horizontal" >
+    
           <Button
               style="@style/DiagFavoritesAlertRowButton" 
               android:id="@+id/favoritesRowDeleteButton"
@@ -29,7 +66,7 @@
               android:text="@string/diag_favorites_select_button_label"
               android:background="@drawable/request_button_selector" >
           </Button>
-    
+          
     </LinearLayout>
     
     <include layout="@layout/horizontalline" />
