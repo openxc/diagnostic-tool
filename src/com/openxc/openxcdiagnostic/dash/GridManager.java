@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.resources;
+package com.openxc.openxcdiagnostic.dash;
 
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;

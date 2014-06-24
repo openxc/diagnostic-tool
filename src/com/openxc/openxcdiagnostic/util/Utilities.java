@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.resources;
+package com.openxc.openxcdiagnostic.util;
 
 import java.util.Arrays;
 import java.util.Collections;

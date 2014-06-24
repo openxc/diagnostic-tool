@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.resources;
+package com.openxc.openxcdiagnostic.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;

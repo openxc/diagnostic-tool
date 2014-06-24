@@ -22,7 +22,7 @@ import com.openxc.VehicleManager;
 import com.openxc.measurements.Measurement;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
-import com.openxc.openxcdiagnostic.resources.GridManager;
+import com.openxc.openxcdiagnostic.dash.GridManager;
 
 public class GrapherActivity extends Activity {
 

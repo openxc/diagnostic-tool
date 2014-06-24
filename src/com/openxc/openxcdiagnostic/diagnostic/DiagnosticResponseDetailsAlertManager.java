@@ -13,9 +13,9 @@ import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
-import com.openxc.openxcdiagnostic.resources.SimpleDialogLauncher;
-import com.openxc.openxcdiagnostic.resources.Toaster;
-import com.openxc.openxcdiagnostic.resources.Utilities;
+import com.openxc.openxcdiagnostic.util.SimpleDialogLauncher;
+import com.openxc.openxcdiagnostic.util.Toaster;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticResponseDetailsAlertManager {
 

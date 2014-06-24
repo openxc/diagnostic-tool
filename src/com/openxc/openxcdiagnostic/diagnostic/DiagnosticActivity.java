@@ -41,8 +41,8 @@ import com.openxc.messages.KeyMatcher;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
-import com.openxc.openxcdiagnostic.resources.Toaster;
-import com.openxc.openxcdiagnostic.resources.Utilities;
+import com.openxc.openxcdiagnostic.util.Toaster;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
