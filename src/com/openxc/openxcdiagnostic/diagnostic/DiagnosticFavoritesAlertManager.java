@@ -105,8 +105,20 @@ public class DiagnosticFavoritesAlertManager {
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                favoritesLayout.removeView(row);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(mContext.getResources().getString(R.string.delete_favorite_verification));
+                builder.setTitle("Delete Request?");
+                builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        DiagnosticFavoritesManager.removeFavoriteRequest(req);
+                        favoritesLayout.removeView(row);
+                    }
+                });
+                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+                builder.create().show();
             }
         });
 

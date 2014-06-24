@@ -15,6 +15,7 @@
     <string name="diag_favorites_delete_button_label">Delete</string>
     <string name="remove_from_favorites_button_label">Remove From Favorites</string>
     <string name="add_to_favorites_button_label">Add To Favorites</string>
+    <string name="delete_favorite_verification">"Are you sure you want to delete this request? This cannot be undone.</string>
        
     <!-- Settings Strings -->
     <string name="settings_alert_label">Settings</string>

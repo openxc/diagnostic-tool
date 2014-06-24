@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-public class SimpleDialogLauncher {
+public class DialogLauncher {
 
     public static void launchAlert(Activity context, String title, String message) {
         
@@ -17,5 +17,6 @@ public class SimpleDialogLauncher {
         });
         builder.create().show();
     }
+    
     
 }
