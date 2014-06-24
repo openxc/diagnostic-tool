@@ -57,31 +57,39 @@ public class DiagnosticResponseDetailsAlertManager {
                 .inflate(R.layout.diagdetailsalertbuttonrow, null);
         final Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
         
-        setFavoritesButtonText(context, addToFavoritesButton, req);
+        configureFavoritesButton(context, addToFavoritesButton, req);
         
         addToFavoritesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!DiagnosticFavoritesManager.containsFavorite(req)) {
                     DiagnosticFavoritesManager.addFavoriteRequest(req);
-                    SimpleDialogLauncher.launchAlert(context, "Add to Favorites", "Request added to Favorites");
+                    SimpleDialogLauncher.launchAlert(context, "Add to Favorites", 
+                            "Request added to Favorites");
                 } else {
                     DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                    SimpleDialogLauncher.launchAlert(context, "Remove from Favorites", "Request removed from Favorites");
+                    SimpleDialogLauncher.launchAlert(context, "Remove from Favorites", 
+                            "Request removed from Favorites");
                 }
-                setFavoritesButtonText(context, addToFavoritesButton, req);
+                configureFavoritesButton(context, addToFavoritesButton, req);
             }
         });
         parent.addView(row);
     }
     
-    private static void setFavoritesButtonText(Activity context, Button button, DiagnosticRequest req) {
+    private static void configureFavoritesButton(Activity context, Button button, 
+            DiagnosticRequest req) {
         String text;
+        int backgroundSelector;
         if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+            backgroundSelector = R.drawable.favorites_button_selector;
             text = context.getResources().getString(R.string.add_to_favorites_button_label);
         } else {
+            backgroundSelector = R.drawable.delete_button_selector;
             text = context.getResources().getString(R.string.remove_from_favorites_button_label);
         }
+        button.setBackground(context.getResources()
+                .getDrawable(backgroundSelector));
         button.setText(text);
     }
     
