@@ -13,7 +13,6 @@ import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.openxcdiagnostic.R;
-import com.openxc.openxcdiagnostic.util.DialogLauncher;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -32,6 +31,7 @@ public class DiagnosticResponseDetailsAlertManager {
         builder.setView(alertLayout);
         builder.setTitle(context.getResources().getString(R.string.details_button_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
             }
         });

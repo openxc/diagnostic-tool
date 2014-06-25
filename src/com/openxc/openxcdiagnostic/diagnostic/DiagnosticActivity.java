@@ -34,6 +34,7 @@ import android.widget.TextView.OnEditorActionListener;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
+import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.KeyMatcher;
@@ -66,9 +67,11 @@ public class DiagnosticActivity extends Activity {
     private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
+        @Override
         public void receive(final DiagnosticRequest request,
                 final DiagnosticResponse response) {
             mHandler.post(new Runnable() {
+                @Override
                 public void run() {
                     mOutputTable.addRow(request, response);
                     scrollOutputToTop();
@@ -78,6 +81,7 @@ public class DiagnosticActivity extends Activity {
     };
 
     private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
         public void
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
@@ -89,6 +93,7 @@ public class DiagnosticActivity extends Activity {
             }
         }
 
+        @Override
         public void onServiceDisconnected(ComponentName className) {
             Log.w(TAG, "VehicleService disconnected unexpectedly");
             mVehicleManager = null;
@@ -115,8 +120,8 @@ public class DiagnosticActivity extends Activity {
 
         try {
             busId = Integer.parseInt(mBusInputText.getText().toString());
-            if (busId < (int) DiagnosticRequest.BUS_RANGE.getMin()
-                    || busId > (int) DiagnosticRequest.BUS_RANGE.getMax()) {
+            if (busId < DiagnosticMessage.BUS_RANGE.getMin()
+                    || busId > DiagnosticMessage.BUS_RANGE.getMax()) {
                 return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
             }
         } catch (NumberFormatException e) {
@@ -132,11 +137,11 @@ public class DiagnosticActivity extends Activity {
         }
         try {
             mode = Integer.parseInt(mModeInputText.getText().toString(), 16);
-            if (mode < (int) DiagnosticRequest.MODE_RANGE.getMin()
-                    || mode > (int) DiagnosticRequest.MODE_RANGE.getMax()) {
+            if (mode < DiagnosticMessage.MODE_RANGE.getMin()
+                    || mode > DiagnosticMessage.MODE_RANGE.getMax()) {
                 return failAndToastError("Invalid mode entry.  Mode must be " + 
-                        "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMin()) 
-                        + " <= Mode <= " + "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMax()));
+                        "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin()) 
+                        + " <= Mode <= " + "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Mode does not appear to be an integer.");
@@ -209,7 +214,7 @@ public class DiagnosticActivity extends Activity {
     }
        
     private void scrollOutputToTop() {
-        ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(ScrollView.FOCUS_UP);
+        ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
     }
 
     private void initButtons() {
@@ -347,6 +352,7 @@ public class DiagnosticActivity extends Activity {
                     String info = buttonInfo.get(button);
                     builder.setMessage(info).setTitle(infoMap.inverse().get(info));
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int id) {
                         }
                     });
@@ -379,8 +385,8 @@ public class DiagnosticActivity extends Activity {
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) findViewById(R.id.modeInput);
-        mModeInputText.setHint("0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMin()) + " - "
-                + "0x" + Integer.toHexString(DiagnosticRequest.MODE_RANGE.getMax()));
+        mModeInputText.setHint("0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin()) + " - "
+                + "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) findViewById(R.id.pidInput);
@@ -444,6 +450,7 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.Diagnostic) {
             // do nothing

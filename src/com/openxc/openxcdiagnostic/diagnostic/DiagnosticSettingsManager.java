@@ -31,6 +31,7 @@ public class DiagnosticSettingsManager {
 
         builder.setTitle(mContext.getResources().getString(R.string.settings_alert_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
             }
         });
@@ -64,12 +65,14 @@ public class DiagnosticSettingsManager {
                 builder.setMessage(mContext.getResources().getString(R.string.delete_responses_verification));
                 builder.setTitle("Delete Responses");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         mContext.deleteAllOutputResponses();
                     }
                 });
                 
                 builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });

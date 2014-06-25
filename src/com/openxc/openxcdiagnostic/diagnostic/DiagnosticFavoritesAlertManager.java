@@ -35,6 +35,7 @@ public class DiagnosticFavoritesAlertManager {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getResources().getString(R.string.favorites_alert_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
             }
         });
@@ -91,12 +92,14 @@ public class DiagnosticFavoritesAlertManager {
                 builder.setMessage(mContext.getResources().getString(R.string.delete_favorite_verification));
                 builder.setTitle("Delete Request?");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                         DiagnosticFavoritesManager.removeFavoriteRequest(req);
                         favoritesLayout.removeView(row);
                     }
                 });
                 builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });

@@ -12,6 +12,7 @@ public class DialogLauncher {
         builder.setMessage(message);
         builder.setTitle(title);
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int id) {
             }
         });
