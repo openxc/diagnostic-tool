@@ -317,32 +317,32 @@ public class DiagnosticActivity extends Activity {
         final BiMap<String, String> infoMap = HashBiMap.create();
 
         mFrequencyInfoButton = (Button) findViewById(R.id.frequencyQuestionButton);
-        buttonInfo.put(mFrequencyInfoButton, res.getString(R.string.frequencyInfo));
-        infoMap.put(res.getString(R.string.frequency_label), res.getString(R.string.frequencyInfo));
+        buttonInfo.put(mFrequencyInfoButton, res.getString(R.string.frequency_info));
+        infoMap.put(res.getString(R.string.frequency_label), res.getString(R.string.frequency_info));
 
         Button mBusInfoButton = (Button) findViewById(R.id.busQuestionButton);
-        buttonInfo.put(mBusInfoButton, res.getString(R.string.busInfo));
-        infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.busInfo));
+        buttonInfo.put(mBusInfoButton, res.getString(R.string.bus_info));
+        infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.bus_info));
 
         Button mIdInfoButton = (Button) findViewById(R.id.idQuestionButton);
-        buttonInfo.put(mIdInfoButton, res.getString(R.string.idInfo));
-        infoMap.put(res.getString(R.string.id_label), res.getString(R.string.idInfo));
+        buttonInfo.put(mIdInfoButton, res.getString(R.string.id_info));
+        infoMap.put(res.getString(R.string.id_label), res.getString(R.string.id_info));
 
         Button mModeInfoButton = (Button) findViewById(R.id.modeQuestionButton);
-        buttonInfo.put(mModeInfoButton, res.getString(R.string.modeInfo));
-        infoMap.put(res.getString(R.string.mode_label), res.getString(R.string.modeInfo));
+        buttonInfo.put(mModeInfoButton, res.getString(R.string.mode_info));
+        infoMap.put(res.getString(R.string.mode_label), res.getString(R.string.mode_info));
 
         Button mPidInfoButton = (Button) findViewById(R.id.pidQuestionButton);
-        buttonInfo.put(mPidInfoButton, res.getString(R.string.pidInfo));
-        infoMap.put(res.getString(R.string.pid_label), res.getString(R.string.pidInfo));
+        buttonInfo.put(mPidInfoButton, res.getString(R.string.pid_info));
+        infoMap.put(res.getString(R.string.pid_label), res.getString(R.string.pid_info));
 
         Button mPayloadInfoButton = (Button) findViewById(R.id.payloadQuestionButton);
-        buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payloadInfo));
-        infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payloadInfo));
+        buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payload_info));
+        infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payload_info));
 
         Button mNameInfoButton = (Button) findViewById(R.id.nameQuestionButton);
-        buttonInfo.put(mNameInfoButton, res.getString(R.string.nameInfo));
-        infoMap.put(res.getString(R.string.name_label), res.getString(R.string.nameInfo));
+        buttonInfo.put(mNameInfoButton, res.getString(R.string.name_info));
+        infoMap.put(res.getString(R.string.name_label), res.getString(R.string.name_info));
 
         for (final Button button : buttonInfo.keySet()) {
             button.setOnClickListener(new OnClickListener() {

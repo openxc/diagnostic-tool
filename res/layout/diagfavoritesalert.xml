@@ -14,42 +14,42 @@
                       
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="name">
+              android:text="@string/name_label">
           </TextView>  
         
           <include layout="@layout/verticalline" />
           
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="Bus">
+              android:text="@string/bus_label">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="Id">
+              android:text="@string/id_label">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="Mode">
+              android:text="@string/mode_label">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="pid">
+              android:text="@string/pid_label">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               style="@style/FavoriteDataLabel"
-              android:text="payload">
+              android:text="@string/payload_label">
           </TextView>
               
     </LinearLayout>
