@@ -1,16 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="3dp">
-   
-    <LinearLayout 
-        android:id="@+id/favoritesAlertTable"
-	    android:layout_width="fill_parent"
+    
+    <LinearLayout   
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:gravity="fill_horizontal" >
+                      
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="name">
+          </TextView>  
+        
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="Bus">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="Id">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="Mode">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="pid">
+          </TextView>
+          
+          <include layout="@layout/verticalline" />
+          
+          <TextView
+              style="@style/FavoriteDataLabel"
+              android:text="payload">
+          </TextView>
+              
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+
+	<ScrollView 
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    android:padding="3dp">
-	</LinearLayout>
-    
-</ScrollView>
+	   
+	    <LinearLayout 
+	        android:id="@+id/favoritesAlertTable"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:padding="3dp">
+		</LinearLayout>
+	    
+	</ScrollView>
+
+</LinearLayout>

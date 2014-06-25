@@ -151,15 +151,30 @@
         <item name="android:layout_margin">5dp</item>
     </style>
     
-    <style name="FavoriteBusLabel" >
-         <item name="android:textSize">23sp</item>
+    <style name="FavoriteDataBase" >
          <item name="android:layout_width">0dp</item>
          <item name="android:layout_weight">1</item>
          <item name="android:layout_height">wrap_content</item>
          <item name="android:layout_margin">5dp</item>
          <item name="android:padding">5dp</item>
          <item name="android:gravity">center</item>
+         <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    
+    <style name="FavoriteDataLabel" parent="FavoriteDataBase">
+         <item name="android:textSize">23sp</item>
+         <item name="android:singleLine">true</item>
          <item name="android:scrollbars">none</item> 
+         <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="FavoriteDataItem" parent="FavoriteDataBase">
+         <item name="android:textSize">23sp</item>
+         <item name="android:layout_margin">5dp</item>
+         <item name="android:padding">5dp</item>
+         <item name="android:gravity">center</item>
+         <item name="android:scrollbars">none</item>
+         <item name="android:textStyle">italic</item>
     </style>
     
     <!-- Diagnostic Settings styles -->

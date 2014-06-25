@@ -8,6 +8,7 @@ import java.util.Random;
 
 
 import android.app.Activity;
+import android.graphics.Rect;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
@@ -148,5 +149,17 @@ public class Utilities {
     public static int getOutputColor(Activity context, DiagnosticResponse resp) {
         int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
         return context.getResources().getColor(color);
+    }
+    
+    public static int getScreenHeight(Activity context) {
+        Rect displayRect = new Rect();
+        context.getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRect);
+        return displayRect.height();
+    }
+    
+    public static int getScreenWidth(Activity context) {
+        Rect displayRect = new Rect();
+        context.getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRect);
+        return displayRect.width();
     }
 }

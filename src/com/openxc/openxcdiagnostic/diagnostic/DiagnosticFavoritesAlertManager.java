@@ -2,12 +2,10 @@ package com.openxc.openxcdiagnostic.diagnostic;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.openxc.messages.DiagnosticRequest;
@@ -30,8 +28,9 @@ public class DiagnosticFavoritesAlertManager {
         
     public void showAlert() {
 
-        ScrollView favoritesLayoutScroll = (ScrollView) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalert, null);
-        LinearLayout favoritesLayout = (LinearLayout) favoritesLayoutScroll.findViewById(R.id.favoritesAlertTable);
+        LinearLayout favoritesLayout = (LinearLayout) mContext.getLayoutInflater()
+                .inflate(R.layout.diagfavoritesalert, null);
+        LinearLayout favoritesTable = (LinearLayout) favoritesLayout.findViewById(R.id.favoritesAlertTable);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getResources().getString(R.string.favorites_alert_label));
@@ -39,24 +38,17 @@ public class DiagnosticFavoritesAlertManager {
             public void onClick(DialogInterface dialog, int id) {
             }
         });
-        builder.setView(favoritesLayoutScroll);
+        favoritesLayout.setMinimumHeight((int)(0.9f*Utilities.getScreenHeight(mContext)));
+        builder.setView(favoritesLayout);
         mAlert = builder.create();
-        fillLayout(favoritesLayout);
+        fillLayout(favoritesTable);
         mAlert.show();
     }
     
-    private void fillLayout(LinearLayout favoritesLayout) {
+    private void fillLayout(LinearLayout favoritesTable) {
         for (DiagnosticRequest req : DiagnosticFavoritesManager.getFavorites()) {
-            createAndAddRow(favoritesLayout, req);
+            createAndAddRow(favoritesTable, req);
         }
-    }
-    
-    private String insertInBold(String text) {
-        return "<b>" + text + "</b>";
-    }
-    
-    private String insertInItalic(String text) {
-        return "<i>" + text + "</i>";
     }
     
     private void createAndAddRow(final LinearLayout favoritesLayout, final DiagnosticRequest req) {
@@ -64,29 +56,23 @@ public class DiagnosticFavoritesAlertManager {
         final LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagfavoritesalertrow, null);
                 
-        String nameText = insertInBold("name") + "<br>" + insertInItalic(Utilities.getNameOutput(req));
         ((TextView) row.findViewById(R.id.favoritesNameLabel))
-            .setText(Html.fromHtml(nameText));
+            .setText(Utilities.getNameOutput(req));
         
-        String busText = insertInBold("bus") + "<br>" + insertInItalic(Utilities.getBusOutput(req));
         ((TextView) row.findViewById(R.id.favoritesBusLabel))
-            .setText(Html.fromHtml(busText));
+            .setText(Utilities.getBusOutput(req));
         
-        String idText = insertInBold("id") + "<br>" + insertInItalic(Utilities.getIdOutput(req));
         ((TextView) row.findViewById(R.id.favoritesIdLabel))
-            .setText(Html.fromHtml(idText));
+            .setText(Utilities.getIdOutput(req));
         
-        String modeText = insertInBold("mode") + "<br>" + insertInItalic(Utilities.getModeOutput(req));
         ((TextView) row.findViewById(R.id.favoritesModeLabel))
-            .setText(Html.fromHtml(modeText));
+            .setText(Utilities.getModeOutput(req));
         
-        String pidText = insertInBold("pid") + "<br>" + insertInItalic(Utilities.getPidOutput(req));
         ((TextView) row.findViewById(R.id.favoritesPidLabel))
-            .setText(Html.fromHtml(pidText));
+            .setText(Utilities.getPidOutput(req));
         
-        String payloadText = insertInBold("payload") + "<br>" + insertInItalic(Utilities.getPayloadOutput(req));
         ((TextView) row.findViewById(R.id.favoritesPayloadLabel))
-            .setText(Html.fromHtml(payloadText));
+            .setText(Utilities.getPayloadOutput(req));
         
         Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
         selectButton.setOnClickListener(new OnClickListener() {

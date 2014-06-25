@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
     
+    <include layout="@layout/thickhorizontalline" />
+    
     <LinearLayout   
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -13,45 +15,47 @@
           
           <TextView
               android:id="@+id/favoritesNameLabel"
-              style="@style/FavoriteBusLabel">
+              style="@style/FavoriteDataItem">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               android:id="@+id/favoritesBusLabel"
-	          style="@style/FavoriteBusLabel">
+	          style="@style/FavoriteDataItem">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               android:id="@+id/favoritesIdLabel"
-              style="@style/FavoriteBusLabel">
+              style="@style/FavoriteDataItem">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               android:id="@+id/favoritesModeLabel"
-              style="@style/FavoriteBusLabel">
+              style="@style/FavoriteDataItem">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               android:id="@+id/favoritesPidLabel"
-              style="@style/FavoriteBusLabel">
+              style="@style/FavoriteDataItem">
           </TextView>
           
           <include layout="@layout/verticalline" />
           
           <TextView
               android:id="@+id/favoritesPayloadLabel"
-              style="@style/FavoriteBusLabel">
+              style="@style/FavoriteDataItem">
           </TextView>
     
     </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
     
     <LinearLayout   
         android:orientation="horizontal"
@@ -75,8 +79,6 @@
           </Button>
           
     </LinearLayout>
-    
-    <include layout="@layout/horizontalline" />
-          
+              
 </LinearLayout>
       
