@@ -1,9 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
@@ -18,30 +15,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.openxc.VehicleManager;
-import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.KeyMatcher;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
-import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticActivity extends Activity {
@@ -49,22 +39,14 @@ public class DiagnosticActivity extends Activity {
     private static String TAG = "VehicleDashboard";
 
     private DiagnosticSettingsManager mSettingsManager;
+    private InputManager mInputManager;
     private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
     private Button mFrequencyInfoButton;
     private Map<Button, String> buttonInfo = new HashMap<>();
-    private EditText mFrequencyInputText;
-    private EditText mBusInputText;
-    private EditText mIdInputText;
-    private EditText mModeInputText;
-    private EditText mPidInputText;
-    private EditText mPayloadInputText;
-    private EditText mNameInputText;
-    private List<EditText> textFields = new ArrayList<>();
     private DiagnosticOutputTable mOutputTable;
-    private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
 
     DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
         @Override
@@ -85,9 +67,9 @@ public class DiagnosticActivity extends Activity {
         public void
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
-            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();            
+            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
             mIsBound = true;
-            
+
             if (mSettingsManager.shouldSniff()) {
                 registerForAllResponses();
             }
@@ -101,118 +83,6 @@ public class DiagnosticActivity extends Activity {
         }
     };
 
-    /**
-     * Method to ensure that null is returned by
-     * generateDiagnosticRequestFromInputFields() when it should be. There are
-     * so many fail points in that method that it's safer to always return a
-     * call to this method than to match up a "return null" statement everywhere
-     * there should be a fail and a Toast. If the Toast happens when it should,
-     * the fail must too.
-     */
-    private DiagnosticRequest failAndToastError(String message) {
-        Toaster.showToast(this, message);
-        return null;
-    }
-    
-    private DiagnosticRequest generateRequestFromRequiredInputFields() {
-        
-        Integer busId, id, mode;
-
-        try {
-            busId = Integer.parseInt(mBusInputText.getText().toString());
-            if (busId < DiagnosticMessage.BUS_RANGE.getMin()
-                    || busId > DiagnosticMessage.BUS_RANGE.getMax()) {
-                return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered Bus does not appear to be an integer.");
-        }
-        try {
-            id = Integer.parseInt(mIdInputText.getText().toString());
-            if (id < 0) {
-                return failAndToastError("Id cannot be negative.");
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered ID does not appear to be an integer.");
-        }
-        try {
-            mode = Integer.parseInt(mModeInputText.getText().toString(), 16);
-            if (mode < DiagnosticMessage.MODE_RANGE.getMin()
-                    || mode > DiagnosticMessage.MODE_RANGE.getMax()) {
-                return failAndToastError("Invalid mode entry.  Mode must be " + 
-                        "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin()) 
-                        + " <= Mode <= " + "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered Mode does not appear to be an integer.");
-        }
-        
-        return new DiagnosticRequest(busId, id, mode);
-    }
-
-    private DiagnosticRequest generateDiagnosticRequestFromInputFields() {
-        
-        DiagnosticRequest request = generateRequestFromRequiredInputFields();
-        if (request == null) {
-            return null;
-        }
-        
-        try {
-            String freqInput = mFrequencyInputText.getText().toString();
-            // frequency is optional, ok if empty
-            if (!freqInput.equals("")) {
-                double frequency = Double.parseDouble(freqInput);
-                if (frequency > 0) {
-                    request.setFrequency(frequency);
-                } else {
-                    return failAndToastError("Frequency cannot be negative.");
-                }
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Enter frequency does not appear to be a number.");
-        }
-        
-        try {
-            String pidInput = mPidInputText.getText().toString();
-            // pid is optional, ok if empty
-            if (!pidInput.equals("")) {
-                int pid = Integer.parseInt(pidInput);
-                if (pid > 0) {
-                    request.setPid(pid);
-                }
-                else {
-                    return failAndToastError("Pid cannot be negative.");
-                }
-            }
-        } catch (NumberFormatException e) {
-            return failAndToastError("Entered PID does not appear to be an integer.");
-        }
-
-        String payloadString = mPayloadInputText.getText().toString();
-        if (!payloadString.equals("")) {
-            if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
-                if (payloadString.length() % 2 == 0) {
-                    //TODO these can't be the right bytes but idk
-                    request.setPayload(payloadString.getBytes());
-                } else {
-                    return failAndToastError("Payload must have an even number of digits.");
-                }
-            } else {
-                return failAndToastError("Payload can only be up to 7 bytes, i.e. 14 digits");
-            }
-        }
-
-        String name = mNameInputText.getText().toString();
-        if (!name.trim().equals("")) {
-            request.setName(name);
-        }
-        
-        //TODO not retrieving this value from UI yet
-        request.setMultipleResponses(false);
- 
-        return request;
-    }
-       
     private void scrollOutputToTop() {
         ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
     }
@@ -225,7 +95,7 @@ public class DiagnosticActivity extends Activity {
             public void onClick(View v) {
                 hideKeyboard();
                 getCurrentFocus().clearFocus();
-                DiagnosticRequest request = generateDiagnosticRequestFromInputFields();
+                DiagnosticRequest request = mInputManager.generateDiagnosticRequestFromInput();
                 if (request != null) {
                     sendRequest(request);
                 }
@@ -236,22 +106,20 @@ public class DiagnosticActivity extends Activity {
         clearButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < textFields.size(); i++) {
-                    textFields.get(i).setText("");
-                    hideKeyboard();
-                    getCurrentFocus().clearFocus();
-                }
+                mInputManager.clearFields();
+                hideKeyboard();
+                getCurrentFocus().clearFocus();
             }
         });
-        
+
         Button favoritesButton = (Button) findViewById(R.id.favoritesButton);
         favoritesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFavoritesAlertManager.showAlert();
             }
-        }); 
-        
+        });
+
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -262,53 +130,42 @@ public class DiagnosticActivity extends Activity {
 
         initInfoButtons();
     }
-    
+
     public void deleteAllOutputResponses() {
         mOutputTable.deleteAllRows();
     }
-    
+
     public void sendRequest(DiagnosticRequest request) {
-        //TODO JUST FOR TESTING! should be 
-        //registerForResponse(request);
-        //mVehicleManager.request(request);
+        // TODO JUST FOR TESTING! should be
+        // registerForResponse(request);
+        // mVehicleManager.request(request);
         mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
     }
-    
+
     public void registerForResponse(DiagnosticRequest request) {
         mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
     }
-    
-    //TODO i'm thinking responses registered for individually will be received by the listener 
-    //twice because they will match the wildcard KeyMatcher and their exactMatcher...both
-    //will be pairs in the MessageListenerSink map
+
+    // TODO i'm thinking responses registered for individually will be received
+    // by the listener
+    // twice because they will match the wildcard KeyMatcher and their
+    // exactMatcher...both
+    // will be pairs in the MessageListenerSink map
     public void registerForAllResponses() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
-    
+
     /**
-     * Stops the activity listening for all responses via the wildcard KeyMatcher.
-     * It DOES NOT stop the activity from listening for responses registered individually
-     * via KeyMatcher.buildExactMatcher(KeyedMessage)
+     * Stops the activity listening for all responses via the wildcard
+     * KeyMatcher. It DOES NOT stop the activity from listening for responses
+     * registered individually via KeyMatcher.buildExactMatcher(KeyedMessage)
      */
     public void stopListeningForAllResponses() {
         mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
-    
+
     public void populateFields(DiagnosticRequest req) {
-        mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));
-        mBusInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getBusId())));
-        mIdInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getId())));
-        mModeInputText.setText(selfOrEmptyIfNull(Integer.toHexString(req.getMode()).toUpperCase(Locale.US)));
-        mPidInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPid())));
-        mPayloadInputText.setText(selfOrEmptyIfNull(new String(req.getPayload())));
-        mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
-    }
-    
-    private String selfOrEmptyIfNull(String st) {
-        if (st == null || st.toLowerCase(Locale.US).equals("null")) {
-            return "";
-        }
-        return st;
+        mInputManager.populateFields(req);
     }
 
     private void initInfoButtons() {
@@ -362,57 +219,11 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
-    private void hideKeyboard() {
+    public void hideKeyboard() {
 
         InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (manager.isAcceptingText()) {
             manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-
-    private void initTextFields() {
-
-        mFrequencyInputText = (EditText) findViewById(R.id.frequencyInput);
-        mFrequencyInputText.setHint("0");
-        textFields.add(mFrequencyInputText);
-
-        mBusInputText = (EditText) findViewById(R.id.busInput);
-        mBusInputText.setHint("1 or 2");
-        textFields.add(mBusInputText);
-
-        mIdInputText = (EditText) findViewById(R.id.idInput);
-        mIdInputText.setHint("#");
-        textFields.add(mIdInputText);
-
-        mModeInputText = (EditText) findViewById(R.id.modeInput);
-        mModeInputText.setHint("0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin()) + " - "
-                + "0x" + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
-        textFields.add(mModeInputText);
-
-        mPidInputText = (EditText) findViewById(R.id.pidInput);
-        mPidInputText.setHint("#");
-        textFields.add(mPidInputText);
-
-        mPayloadInputText = (EditText) findViewById(R.id.payloadInput);
-        mPayloadInputText.setHint("e.g. 0x1234");
-        textFields.add(mPayloadInputText);
-
-        mNameInputText = (EditText) findViewById(R.id.nameInput);
-        textFields.add(mNameInputText);
-
-        for (int i = 0; i < textFields.size(); i++) {
-            final EditText textField = textFields.get(i);
-            textField.setOnEditorActionListener(new OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId,
-                        KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        hideKeyboard();
-                        getCurrentFocus().clearFocus();
-                    }
-                    return false;
-                }
-            });
         }
     }
 
@@ -421,15 +232,15 @@ public class DiagnosticActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
-        
-        //TODO ick
+
+        // TODO ick
         DiagnosticFavoritesManager.init(this);
+        mInputManager = new InputManager(this);
         mSettingsManager = new DiagnosticSettingsManager(this);
         mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
-        
+
         initButtons();
-        initTextFields();
-        
+
         mOutputTable = new DiagnosticOutputTable(this);
         mOutputTable.load();
     }
