@@ -88,6 +88,8 @@ public class DiagnosticOutputTableSaver {
     }
     
     private ArrayList<DiagnosticRequest> loadSavedRequests() {
+        
+        @SuppressWarnings("serial")
         Type type = new TypeToken<List<DiagnosticRequest>>(){}.getType();
         String json = sPreferences.getString(getSavedRequestsKey(), "");
         List<DiagnosticRequest> requestList = (new Gson()).fromJson(json, type);
@@ -100,6 +102,7 @@ public class DiagnosticOutputTableSaver {
     
     private ArrayList<DiagnosticResponse> loadSavedResponses() {
         
+        @SuppressWarnings("serial")
         Type type = new TypeToken<List<DiagnosticResponse>>(){}.getType();
         String json = sPreferences.getString(getSavedResponsesKey(), "");
         List<DiagnosticResponse> responseList = (new Gson()).fromJson(json, type);

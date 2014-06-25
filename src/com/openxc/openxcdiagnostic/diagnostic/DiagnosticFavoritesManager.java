@@ -58,7 +58,8 @@ public class DiagnosticFavoritesManager {
     }
     
     private static ArrayList<DiagnosticRequest> loadFavorites() {
-        
+ 
+        @SuppressWarnings("serial")
         Type type = new TypeToken<List<DiagnosticRequest>>(){}.getType();
         String json = sPreferences.getString(getFavoritesKey(), "");
         List<DiagnosticRequest> favoriteList = (new Gson()).fromJson(json, type);
