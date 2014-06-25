@@ -1,15 +1,23 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.openxcdiagnostic.R;
@@ -26,12 +34,27 @@ public class InputManager {
     private EditText mNameInputText;
     private List<EditText> textFields = new ArrayList<>();
     private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
-
+    private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
+
+    private class InputHolder {
+        private String frequencyInput = getFrequencyInput();
+        private String busInput = getBusInput();
+        private String idInput = getIdInput();
+        private String modeInput = getModeInput();
+        private String pidInput = getPidInput();
+        private String payloadInput = getPayloadInput();
+        private String nameInput = getNameInput();
+
+        private InputHolder() {
+        }
+    }
 
     public InputManager(DiagnosticActivity context) {
         mContext = context;
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         initTextFields();
+        restoreFields();
     }
 
     public void populateFields(DiagnosticRequest req) {
@@ -42,6 +65,16 @@ public class InputManager {
         mPidInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPid())));
         mPayloadInputText.setText(selfOrEmptyIfNull(new String(req.getPayload())));
         mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
+    }
+
+    public void populateFields(InputHolder holder) {
+        mFrequencyInputText.setText(holder.frequencyInput);
+        mBusInputText.setText(holder.busInput);
+        mIdInputText.setText(holder.idInput);
+        mModeInputText.setText(holder.modeInput);
+        mPidInputText.setText(holder.pidInput);
+        mPayloadInputText.setText(holder.payloadInput);
+        mNameInputText.setText(holder.nameInput);
     }
 
     private String selfOrEmptyIfNull(String st) {
@@ -101,7 +134,48 @@ public class InputManager {
                     return false;
                 }
             });
+            textField.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start,
+                        int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start,
+                        int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    saveFields();
+                }
+            });
         }
+    }
+
+    private void saveFields() {
+        InputHolder inputHolder = new InputHolder();
+        Editor prefsEditor = mPreferences.edit();
+        String json = (new Gson()).toJson(inputHolder);
+        prefsEditor.putString(getInputKey(), json);
+        prefsEditor.commit();
+    }
+
+    private void restoreFields() {
+
+        @SuppressWarnings("serial")
+        Type type = new TypeToken<InputHolder>() {
+        }.getType();
+        String json = mPreferences.getString(getInputKey(), "");
+        InputHolder inputHolder = (new Gson()).fromJson(json, type);
+        if (inputHolder != null) {
+            populateFields(inputHolder);
+        }
+    }
+
+    private String getInputKey() {
+        return "input_key";
     }
 
     /**
