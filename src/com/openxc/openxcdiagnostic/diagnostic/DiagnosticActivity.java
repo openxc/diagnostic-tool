@@ -295,7 +295,7 @@ public class DiagnosticActivity extends Activity {
         mIdInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getId())));
         mModeInputText.setText(selfOrEmptyIfNull(Integer.toHexString(req.getMode()).toUpperCase(Locale.US)));
         mPidInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPid())));
-        mPayloadInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPayload())));
+        mPayloadInputText.setText(selfOrEmptyIfNull(new String(req.getPayload())));
         mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
     

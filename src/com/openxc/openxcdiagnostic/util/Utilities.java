@@ -25,37 +25,6 @@ public class Utilities {
     //TODO this contains NegativeResponseCode.None, but ok because it's just for testing anyway
     private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes = 
             Collections.unmodifiableList(Arrays.asList(DiagnosticResponse.NegativeResponseCode.values()));
-
-    public static String getOutputString(DiagnosticRequest req) {
-        String result = new String();
-        result = result + "bus : " + getBusOutput(req) + "\n";
-        result = result + "id : " + getIdOutput(req) + "\n";
-        result = result + "mode: " + getModeOutput(req) + "\n";
-        result = result + "pid : " + getPidOutput(req) + "\n";
-        result = result + "payload : " + getPayloadOutput(req) + "\n";
-        result = result + "frequency : " + getFrequencyOutput(req) + "\n";
-        result = result + "name : " + getNameOutput(req);
-        return result;
-    }
-
-    public static String getOutputString(DiagnosticResponse resp) {
-        String result = new String();
-        result = result + "bus : " + getBusOutput(resp) + "\n";
-        result = result + "id : " + getIdOutput(resp) + "\n";
-        result = result + "mode: " + getModeOutput(resp) + "\n";
-        result = result + "pid : " + getPidOutput(resp) + "\n";
-        result = result + "success : " + getSuccessOutput(resp) + "\n";
-        boolean success = resp.getSuccess();
-        if (success) {
-            result = result + "payload : " + getPayloadOutput(resp) + "\n";
-            result = result + "value : " + getValueOutput(resp);
-        } else {
-            DiagnosticResponse.NegativeResponseCode code = resp.getNegativeResponseCode();
-            result = result + "code : "
-                    + code.toDocumentationString() + " (" + code.hexCodeString() + ")";
-        }
-        return result;
-    }
     
     
     //all these outputs are italicized so the space prevents them from being cut off
@@ -93,11 +62,11 @@ public class Utilities {
     }
     
     public static String getPayloadOutput(DiagnosticRequest req) {
-        return req.getPayload() == null ? "" : String.valueOf(req.getPayload()) + " ";
+        return req.getPayload() == null ? "" : "0x" + new String(req.getPayload()) + " ";
     }
     
     public static String getPayloadOutput(DiagnosticResponse resp) {
-        return resp.getPayload() == null ? "" : String.valueOf(resp.getPayload()) + " ";
+        return resp.getPayload() == null ? "" : "0x" + new String(resp.getPayload()) + " ";
     }
     
     public static String getSuccessOutput(DiagnosticResponse resp) {
