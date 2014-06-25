@@ -118,6 +118,15 @@
         <item name="android:textStyle">italic</item>
     </style>
     
+    <style name="DiagDetailsAlertTable" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+    
     <style name="DiagOutputTableContentText" >
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">17sp</item>
