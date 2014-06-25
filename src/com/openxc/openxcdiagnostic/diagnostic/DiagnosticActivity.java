@@ -44,6 +44,11 @@ public class DiagnosticActivity extends Activity {
                 @Override
                 public void run() {
                     mOutputTable.addRow(request, response);
+                    if (request.getFrequency() == null
+                            || request.getFrequency() == 0) {
+                        mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
+                                DiagnosticActivity.this.mResponseListener);
+                    }
                     scrollOutputToTop();
                 }
             });
@@ -158,6 +163,11 @@ public class DiagnosticActivity extends Activity {
 
         mOutputTable = new DiagnosticOutputTable(this);
         mOutputTable.load();
+    }
+
+    @Override
+    public void onDestroy() {
+        mVehicleManager.removeListener(mResponseListener);
     }
 
     @Override
