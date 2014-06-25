@@ -21,13 +21,11 @@ public class DiagnosticFavoritesManager {
     //TODO could use refactoring.  Really don't like having to pass in a context, preferable
     //to not have to ensure that you call init before doing anything else, but good news is it crashes
     //right away if you don't so easy to detect
-    private static DiagnosticActivity sContext; 
     private static ArrayList<DiagnosticRequest> sFavorites;
     private static SharedPreferences sPreferences;
     
     public static void init(DiagnosticActivity context) {
-        sContext = context;
-        sPreferences = PreferenceManager.getDefaultSharedPreferences(sContext);
+        sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sFavorites = loadFavorites();
     }
     
