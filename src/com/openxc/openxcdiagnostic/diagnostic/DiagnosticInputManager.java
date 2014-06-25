@@ -23,7 +23,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 
-public class InputManager {
+public class DiagnosticInputManager {
 
     private EditText mFrequencyInputText;
     private EditText mBusInputText;
@@ -50,7 +50,7 @@ public class InputManager {
         }
     }
 
-    public InputManager(DiagnosticActivity context) {
+    public DiagnosticInputManager(DiagnosticActivity context) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         initTextFields();
