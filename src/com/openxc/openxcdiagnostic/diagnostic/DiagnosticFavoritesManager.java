@@ -47,7 +47,7 @@ public class DiagnosticFavoritesManager {
     
     private static void setFavorites(ArrayList<DiagnosticRequest> newFavorites) {
         Editor prefsEditor = sPreferences.edit();
-        String json = (new Gson()).toJson(sFavorites);
+        String json = (new Gson()).toJson(newFavorites);
         prefsEditor.putString(getFavoritesKey(), json);
         prefsEditor.commit();
         sFavorites = newFavorites;
