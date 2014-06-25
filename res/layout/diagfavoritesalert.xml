@@ -9,11 +9,11 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
         android:gravity="fill_horizontal" >
                       
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/nameHeader"
               android:text="@string/name_label">
           </TextView>  
         
@@ -21,6 +21,7 @@
           
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/busHeader"
               android:text="@string/bus_label">
           </TextView>
           
@@ -28,6 +29,7 @@
           
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/idHeader"
               android:text="@string/id_label">
           </TextView>
           
@@ -35,6 +37,7 @@
           
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/modeHeader"
               android:text="@string/mode_label">
           </TextView>
           
@@ -42,6 +45,7 @@
           
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/pidHeader"
               android:text="@string/pid_label">
           </TextView>
           
@@ -49,25 +53,24 @@
           
           <TextView
               style="@style/FavoriteDataLabel"
+              android:id="@+id/payloadHeader"
               android:text="@string/payload_label">
           </TextView>
               
     </LinearLayout>
     
-    <include layout="@layout/horizontalline" />
+    <include layout="@layout/thickhorizontalline" />
 
 	<ScrollView 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:padding="3dp">
+	    android:orientation="vertical" >
 	   
 	    <LinearLayout 
 	        android:id="@+id/favoritesAlertTable"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:orientation="vertical"
-		    android:padding="3dp">
+		    android:orientation="vertical" >
 		</LinearLayout>
 	    
 	</ScrollView>
