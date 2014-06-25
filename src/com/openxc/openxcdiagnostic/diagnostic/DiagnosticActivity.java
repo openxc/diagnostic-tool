@@ -30,7 +30,6 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -417,7 +416,7 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
         
-        //ick
+        //TODO ick
         DiagnosticFavoritesManager.init(this);
         mSettingsManager = new DiagnosticSettingsManager(this);
         mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
@@ -426,6 +425,7 @@ public class DiagnosticActivity extends Activity {
         initTextFields();
         
         mOutputTable = new DiagnosticOutputTable(this);
+        mOutputTable.load();
     }
 
     @Override

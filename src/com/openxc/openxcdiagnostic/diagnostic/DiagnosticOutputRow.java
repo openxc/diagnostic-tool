@@ -17,12 +17,16 @@ public class DiagnosticOutputRow {
 
     private LinearLayout mView;
     private DiagnosticOutputTable mTable;
+    private DiagnosticResponse mResponse;
+    private DiagnosticRequest mRequest;
 
     public DiagnosticOutputRow(DiagnosticActivity context, DiagnosticOutputTable table,
             DiagnosticRequest req, DiagnosticResponse resp, int rowNumber) {
 
-        mTable = table;
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
+        mTable = table;
+        mResponse = resp;
+        mRequest = req;
         
         initButtons(context, req, resp);
         fillOutputResponseTable(context, resp);        
@@ -105,6 +109,14 @@ public class DiagnosticOutputRow {
 
     public LinearLayout getView() {
         return mView;
+    } 
+    
+    public DiagnosticRequest getRequest() {
+        return mRequest;
+    }
+    
+    public DiagnosticResponse getResponse() {
+        return mResponse;
     }
     
 }
