@@ -7,10 +7,9 @@
         android:gravity="fill_horizontal" >
     
     <TextView 
-        android:id="@+id/outputRowNumberText"
+        android:id="@+id/outputRowTimestamp"
         android:layout_width="wrap_content"
-        android:minWidth="33dp"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_gravity="top"
         android:gravity="center"

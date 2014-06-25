@@ -20,21 +20,28 @@ public class DiagnosticOutputRow {
     private DiagnosticResponse mResponse;
     private DiagnosticRequest mRequest;
 
-    public DiagnosticOutputRow(DiagnosticActivity context, DiagnosticOutputTable table,
-            DiagnosticRequest req, DiagnosticResponse resp, int rowNumber) {
+    public DiagnosticOutputRow(DiagnosticActivity context,
+            DiagnosticOutputTable table, DiagnosticRequest req,
+            DiagnosticResponse resp) {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         mTable = table;
         mResponse = resp;
         mRequest = req;
-        
+
         initButtons(context, req, resp);
-        fillOutputResponseTable(context, resp);        
-        ((TextView) mView.findViewById(R.id.outputRowNumberText)).setText(String.valueOf(rowNumber));
+        fillOutputResponseTable(context, resp);
+        String timestampString;
+        if (resp.getTimestamp() != null) {
+            timestampString = Utilities.epochTimeToTime(resp.getTimestamp());
+        } else {
+            timestampString = "0:00";
+        }
+        ((TextView) mView.findViewById(R.id.outputRowTimestamp)).setText(timestampString);
     }
 
-    private void initButtons(final DiagnosticActivity context, final DiagnosticRequest req,
-            final DiagnosticResponse resp) {
+    private void initButtons(final DiagnosticActivity context,
+            final DiagnosticRequest req, final DiagnosticResponse resp) {
 
         Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
         detailsButton.setOnClickListener(new OnClickListener() {
@@ -51,7 +58,7 @@ public class DiagnosticOutputRow {
                 mTable.removeRow(DiagnosticOutputRow.this);
             }
         });
-        
+
         Button resendButton = (Button) mView.findViewById(R.id.outputResendButton);
         resendButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -61,25 +68,26 @@ public class DiagnosticOutputRow {
         });
 
     }
-    
-    private void createAndAddRowToOutput(Activity context, LinearLayout parent, String label, 
-            String value, DiagnosticMessage msg) {
-        
+
+    private void createAndAddRowToOutput(Activity context, LinearLayout parent,
+            String label, String value, DiagnosticMessage msg) {
+
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.outputresponsetablerow, null);
         ((TextView) row.findViewById(R.id.outputTableRowLabel)).setText(label);
-        
-        TextView valueText =  (TextView) row.findViewById(R.id.outputTableRowValue);
+
+        TextView valueText = (TextView) row.findViewById(R.id.outputTableRowValue);
         valueText.setText(value);
         if (msg instanceof DiagnosticResponse) {
             valueText.setTextColor(Utilities.getOutputColor(context, (DiagnosticResponse) msg));
         }
         parent.addView(row);
     }
-    
-    private void fillOutputResponseTable(DiagnosticActivity context, DiagnosticResponse resp) {
-        
+
+    private void fillOutputResponseTable(DiagnosticActivity context,
+            DiagnosticResponse resp) {
+
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-        
+
         createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp), resp);
         createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
         createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
@@ -91,32 +99,29 @@ public class DiagnosticOutputRow {
         } else {
             fillOutputTableWithFailureDetails(infoTable, context, resp);
         }
-    }    
-    
-    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable, 
-            Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "payload", 
-                Utilities.getPayloadOutput(resp), resp);
-        createAndAddRowToOutput(context, responseTable, "value", 
-                Utilities.getValueOutput(resp), resp);
     }
-    
-    private void fillOutputTableWithFailureDetails(LinearLayout responseTable, Activity context, 
-            DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "neg. resp. code", 
-                Utilities.getOutputTableResponseCodeOutput(resp), resp);
+
+    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable,
+            Activity context, DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "payload", Utilities.getPayloadOutput(resp), resp);
+        createAndAddRowToOutput(context, responseTable, "value", Utilities.getValueOutput(resp), resp);
+    }
+
+    private void fillOutputTableWithFailureDetails(LinearLayout responseTable,
+            Activity context, DiagnosticResponse resp) {
+        createAndAddRowToOutput(context, responseTable, "neg. resp. code", Utilities.getOutputTableResponseCodeOutput(resp), resp);
     }
 
     public LinearLayout getView() {
         return mView;
-    } 
-    
+    }
+
     public DiagnosticRequest getRequest() {
         return mRequest;
     }
-    
+
     public DiagnosticResponse getResponse() {
         return mResponse;
     }
-    
+
 }
