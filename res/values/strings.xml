@@ -38,6 +38,7 @@
     <string name="pid_label">PID</string>
     <string name="payload_label">Payload</string>
     <string name="name_label">Name</string>
+    <string name="command_label">Command</string>
     <string name="alert_request_header">REQUEST</string>
     <string name="alert_response_header">RESPONSE</string>
     
@@ -50,6 +51,7 @@
     <string name="name_info">(Optional) A human readable, string name for this request. If provided, the response will have a name field (much like a normal translated message) with this value in place of bus, id, mode and pid.</string>
     <string name="multipleResponses_info">If checked, the request will stay active for a full 100ms, even after receiving a diagnostic response message</string>
     <string name="frequency_info">(Optional, defaults to 0) The frequency in Hz to send this request. To send a single non-recurring request, set this to 0 or leave it out.</string>    
+    <string name ="command_info">The command to which the VI should respond.</string>
     
     <!-- Vehicle Dashboard Strings -->
     <string name="steering_wheel_angle_label">Steering Wheel</string>

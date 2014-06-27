@@ -13,15 +13,19 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticInputManager {
 
@@ -32,12 +36,13 @@ public class DiagnosticInputManager {
     private EditText mPidInputText;
     private EditText mPayloadInputText;
     private EditText mNameInputText;
-    private List<EditText> textFields = new ArrayList<>();
+    private EditText mCommandInputText;
+    private List<EditText> textFields;
     private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
 
-    private class InputHolder {
+    private class RequestInputHolder {
         private String frequencyInput = getFrequencyInput();
         private String busInput = getBusInput();
         private String idInput = getIdInput();
@@ -46,19 +51,22 @@ public class DiagnosticInputManager {
         private String payloadInput = getPayloadInput();
         private String nameInput = getNameInput();
 
-        private InputHolder() {
+        private RequestInputHolder() {
         }
     }
 
-    public DiagnosticInputManager(DiagnosticActivity context) {
+    public DiagnosticInputManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        initTextFields();
-        restoreFields();
+        initTextFields(displayCommands);
     }
     
-    public void toggleRequestCommand() {
-        
+    public void toggleRequestCommand(boolean displayCommands) {
+        initTextFields(displayCommands);
+    }
+    
+    public void populateFields(Command command) {
+        mCommandInputText.setText(selfOrEmptyIfNull(String.valueOf(command.getCommand())));
     }
 
     public void populateFields(DiagnosticRequest req) {
@@ -75,7 +83,7 @@ public class DiagnosticInputManager {
         mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
 
-    public void populateFields(InputHolder holder) {
+    public void populateFields(RequestInputHolder holder) {
         mFrequencyInputText.setText(holder.frequencyInput);
         mBusInputText.setText(holder.busInput);
         mIdInputText.setText(holder.idInput);
@@ -97,8 +105,39 @@ public class DiagnosticInputManager {
             textFields.get(i).setText("");
         }
     }
+    
+    private void initTextFields(boolean displayCommands) {
+        
+        FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
+        LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
+        LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(R.id.inputTable);
+        LinearLayout newView;
+        if (displayCommands) {
+            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagcommandinput, null);
+        } else {
+            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagrequestinput, null);
+        }
+        newView.setId(R.id.inputTable);
+        Utilities.replaceView(diagnosticLayout, oldView, newView);
+        
+        if (displayCommands) {
+            initCommandTextFields();
+        } else {
+            initRequestTextFields();
+            restoreRequestFields();
+        }
+    }
+    
+    private void initCommandTextFields() {
+        textFields = new ArrayList<>();
+        mCommandInputText = (EditText) mContext.findViewById(R.id.commandInput);
+        textFields.add(mCommandInputText);
+    }
 
-    private void initTextFields() {
+    private void initRequestTextFields() {
+        
+        textFields = new ArrayList<>();
+        
         mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
         mFrequencyInputText.setHint("0");
         textFields.add(mFrequencyInputText);
@@ -163,20 +202,20 @@ public class DiagnosticInputManager {
     }
 
     private void saveFields() {
-        InputHolder inputHolder = new InputHolder();
+        RequestInputHolder inputHolder = new RequestInputHolder();
         Editor prefsEditor = mPreferences.edit();
         String json = (new Gson()).toJson(inputHolder);
         prefsEditor.putString(getInputKey(), json);
         prefsEditor.commit();
     }
 
-    private void restoreFields() {
+    private void restoreRequestFields() {
 
         @SuppressWarnings("serial")
-        Type type = new TypeToken<InputHolder>() {
+        Type type = new TypeToken<RequestInputHolder>() {
         }.getType();
         String json = mPreferences.getString(getInputKey(), "");
-        InputHolder inputHolder = (new Gson()).fromJson(json, type);
+        RequestInputHolder inputHolder = (new Gson()).fromJson(json, type);
         if (inputHolder != null) {
             populateFields(inputHolder);
         }
@@ -195,6 +234,11 @@ public class DiagnosticInputManager {
      * the fail must too.
      */
     private DiagnosticRequest failAndToastError(String message) {
+        Toaster.showToast(mContext, message);
+        return null;
+    }
+    
+    private Command failAndToastCommandError(String message) {
         Toaster.showToast(mContext, message);
         return null;
     }
@@ -299,6 +343,14 @@ public class DiagnosticInputManager {
 
         return request;
     }
+    
+    public Command generateCommandFromInput() {
+        String commandInput = getCommandInput();
+        if (commandInput.equals("")) {
+            return failAndToastCommandError("Command cannot be empty.");
+        }
+        return new Command(commandInput);
+    }
 
     private String getFrequencyInput() {
         return mFrequencyInputText.getText().toString();
@@ -326,6 +378,10 @@ public class DiagnosticInputManager {
 
     private String getNameInput() {
         return mNameInputText.getText().toString();
+    }
+    
+    private String getCommandInput() {
+        return mCommandInputText.getText().toString();
     }
 
 }

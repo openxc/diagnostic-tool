@@ -16,6 +16,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ScrollView;
 
 import com.openxc.VehicleManager;
+import com.openxc.messages.Command;
+import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.KeyMatcher;
@@ -29,6 +31,7 @@ public class DiagnosticActivity extends Activity {
 
     private DiagnosticSettingsManager mSettingsManager;
     private DiagnosticInputManager mInputManager;
+    private DiagnosticButtonsManager mButtonsManager;
     private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
@@ -48,6 +51,19 @@ public class DiagnosticActivity extends Activity {
                         mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
                                 DiagnosticActivity.this.mResponseListener);
                     }
+                    scrollOutputToTop();
+                }
+            });
+        }
+    };
+    
+    CommandResponse.Listener mCommandResponseListener = new CommandResponse.Listener() {
+        @Override
+        public void receive(final CommandResponse response) {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                   // mOutputTable.addRow(response);
                     scrollOutputToTop();
                 }
             });
@@ -89,6 +105,12 @@ public class DiagnosticActivity extends Activity {
         // mVehicleManager.request(request);
         mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
     }
+    
+    public void sendCommand(Command command) {
+        // TODO JUST FOR TESTING! should be
+        //...something else
+        mCommandResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
+    }
 
     public void registerForResponse(DiagnosticRequest request) {
         mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
@@ -116,12 +138,20 @@ public class DiagnosticActivity extends Activity {
         mInputManager.populateFields(req);
     }
 
-    public void takeSendRequestButtonPush() {
+    public void takeSendButtonPush() {
         hideKeyboard();
         getCurrentFocus().clearFocus();
-        DiagnosticRequest request = mInputManager.generateDiagnosticRequestFromInput();
-        if (request != null) {
-            sendRequest(request);
+        
+        if (mSettingsManager.shouldDisplayCommands()) {
+            Command command = mInputManager.generateCommandFromInput();
+            if (command != null) {
+                sendCommand(command);
+            }
+        } else {
+            DiagnosticRequest request = mInputManager.generateDiagnosticRequestFromInput();
+            if (request != null) {
+                sendRequest(request);
+            }
         }
     }
 
@@ -147,8 +177,10 @@ public class DiagnosticActivity extends Activity {
         }
     }
     
-    public void toggleRequestCommand() {
-         mInputManager.toggleRequestCommand();
+    public void toggleRequestCommand(boolean displayCommands) {
+        //order matters here
+        mInputManager.toggleRequestCommand(displayCommands);
+        mButtonsManager.toggleRequestCommand(displayCommands);
     }
     
     @Override
@@ -157,11 +189,11 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
 
-        // TODO ick
         DiagnosticFavoritesManager.init(this);
-        DiagnosticButtonsManager.init(this);
-        mInputManager = new DiagnosticInputManager(this);
         mSettingsManager = new DiagnosticSettingsManager(this);
+        boolean displayCommands = mSettingsManager.shouldDisplayCommands();
+        mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
+        mInputManager = new DiagnosticInputManager(this, displayCommands);
         mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
 
         mOutputTable = new DiagnosticOutputTable(this);

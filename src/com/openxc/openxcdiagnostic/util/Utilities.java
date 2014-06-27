@@ -11,7 +11,11 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import com.openxc.messages.Command;
+import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
@@ -126,6 +130,10 @@ public class Utilities {
         response.timestamp();
         return response;
     }
+    
+    public static CommandResponse generateRandomFakeCommandResponse(Command command) {
+        return new CommandResponse(command.getCommand(), "test command response");
+    }
 
     public static String epochTimeToTime(long time) {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
@@ -149,5 +157,10 @@ public class Utilities {
         Rect displayRect = new Rect();
         context.getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRect);
         return displayRect.width();
+    }
+    
+    public static void replaceView(LinearLayout layout, final View oldView, final View newView) {
+        layout.addView(newView, layout.indexOfChild(oldView));
+        layout.removeView(oldView);
     }
 }

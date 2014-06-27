@@ -88,7 +88,7 @@ public class DiagnosticSettingsManager {
                 
                 setShouldDisplayCommands(!shouldDisplayCommands());
                 configureToggleButton(responseCommandToggle);
-                mContext.toggleRequestCommand();
+                mContext.toggleRequestCommand(shouldDisplayCommands());
             }
         });
     }
