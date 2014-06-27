@@ -130,7 +130,7 @@ public class Utilities {
     public static String epochTimeToTime(long time) {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.US);
-        Date date = new Date(Long.parseLong(String.valueOf(time)) / 1000);
+        Date date = new Date(Long.parseLong(String.valueOf(time)));
         return timeFormat.format(date) + "\n" + dateFormat.format(date);
     }
 
