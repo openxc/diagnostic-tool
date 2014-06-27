@@ -20,8 +20,6 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.KeyMatcher;
 import com.openxc.openxcdiagnostic.R;
-import com.openxc.openxcdiagnostic.dash.DashboardActivity;
-import com.openxc.openxcdiagnostic.menu.MenuActivity;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -148,7 +146,11 @@ public class DiagnosticActivity extends Activity {
             manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
-
+    
+    public void toggleRequestCommand() {
+         mInputManager.toggleRequestCommand();
+    }
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

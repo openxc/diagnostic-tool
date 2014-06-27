@@ -190,26 +190,27 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">50dp</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_margin">1dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:paddingRight">3dp</item>
     </style>
     
     <style name="SettingsText">
         <item name="android:textSize">20sp</item>
+        <item name="android:singleLine">true</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>  
     
     <style name="SettingsItemLabel" parent="SettingsText">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>  
+        <item name="android:layout_weight">0.6</item>  
     </style> 
     
     <style name="SettingsItemButton" parent="SettingsText">
-        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">0.4</item>
         <item name="android:gravity">center</item>
-        <item name="android:paddingRight">2dp</item>
     </style>    
     
     <!-- Dashboard styles -->

@@ -56,6 +56,10 @@ public class DiagnosticInputManager {
         initTextFields();
         restoreFields();
     }
+    
+    public void toggleRequestCommand() {
+        
+    }
 
     public void populateFields(DiagnosticRequest req) {
         mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));

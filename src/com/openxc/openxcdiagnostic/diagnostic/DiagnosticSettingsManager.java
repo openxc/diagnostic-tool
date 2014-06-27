@@ -79,17 +79,63 @@ public class DiagnosticSettingsManager {
                 builder.create().show();
             }
         });
+        
+        final Button responseCommandToggle = (Button) layout.findViewById(R.id.responseCommandToggleButton);
+        configureToggleButton(responseCommandToggle);
+        responseCommandToggle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+                setShouldDisplayCommands(!shouldDisplayCommands());
+                configureToggleButton(responseCommandToggle);
+                mContext.toggleRequestCommand();
+            }
+        });
+    }
+    
+    private void configureToggleButton(Button toggleButton) {
+        String buttonText;
+        int backgroundSelector;
+
+        if (shouldDisplayCommands()) {
+            buttonText = "Send Requests";
+            backgroundSelector = R.drawable.send_request_button_selector;
+        }
+        else {
+            buttonText = "Send Commands";
+            backgroundSelector = R.drawable.send_command_button_selector;
+        }
+        toggleButton.setText(buttonText);
+        toggleButton.setBackground(mContext.getResources()
+                .getDrawable(backgroundSelector));
+    }
+    
+    public boolean shouldDisplayCommands() {
+        return mPreferences.getBoolean(getDisplayCommandsKey(), false);
+    }
+    
+    public void setShouldDisplayCommands(boolean shouldDisplay) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putBoolean(getDisplayCommandsKey(), shouldDisplay);
+        editor.commit();
     }
     
     public boolean shouldSniff() {
-        return mPreferences.getBoolean(mContext.getResources().getString(R.string.sniffing_checkbox_key), false);
+        return mPreferences.getBoolean(getSniffingCheckboxKey(), false);
     }
     
     public void setShouldSniff(boolean shouldSniff) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(mContext.getResources().getString(R.string.sniffing_checkbox_key), 
-                shouldSniff);
+        editor.putBoolean(getSniffingCheckboxKey(), shouldSniff);
         editor.commit();
+    }
+    
+    private String getDisplayCommandsKey() {
+        return "display_commands_key";
+    }
+    
+    private String getSniffingCheckboxKey() {
+        return "sniffing_checkbox_key";
     }
 
 }

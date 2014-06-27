@@ -22,8 +22,8 @@
     <string name="delete_all_responses_label">Delete all responses?</string>
     <string name="delete_all_responses_button_text">Delete</string>
     <string name="sniffing_label">Enable response sniffing</string>
-    <string name="sniffing_checkbox_key">sniffing_checkbox_key</string>
     <string name="delete_responses_verification">"Are you sure you want to delete all responses? This cannot be undone.</string>
+    <string name="response_command_toggle_label">Toggle Response/Command</string>
     
     <!-- Menu Tab Strings -->
     <string name="dashboard">Dash</string>

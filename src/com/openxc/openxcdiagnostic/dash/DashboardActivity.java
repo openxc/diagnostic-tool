@@ -36,8 +36,6 @@ import com.openxc.measurements.UnrecognizedMeasurementTypeException;
 import com.openxc.measurements.VehicleSpeed;
 import com.openxc.measurements.WindshieldWiperStatus;
 import com.openxc.openxcdiagnostic.R;
-import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
-import com.openxc.openxcdiagnostic.menu.MenuActivity;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.remote.VehicleServiceException;
 
