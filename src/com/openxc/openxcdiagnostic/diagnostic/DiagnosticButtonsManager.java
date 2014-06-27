@@ -67,7 +67,7 @@ public class DiagnosticButtonsManager {
     
     private void initCommandInfoButtons() {
         final Resources res = mContext.getResources();
-        Button commandInfoButton = (Button) mContext.findViewById(R.id.frequencyQuestionButton);
+        Button commandInfoButton = (Button) mContext.findViewById(R.id.commandQuestionButton);
         commandInfoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

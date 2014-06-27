@@ -190,11 +190,12 @@ public class DiagnosticActivity extends Activity {
         Log.i(TAG, "Vehicle diagnostic created");
 
         DiagnosticFavoritesManager.init(this);
+        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
         mSettingsManager = new DiagnosticSettingsManager(this);
         boolean displayCommands = mSettingsManager.shouldDisplayCommands();
-        mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
+        //order matters here
         mInputManager = new DiagnosticInputManager(this, displayCommands);
-        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
+        mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
 
         mOutputTable = new DiagnosticOutputTable(this);
         mOutputTable.load();
