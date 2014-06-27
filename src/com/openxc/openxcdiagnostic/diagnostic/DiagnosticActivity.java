@@ -22,6 +22,7 @@ import com.openxc.messages.KeyMatcher;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
+import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticActivity extends Activity {
@@ -188,16 +189,7 @@ public class DiagnosticActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.Diagnostic) {
-            // do nothing
-            startActivity(new Intent(this, DiagnosticActivity.class));
-        } else if (item.getItemId() == R.id.Menu) {
-            startActivity(new Intent(this, MenuActivity.class));
-            return true;
-        } else if (item.getItemId() == R.id.Dashboard) {
-            startActivity(new Intent(this, DashboardActivity.class));
-            return true;
-        }
+        ActivityLauncher.launchActivity(this, item.getItemId());
         return super.onOptionsItemSelected(item);
     }
 

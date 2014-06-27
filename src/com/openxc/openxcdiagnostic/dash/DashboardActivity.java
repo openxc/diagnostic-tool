@@ -38,6 +38,7 @@ import com.openxc.measurements.WindshieldWiperStatus;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
+import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.remote.VehicleServiceException;
 
 public class DashboardActivity extends Activity {
@@ -406,15 +407,7 @@ public class DashboardActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	if (item.getItemId() == R.id.Diagnostic) {
-    		startActivity(new Intent(this, DiagnosticActivity.class));
-    	} else if (item.getItemId() == R.id.Menu) {
-    		startActivity(new Intent(this, MenuActivity.class));
-            return true;
-    	}
-    	else if (item.getItemId() == R.id.Dashboard) {
-    	    //do nothing
-    	}
+    	ActivityLauncher.launchActivity(this, item.getItemId());
     	return super.onOptionsItemSelected(item);
     }
 

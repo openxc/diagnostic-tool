@@ -17,6 +17,7 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.dash.GridManager;
+import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 
 public class MenuActivity extends Activity {
 	
@@ -67,16 +68,8 @@ public class MenuActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	if (item.getItemId() == R.id.Diagnostic) {
-    		startActivity(new Intent(this, DiagnosticActivity.class));
-    	} else if (item.getItemId() == R.id.Menu) {
-    		//do nothing
-    	}
-    	else if (item.getItemId() == R.id.Dashboard) {
-    	    startActivity(new Intent(this, DashboardActivity.class));
-            return true;
-    	}
-    	return super.onOptionsItemSelected(item);
+        ActivityLauncher.launchActivity(this, item.getItemId());
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
