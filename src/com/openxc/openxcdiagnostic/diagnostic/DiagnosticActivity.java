@@ -21,6 +21,7 @@ import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.KeyMatcher;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.Utilities;
@@ -59,11 +60,11 @@ public class DiagnosticActivity extends Activity {
     
     CommandResponse.Listener mCommandResponseListener = new CommandResponse.Listener() {
         @Override
-        public void receive(final CommandResponse response) {
+        public void receive(final Command command, final CommandResponse response) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                   // mOutputTable.addRow(response);
+                    mOutputTable.addRow(command, response);
                     scrollOutputToTop();
                 }
             });
@@ -99,17 +100,23 @@ public class DiagnosticActivity extends Activity {
         mOutputTable.deleteAllRows();
     }
 
-    public void sendRequest(DiagnosticRequest request) {
-        // TODO JUST FOR TESTING! should be
-        // registerForResponse(request);
-        // mVehicleManager.request(request);
-        mResponseListener.receive(request, Utilities.generateRandomFakeResponse(request));
-    }
+    public void send(VehicleMessage request) {
+        
+        if (request instanceof DiagnosticRequest) {
+            // TODO JUST FOR TESTING! should be
+            // registerForResponse(request);
+            // mVehicleManager.request(request);
+            DiagnosticRequest diagRequest = (DiagnosticRequest) request;
+            mResponseListener.receive(diagRequest, Utilities.generateRandomFakeResponse(diagRequest));
+        } else if (request instanceof Command) {
     
-    public void sendCommand(Command command) {
-        // TODO JUST FOR TESTING! should be
-        //...something else
-        mCommandResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
+            // TODO JUST FOR TESTING! should be
+            //...something else
+            Command command = (Command)request;
+            mCommandResponseListener.receive(command, Utilities.generateRandomFakeCommandResponse(command));
+        } else {
+            Log.w(TAG, "Unable to send unrecognized request type");
+        }
     }
 
     public void registerForResponse(DiagnosticRequest request) {
@@ -134,7 +141,7 @@ public class DiagnosticActivity extends Activity {
         mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
 
-    public void populateFields(DiagnosticRequest req) {
+    public void populateFields(VehicleMessage req) {
         mInputManager.populateFields(req);
     }
 
@@ -142,16 +149,15 @@ public class DiagnosticActivity extends Activity {
         hideKeyboard();
         getCurrentFocus().clearFocus();
         
+        VehicleMessage request;
         if (mSettingsManager.shouldDisplayCommands()) {
-            Command command = mInputManager.generateCommandFromInput();
-            if (command != null) {
-                sendCommand(command);
-            }
+            request = mInputManager.generateCommandFromInput();
+            
         } else {
-            DiagnosticRequest request = mInputManager.generateDiagnosticRequestFromInput();
-            if (request != null) {
-                sendRequest(request);
-            }
+             request = mInputManager.generateDiagnosticRequestFromInput();
+        }
+        if (request != null) {
+            send(request);
         }
     }
 
@@ -162,7 +168,7 @@ public class DiagnosticActivity extends Activity {
     }
 
     public void takeFavoritesButtonPush() {
-        mFavoritesAlertManager.showAlert();
+        mFavoritesAlertManager.showAlert(mSettingsManager.shouldDisplayCommands());
     }
 
     public void takeSettingsButtonPush() {

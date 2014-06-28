@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+	android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:gravity="fill_horizontal" >
+	  
+	<TextView
+	    android:id="@+id/favoritesNameData"
+	    style="@style/FavoriteDataItem">
+	</TextView>
+	
+	<include layout="@layout/verticalline" />
+	
+	<TextView
+	    android:id="@+id/favoritesBusData"
+	 style="@style/FavoriteDataItem">
+	</TextView>
+	
+	<include layout="@layout/verticalline" />
+	
+	<TextView
+	    android:id="@+id/favoritesIdData"
+	    style="@style/FavoriteDataItem">
+	</TextView>
+	
+	<include layout="@layout/verticalline" />
+	
+	<TextView
+	    android:id="@+id/favoritesModeData"
+	    style="@style/FavoriteDataItem">
+	</TextView>
+	
+	<include layout="@layout/verticalline" />
+	
+	<TextView
+	    android:id="@+id/favoritesPidData"
+	    style="@style/FavoriteDataItem">
+	</TextView>
+	
+	<include layout="@layout/verticalline" />
+	
+	<TextView
+	    android:id="@+id/favoritesPayloadData"
+	    style="@style/FavoriteDataItem">
+	</TextView>    
+              
+</LinearLayout>
+      

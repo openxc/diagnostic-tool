@@ -96,6 +96,18 @@ public class Utilities {
     public static String getNameOutput(DiagnosticRequest req) {
         return req.getName() == null ? "" : String.valueOf(req.getName()) + " ";
     }
+    
+    public static String getMessageOutput(CommandResponse resp) {
+        return resp.getMessage() == null ? "" : resp.getMessage();
+    }
+    
+    public static String getCommandOutput(CommandResponse resp) {
+        return resp.getCommand() == null ? "" : resp.getCommand();
+    }
+    
+    public static String getCommandOutput(Command command) {
+        return command.getCommand() == null ? "" : command.getCommand();
+    }
 
     public static String getResponseCodeOutput(DiagnosticResponse resp) {
         return resp.getNegativeResponseCode().hexCodeString() + " ";
@@ -132,7 +144,9 @@ public class Utilities {
     }
     
     public static CommandResponse generateRandomFakeCommandResponse(Command command) {
-        return new CommandResponse(command.getCommand(), "test command response");
+        CommandResponse resp = new CommandResponse(command.getCommand(), "test command response");
+        resp.timestamp();
+        return resp;
     }
 
     public static String epochTimeToTime(long time) {

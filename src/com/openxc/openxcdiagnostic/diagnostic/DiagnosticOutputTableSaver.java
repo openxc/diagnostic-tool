@@ -11,6 +11,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.VehicleMessage;
 
 /**
  * 
@@ -19,8 +20,8 @@ import com.openxc.messages.DiagnosticResponse;
  */
 public class DiagnosticOutputTableSaver {
 
-    private ArrayList<DiagnosticResponse> mResponses;
-    private ArrayList<DiagnosticRequest> mRequests;
+    private ArrayList<VehicleMessage> mResponses;
+    private ArrayList<VehicleMessage> mRequests;
     private static SharedPreferences sPreferences;
     
     public DiagnosticOutputTableSaver(DiagnosticActivity context) {
@@ -29,49 +30,49 @@ public class DiagnosticOutputTableSaver {
         mRequests = loadSavedRequests();
     }
     
-    public void add(DiagnosticRequest req, DiagnosticResponse resp) {
+    public void add(VehicleMessage req, VehicleMessage resp) {
         
         //dirty...two separate arrays, entries must correspond
-        ArrayList<DiagnosticRequest> newSavedRequests = mRequests;
+        ArrayList<VehicleMessage> newSavedRequests = mRequests;
         newSavedRequests.add(0, req);
         setSavedRequests(newSavedRequests);
         
-        ArrayList<DiagnosticResponse> newSavedResponses = mResponses;
+        ArrayList<VehicleMessage> newSavedResponses = mResponses;
         newSavedResponses.add(0, resp);
         setSavedResponses(newSavedResponses);
     }
     
-    public void remove(DiagnosticRequest req, DiagnosticResponse resp) {
+    public void remove(VehicleMessage req, VehicleMessage resp) {
                 
         //responses should be unique because of the timestamp, so find the appropriate
         //response first, then find the corresponding request
-        ArrayList<DiagnosticResponse> newSavedResponses = mResponses;
+        ArrayList<VehicleMessage> newSavedResponses = mResponses;
         int removeIndex = newSavedResponses.indexOf(resp);
         
         if (removeIndex >= 0) {
             newSavedResponses.remove(resp);
             setSavedResponses(newSavedResponses);
             
-            ArrayList<DiagnosticRequest> newSavedRequests = mRequests;        
+            ArrayList<VehicleMessage> newSavedRequests = mRequests;        
             newSavedRequests.remove(removeIndex);
             setSavedRequests(newSavedRequests);
         }
     }
     
     public void removeAll() {
-        setSavedRequests(new ArrayList<DiagnosticRequest>());
-        setSavedResponses(new ArrayList<DiagnosticResponse>());
+        setSavedRequests(new ArrayList<VehicleMessage>());
+        setSavedResponses(new ArrayList<VehicleMessage>());
     }
     
-    public ArrayList<DiagnosticResponse> getSavedResponses() {
+    public ArrayList<VehicleMessage> getSavedResponses() {
         return mResponses;
     }
     
-    public ArrayList<DiagnosticRequest> getSavedRequests() {
+    public ArrayList<VehicleMessage> getSavedRequests() {
         return mRequests;
     }
     
-    private void setSavedRequests(ArrayList<DiagnosticRequest> newSavedRequests) {
+    private void setSavedRequests(ArrayList<VehicleMessage> newSavedRequests) {
         Editor prefsEditor = sPreferences.edit();
         String json = (new Gson()).toJson(newSavedRequests);
         prefsEditor.putString(getSavedRequestsKey(), json);
@@ -79,7 +80,7 @@ public class DiagnosticOutputTableSaver {
         mRequests = newSavedRequests;
     }
     
-    private void setSavedResponses(ArrayList<DiagnosticResponse> newSavedResponses) {
+    private void setSavedResponses(ArrayList<VehicleMessage> newSavedResponses) {
         Editor prefsEditor = sPreferences.edit();
         String json = (new Gson()).toJson(newSavedResponses);
         prefsEditor.putString(getSavedResponsesKey(), json);
@@ -87,12 +88,12 @@ public class DiagnosticOutputTableSaver {
         mResponses = newSavedResponses;
     }
     
-    private ArrayList<DiagnosticRequest> loadSavedRequests() {
+    private ArrayList<VehicleMessage> loadSavedRequests() {
         
         @SuppressWarnings("serial")
         Type type = new TypeToken<List<DiagnosticRequest>>(){}.getType();
         String json = sPreferences.getString(getSavedRequestsKey(), "");
-        List<DiagnosticRequest> requestList = (new Gson()).fromJson(json, type);
+        List<VehicleMessage> requestList = (new Gson()).fromJson(json, type);
         if (requestList != null) {
             return new ArrayList<>(requestList);
         }
@@ -100,12 +101,12 @@ public class DiagnosticOutputTableSaver {
         return new ArrayList<>();
     }
     
-    private ArrayList<DiagnosticResponse> loadSavedResponses() {
+    private ArrayList<VehicleMessage> loadSavedResponses() {
         
         @SuppressWarnings("serial")
         Type type = new TypeToken<List<DiagnosticResponse>>(){}.getType();
         String json = sPreferences.getString(getSavedResponsesKey(), "");
-        List<DiagnosticResponse> responseList = (new Gson()).fromJson(json, type);
+        List<VehicleMessage> responseList = (new Gson()).fromJson(json, type);
         if (responseList != null) {
             return new ArrayList<>(responseList);
         } 

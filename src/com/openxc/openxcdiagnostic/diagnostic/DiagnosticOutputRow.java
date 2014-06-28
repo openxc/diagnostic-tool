@@ -7,9 +7,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.openxc.messages.DiagnosticMessage;
-import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -17,12 +17,12 @@ public class DiagnosticOutputRow {
 
     private LinearLayout mView;
     private DiagnosticOutputTable mTable;
-    private DiagnosticResponse mResponse;
-    private DiagnosticRequest mRequest;
+    private VehicleMessage mResponse;
+    private VehicleMessage mRequest;
 
     public DiagnosticOutputRow(DiagnosticActivity context,
-            DiagnosticOutputTable table, DiagnosticRequest req,
-            DiagnosticResponse resp) {
+            DiagnosticOutputTable table, VehicleMessage req,
+            VehicleMessage resp) {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         mTable = table;
@@ -41,7 +41,7 @@ public class DiagnosticOutputRow {
     }
 
     private void initButtons(final DiagnosticActivity context,
-            final DiagnosticRequest req, final DiagnosticResponse resp) {
+            final VehicleMessage req, final VehicleMessage resp) {
 
         Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
         detailsButton.setOnClickListener(new OnClickListener() {
@@ -63,14 +63,14 @@ public class DiagnosticOutputRow {
         resendButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.sendRequest(req);
+                context.send(req);
             }
         });
 
     }
 
     private void createAndAddRowToOutput(Activity context, LinearLayout parent,
-            String label, String value, DiagnosticMessage msg) {
+            String label, String value, VehicleMessage msg) {
 
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.outputresponsetablerow, null);
         ((TextView) row.findViewById(R.id.outputTableRowLabel)).setText(label);
@@ -84,21 +84,27 @@ public class DiagnosticOutputRow {
     }
 
     private void fillOutputResponseTable(DiagnosticActivity context,
-            DiagnosticResponse resp) {
+            VehicleMessage msgResponse) {
 
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-
-        createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp), resp);
-        createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
-        createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
-        createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp), resp);
-        boolean responseSuccess = resp.getSuccess();
-        createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp), resp);
-        if (responseSuccess) {
-            fillOutputTableWithSuccessDetails(infoTable, context, resp);
-        } else {
-            fillOutputTableWithFailureDetails(infoTable, context, resp);
-        }
+            if (msgResponse instanceof DiagnosticResponse) {
+                DiagnosticResponse resp = (DiagnosticResponse) msgResponse;
+                createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp), resp);
+                boolean responseSuccess = resp.getSuccess();
+                createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp), resp);
+                if (responseSuccess) {
+                    fillOutputTableWithSuccessDetails(infoTable, context, resp);
+                } else {
+                    fillOutputTableWithFailureDetails(infoTable, context, resp);
+                }
+            } else if (msgResponse instanceof CommandResponse ){
+                CommandResponse cmdResponse = (CommandResponse) msgResponse;
+                createAndAddRowToOutput(context, infoTable, "command response", 
+                        Utilities.getMessageOutput(cmdResponse), cmdResponse);
+            }
     }
 
     private void fillOutputTableWithSuccessDetails(LinearLayout responseTable,
@@ -109,18 +115,19 @@ public class DiagnosticOutputRow {
 
     private void fillOutputTableWithFailureDetails(LinearLayout responseTable,
             Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "neg. resp. code", Utilities.getOutputTableResponseCodeOutput(resp), resp);
+        createAndAddRowToOutput(context, responseTable, "neg. resp. code", 
+                Utilities.getOutputTableResponseCodeOutput(resp), resp);
     }
 
     public LinearLayout getView() {
         return mView;
     }
 
-    public DiagnosticRequest getRequest() {
+    public VehicleMessage getRequest() {
         return mRequest;
     }
 
-    public DiagnosticResponse getResponse() {
+    public VehicleMessage getResponse() {
         return mResponse;
     }
 

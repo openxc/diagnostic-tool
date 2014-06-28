@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
@@ -42,17 +43,21 @@ public class DiagnosticInputManager {
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
 
-    private class RequestInputHolder {
-        private String frequencyInput = getFrequencyInput();
+    private class InputHolder {
+        private String frequencyInput = getFrequencyInput();    
+    }
+    
+    private class RequestInputHolder extends InputHolder {
         private String busInput = getBusInput();
         private String idInput = getIdInput();
         private String modeInput = getModeInput();
         private String pidInput = getPidInput();
         private String payloadInput = getPayloadInput();
         private String nameInput = getNameInput();
-
-        private RequestInputHolder() {
-        }
+    }
+    
+    private class CommandInputHolder extends InputHolder {
+        private String commandInput = getCommandInput();
     }
 
     public DiagnosticInputManager(DiagnosticActivity context, boolean displayCommands) {
@@ -65,11 +70,19 @@ public class DiagnosticInputManager {
         initTextFields(displayCommands);
     }
     
-    public void populateFields(Command command) {
+    public void populateFields(VehicleMessage message) {
+        if (message instanceof DiagnosticRequest) {
+            populateFields((DiagnosticRequest) message);
+        } else { 
+            populateFields((Command) message);
+        }
+    }
+    
+    private void populateFields(Command command) {
         mCommandInputText.setText(selfOrEmptyIfNull(String.valueOf(command.getCommand())));
     }
 
-    public void populateFields(DiagnosticRequest req) {
+    private void populateFields(DiagnosticRequest req) {
         mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));
         mBusInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getBusId())));
         mIdInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getId())));
@@ -82,9 +95,23 @@ public class DiagnosticInputManager {
         }
         mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
-
-    public void populateFields(RequestInputHolder holder) {
+    
+    public void populateFields(InputHolder holder) {
+        
         mFrequencyInputText.setText(holder.frequencyInput);
+
+        if (holder instanceof RequestInputHolder) {
+            populateFields((RequestInputHolder) holder);
+        } else {
+            populateFields((CommandInputHolder) holder);
+        }
+    }
+    
+    private void populateFields(CommandInputHolder holder) {
+        mCommandInputText.setText(holder.commandInput);
+    }
+
+    private void populateFields(RequestInputHolder holder) {
         mBusInputText.setText(holder.busInput);
         mIdInputText.setText(holder.idInput);
         mModeInputText.setText(holder.modeInput);
@@ -106,68 +133,37 @@ public class DiagnosticInputManager {
         }
     }
     
-    private void initTextFields(boolean displayCommands) {
+    private void initTextFields(final boolean displayCommands) {
+        
+        int inputTableId = R.id.inputTable;
         
         FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
         LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
-        LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(R.id.inputTable);
+        LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(inputTableId);
         LinearLayout newView;
         if (displayCommands) {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagcommandinput, null);
         } else {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagrequestinput, null);
         }
-        newView.setId(R.id.inputTable);
+        newView.setId(inputTableId);
         Utilities.replaceView(diagnosticLayout, oldView, newView);
         
-        if (displayCommands) {
-            initCommandTextFields();
-        } else {
-            initRequestTextFields();
-            restoreRequestFields();
-        }
-    }
-    
-    private void initCommandTextFields() {
         textFields = new ArrayList<>();
-        mCommandInputText = (EditText) mContext.findViewById(R.id.commandInput);
-        textFields.add(mCommandInputText);
-    }
 
-    private void initRequestTextFields() {
-        
-        textFields = new ArrayList<>();
-        
         mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
         mFrequencyInputText.setHint("0");
         textFields.add(mFrequencyInputText);
-
-        mBusInputText = (EditText) mContext.findViewById(R.id.busInput);
-        mBusInputText.setHint("1 or 2");
-        textFields.add(mBusInputText);
-
-        mIdInputText = (EditText) mContext.findViewById(R.id.idInput);
-        mIdInputText.setHint("#");
-        textFields.add(mIdInputText);
-
-        mModeInputText = (EditText) mContext.findViewById(R.id.modeInput);
-        mModeInputText.setHint("0x"
-                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin())
-                + " - " + "0x"
-                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
-        textFields.add(mModeInputText);
-
-        mPidInputText = (EditText) mContext.findViewById(R.id.pidInput);
-        mPidInputText.setHint("#");
-        textFields.add(mPidInputText);
-
-        mPayloadInputText = (EditText) mContext.findViewById(R.id.payloadInput);
-        mPayloadInputText.setHint("e.g. 0x1234");
-        textFields.add(mPayloadInputText);
-
-        mNameInputText = (EditText) mContext.findViewById(R.id.nameInput);
-        textFields.add(mNameInputText);
-
+        
+        //TODO don't like having two ifs with the same condition
+        if (displayCommands) {
+            initCommandTextFields();
+            restoreCommandTextFields();
+        } else {
+            initRequestTextFields();
+            restoreRequestTextFields();
+        }
+        
         for (int i = 0; i < textFields.size(); i++) {
             final EditText textField = textFields.get(i);
             textField.setOnEditorActionListener(new OnEditorActionListener() {
@@ -195,43 +191,102 @@ public class DiagnosticInputManager {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    saveFields();
+                    saveFields(displayCommands);
                 }
             });
         }
     }
+    
+    private void initCommandTextFields() {
+        mCommandInputText = (EditText) mContext.findViewById(R.id.commandInput);
+        textFields.add(mCommandInputText);
+    }
 
-    private void saveFields() {
-        RequestInputHolder inputHolder = new RequestInputHolder();
+    private void initRequestTextFields() {
+
+        mBusInputText = (EditText) mContext.findViewById(R.id.busInput);
+        mBusInputText.setHint("1 or 2");
+        textFields.add(mBusInputText);
+
+        mIdInputText = (EditText) mContext.findViewById(R.id.idInput);
+        mIdInputText.setHint("#");
+        textFields.add(mIdInputText);
+
+        mModeInputText = (EditText) mContext.findViewById(R.id.modeInput);
+        mModeInputText.setHint("0x"
+                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin())
+                + " - " + "0x"
+                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
+        textFields.add(mModeInputText);
+
+        mPidInputText = (EditText) mContext.findViewById(R.id.pidInput);
+        mPidInputText.setHint("#");
+        textFields.add(mPidInputText);
+
+        mPayloadInputText = (EditText) mContext.findViewById(R.id.payloadInput);
+        mPayloadInputText.setHint("e.g. 0x1234");
+        textFields.add(mPayloadInputText);
+
+        mNameInputText = (EditText) mContext.findViewById(R.id.nameInput);
+        textFields.add(mNameInputText);
+    }
+
+    private void saveFields(boolean displayCommands) {
+        
+        InputHolder inputHolder;
+        String inputKey;
+        if (displayCommands) {
+            inputHolder = new CommandInputHolder();
+            inputKey = getCommandInputKey();
+        } else {
+            inputHolder = new RequestInputHolder();
+            inputKey = getRequestInputKey();
+        }
         Editor prefsEditor = mPreferences.edit();
         String json = (new Gson()).toJson(inputHolder);
-        prefsEditor.putString(getInputKey(), json);
+        prefsEditor.putString(inputKey, json);
         prefsEditor.commit();
     }
 
-    private void restoreRequestFields() {
+    private void restoreRequestTextFields() {
 
         @SuppressWarnings("serial")
         Type type = new TypeToken<RequestInputHolder>() {
         }.getType();
-        String json = mPreferences.getString(getInputKey(), "");
+        String json = mPreferences.getString(getRequestInputKey(), "");
         RequestInputHolder inputHolder = (new Gson()).fromJson(json, type);
         if (inputHolder != null) {
             populateFields(inputHolder);
         }
     }
+    
+    private void restoreCommandTextFields() {
 
-    private String getInputKey() {
-        return "input_key";
+        @SuppressWarnings("serial")
+        Type type = new TypeToken<CommandInputHolder>() {
+        }.getType();
+        String json = mPreferences.getString(getCommandInputKey(), "");
+        CommandInputHolder inputHolder = (new Gson()).fromJson(json, type);
+        if (inputHolder != null) {
+            populateFields(inputHolder);
+        }
+    }
+
+    private String getRequestInputKey() {
+        return "request_input_key";
+    }
+    
+    private String getCommandInputKey() {
+        return "command_input_key";
     }
 
     /**
      * Method to ensure that null is returned by
-     * generateDiagnosticRequestFromInputFields() when it should be. There are
-     * so many fail points in that method that it's safer to always return a
+     * methods that call it when it should be. There are
+     * so many fail points in those methods that it's safer to always return a
      * call to this method than to match up a "return null" statement everywhere
      * there should be a fail and a Toast. If the Toast happens when it should,
-     * the fail must too.
+     * the fail (return of null) must too.
      */
     private DiagnosticRequest failAndToastError(String message) {
         Toaster.showToast(mContext, message);

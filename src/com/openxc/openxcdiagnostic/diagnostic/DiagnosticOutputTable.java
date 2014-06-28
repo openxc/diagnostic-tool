@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import com.openxc.messages.DiagnosticRequest;
-import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 
 public class DiagnosticOutputTable {
@@ -25,8 +24,8 @@ public class DiagnosticOutputTable {
     public void load() {
 
         clearTable();
-        ArrayList<DiagnosticRequest> savedRequests = mSaver.getSavedRequests();
-        ArrayList<DiagnosticResponse> savedResponses = mSaver.getSavedResponses();
+        ArrayList<VehicleMessage> savedRequests = mSaver.getSavedRequests();
+        ArrayList<VehicleMessage> savedResponses = mSaver.getSavedResponses();
 
         if (savedRequests.size() == savedResponses.size()) {
             for (int i = savedRequests.size() - 1; i >= 0; i--) {
@@ -38,12 +37,13 @@ public class DiagnosticOutputTable {
 
     }
 
-    public void addRow(DiagnosticRequest req, DiagnosticResponse resp) {
+    public void addRow(VehicleMessage req, VehicleMessage resp) {
         addToTable(req, resp);
+        //TODO commands are getting saved
         mSaver.add(req, resp);
     }
 
-    private void addToTable(DiagnosticRequest req, DiagnosticResponse resp) {
+    private void addToTable(VehicleMessage req, VehicleMessage resp) {
         DiagnosticOutputRow row = new DiagnosticOutputRow(mContext, this, req, resp);
         mView.addView(row.getView(), 0);
     }

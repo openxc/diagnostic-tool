@@ -4,53 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
         
-    <LinearLayout   
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="fill_horizontal" >
-          
-          <TextView
-              android:id="@+id/favoritesNameData"
-              style="@style/FavoriteDataItem">
-          </TextView>
-          
-          <include layout="@layout/verticalline" />
-          
-          <TextView
-              android:id="@+id/favoritesBusData"
-	          style="@style/FavoriteDataItem">
-          </TextView>
-          
-          <include layout="@layout/verticalline" />
-          
-          <TextView
-              android:id="@+id/favoritesIdData"
-              style="@style/FavoriteDataItem">
-          </TextView>
-          
-          <include layout="@layout/verticalline" />
-          
-          <TextView
-              android:id="@+id/favoritesModeData"
-              style="@style/FavoriteDataItem">
-          </TextView>
-          
-          <include layout="@layout/verticalline" />
-          
-          <TextView
-              android:id="@+id/favoritesPidData"
-              style="@style/FavoriteDataItem">
-          </TextView>
-          
-          <include layout="@layout/verticalline" />
-          
-          <TextView
-              android:id="@+id/favoritesPayloadData"
-              style="@style/FavoriteDataItem">
-          </TextView>
-    
-    </LinearLayout>
+    <include layout="@layout/diagfavoritesalertrequestdata"
+        android:id="@+id/diagFavoritesAlertRowData" />
     
     <include layout="@layout/horizontalline" />
     

@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.openxc.messages.DiagnosticMessage;
+import com.openxc.messages.Command;
+import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
@@ -20,7 +22,7 @@ public class DiagnosticResponseDetailsAlertManager {
 
     private DiagnosticResponseDetailsAlertManager() { }
     
-    public static void show(Activity context, DiagnosticRequest req, DiagnosticResponse resp) {
+    public static void show(Activity context, VehicleMessage req, VehicleMessage resp) {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
@@ -38,22 +40,30 @@ public class DiagnosticResponseDetailsAlertManager {
         builder.create().show();
     }
     
-    private static void fillRequestTable(LinearLayout alertLayout, Activity context, DiagnosticRequest req) {
+    private static void fillRequestTable(LinearLayout alertLayout, Activity context, VehicleMessage reqMessage) {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
-        createAndAddHeaderRow(context, requestTable, "REQUEST");
-        createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req), req);
-        createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req), req);
-        createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req), req);
-        createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req), req);
-        createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req), req);
-        createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req), req);
-        createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
-        createAndAddButtonsRow(context, requestTable, req);
+        
+        if (reqMessage instanceof DiagnosticRequest) {
+            DiagnosticRequest req = (DiagnosticRequest) reqMessage;
+            createAndAddHeaderRow(context, requestTable, "REQUEST");
+            createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req), req);
+            createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req), req);
+            createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req), req);
+            createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req), req);
+            createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req), req);
+            createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req), req);
+            createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
+        } else if (reqMessage instanceof Command) {
+            Command command = (Command) reqMessage;
+            createAndAddHeaderRow(context, requestTable, "COMMAND");
+            createAndAddRow(context, requestTable, "command", Utilities.getCommandOutput(command), command);
+        }
+        createAndAddButtonsRow(context, requestTable, reqMessage);
     }
     
     private static void createAndAddButtonsRow(final Activity context, LinearLayout parent,
-            final DiagnosticRequest req) {
+            final VehicleMessage req) {
         LinearLayout row = (LinearLayout) context.getLayoutInflater()
                 .inflate(R.layout.diagdetailsalertbuttonrow, null);
         final Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
@@ -63,13 +73,23 @@ public class DiagnosticResponseDetailsAlertManager {
         addToFavoritesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!DiagnosticFavoritesManager.containsFavorite(req)) {
-                    DiagnosticFavoritesManager.addFavoriteRequest(req);
-                    Toaster.showToast(context,  "Request Added to Favorites");
+                
+                String message;
+                
+                if (req instanceof DiagnosticRequest) {
+                    message = "Request";
                 } else {
-                    DiagnosticFavoritesManager.removeFavoriteRequest(req);
-                    Toaster.showToast(context, "Request Removed from Favorites");
+                    message = "Command";
                 }
+                
+                if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+                    DiagnosticFavoritesManager.add(req);
+                    message = message + " Added to Favorites.";
+                } else {
+                    DiagnosticFavoritesManager.remove(req);
+                    message = message + " Removed from Favorites.";
+                }
+                Toaster.showToast(context, message);
                 configureFavoritesButton(context, addToFavoritesButton, req);
             }
         });
@@ -77,7 +97,7 @@ public class DiagnosticResponseDetailsAlertManager {
     }
        
     private static void configureFavoritesButton(Activity context, Button button, 
-            DiagnosticRequest req) {
+            VehicleMessage req) {
         String text;
         int backgroundSelector;
         if (!DiagnosticFavoritesManager.containsFavorite(req)) {
@@ -92,19 +112,26 @@ public class DiagnosticResponseDetailsAlertManager {
         button.setText(text);
     }
     
-    private static void fillResponseTable(LinearLayout alertLayout, Activity context, DiagnosticResponse resp) {
+    private static void fillResponseTable(LinearLayout alertLayout, Activity context, VehicleMessage respMessage) {
+        
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         createAndAddHeaderRow(context, responseTable, "RESPONSE");
-        createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp), resp);
-        createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp), resp);
-        createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp), resp);
-        createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp), resp);
-        boolean responseSuccess = resp.getSuccess();
-        createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp), resp);
-        if (responseSuccess) {
-            fillTableWithSuccessDetails(responseTable, context, resp);
-        } else {
-            fillTableWithFailureDetails(responseTable, context, resp);
+        if (respMessage instanceof DiagnosticResponse) {
+            DiagnosticResponse resp = (DiagnosticResponse) respMessage;
+            createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp), resp);
+            createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp), resp);
+            createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp), resp);
+            createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp), resp);
+            boolean responseSuccess = resp.getSuccess();
+            createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp), resp);
+            if (responseSuccess) {
+                fillTableWithSuccessDetails(responseTable, context, resp);
+            } else {
+                fillTableWithFailureDetails(responseTable, context, resp);
+            }
+        } else if (respMessage instanceof CommandResponse) {
+            CommandResponse resp = (CommandResponse) respMessage;
+            createAndAddRow(context, responseTable, "message", Utilities.getMessageOutput(resp), resp);
         }
     }
     
@@ -120,7 +147,7 @@ public class DiagnosticResponseDetailsAlertManager {
     }
 
     private static void createAndAddRow(Activity context, LinearLayout parent, String label, 
-            String value, DiagnosticMessage msg) {
+            String value, VehicleMessage msg) {
     
         LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
@@ -129,7 +156,7 @@ public class DiagnosticResponseDetailsAlertManager {
         if (msg instanceof DiagnosticResponse) {
             valueText.setTextColor(Utilities.getOutputColor(context, 
                     (DiagnosticResponse) msg));
-        }
+        } 
         parent.addView(row);
     }
     
