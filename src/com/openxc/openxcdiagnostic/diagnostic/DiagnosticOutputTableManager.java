@@ -1,6 +1,8 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -23,13 +25,16 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     private static String TAG = "DiagnosticOutputTable";
     private ScrollView outputScroll;
     private boolean mDisplayCommands;
+    private Map<LinearLayout, Saver> tablesAndSavers = new HashMap<>();
 
     public DiagnosticOutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
-        mDiagnosticSaver = new DiagnosticSaver(context);
-        mCommandSaver = new CommandSaver(context);
         mDiagnosticTable = inflateOutputTable();
+        mDiagnosticSaver = new DiagnosticSaver(context);
+        tablesAndSavers.put(mDiagnosticTable, mDiagnosticSaver);
         mCommandTable = inflateOutputTable();
+        mCommandSaver = new CommandSaver(context);
+        tablesAndSavers.put(mCommandTable, mCommandSaver);
         outputScroll = (ScrollView) mContext.findViewById(R.id.responseOutputScroll);
         setRequestCommandState(displayCommands);
     }
@@ -56,32 +61,20 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
         outputScroll.removeAllViews();
         LinearLayout newView = selectTable();
         outputScroll.addView(newView);
-        
-        loadDiagnosticTable();       
-        loadCommandTable();
-    }
-
-    private void loadDiagnosticTable() {
-        
-        clearTable(mDiagnosticTable);
-        ArrayList<DiagnosticPair> pairs = mDiagnosticSaver.getPairs();
-
-        for (int i = pairs.size() - 1; i >= 0; i--) {
-            DiagnosticPair pair = pairs.get(i);
-                addToTable(mDiagnosticTable, pair.getReq(), pair.getResp());
-         } 
+        loadTables();
     }
     
-    private void loadCommandTable() {
+    private void loadTables() {
         
-        clearTable(mCommandTable);
-        ArrayList<CommandPair> pairs = mCommandSaver.getPairs();
-
-        for (int i = pairs.size() - 1; i >= 0; i--) {
-            CommandPair pair = pairs.get(i);
-                addToTable(mCommandTable, pair.getReq(), pair.getResp());
-         } 
-    }
+        for (Map.Entry<LinearLayout, Saver> entry : tablesAndSavers.entrySet()) {
+           ArrayList<Pair> pairs = entry.getValue().getPairs();
+           
+           for (int i = pairs.size() - 1; i >= 0; i--) {
+               Pair pair = pairs.get(i);
+                   addToTable(entry.getKey(), pair.getReq(), pair.getResp());
+            } 
+        }
+    } 
     
     public void add(VehicleMessage req, VehicleMessage resp) {
         

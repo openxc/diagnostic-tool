@@ -34,8 +34,13 @@ public class DiagnosticSaver implements Saver {
         save(diagnosticPairs);
     }
     
-    public ArrayList<DiagnosticPair> getPairs() {
-        return diagnosticPairs;
+    public ArrayList<Pair> getPairs() {
+        //cannot cast from ArrayList<DiagnosticPair> to ArrayList<Pair>
+        ArrayList<Pair> pairs = new ArrayList<>();
+        for (int i=0; i < diagnosticPairs.size(); i++) {
+            pairs.add(diagnosticPairs.get(i));
+        }
+        return pairs;
     }
     
     public void removeAll() {
