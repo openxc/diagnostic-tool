@@ -14,10 +14,7 @@
             android:checked="false"/>
     </LinearLayout>
     
-    <View 
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="@color/black"/>
+    <include layout="@layout/horizontalline" />
     
     <LinearLayout style="@style/SettingsRow">
         <TextView
@@ -31,10 +28,7 @@
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
     
-    <View 
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="@color/black"/> 
+    <include layout="@layout/horizontalline" />
         
     <LinearLayout style="@style/SettingsRow">
         <TextView
@@ -48,10 +42,7 @@
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
     
-    <View 
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        android:background="@color/black"/> 
+    <include layout="@layout/horizontalline" /> 
         
     <LinearLayout style="@style/SettingsRow">
         <TextView
