@@ -16,16 +16,16 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 public class DiagnosticOutputRow {
 
     private LinearLayout mView;
-    private DiagnosticOutputTableManager mTable;
+    private DiagnosticOutputTableManager mTableManager;
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
 
     public DiagnosticOutputRow(DiagnosticActivity context,
-            DiagnosticOutputTableManager table, VehicleMessage req,
+            DiagnosticOutputTableManager tableManager, VehicleMessage req,
             VehicleMessage resp) {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
-        mTable = table;
+        mTableManager = tableManager;
         mResponse = resp;
         mRequest = req;
 
@@ -55,7 +55,7 @@ public class DiagnosticOutputRow {
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTable.removeRow(DiagnosticOutputRow.this);
+                mTableManager.removeRow(DiagnosticOutputRow.this);
             }
         });
 
@@ -66,7 +66,6 @@ public class DiagnosticOutputRow {
                 context.send(req);
             }
         });
-
     }
 
     private void createAndAddRowToOutput(Activity context, LinearLayout parent,
