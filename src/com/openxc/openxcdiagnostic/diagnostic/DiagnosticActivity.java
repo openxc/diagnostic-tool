@@ -173,7 +173,6 @@ public class DiagnosticActivity extends Activity {
 
     public void takeSendButtonPush() {
         hideKeyboard();
-        getCurrentFocus().clearFocus();
         
         VehicleMessage request;
         if (mSettingsManager.shouldDisplayCommands()) {
@@ -190,23 +189,25 @@ public class DiagnosticActivity extends Activity {
     public void takeClearButtonPush() {
         mInputManager.clearFields();
         hideKeyboard();
-        getCurrentFocus().clearFocus();
     }
 
     public void takeFavoritesButtonPush() {
+        hideKeyboard();
         mFavoritesAlertManager.showAlert();
     }
 
     public void takeSettingsButtonPush() {
+        hideKeyboard();
         mSettingsManager.showAlert();
     }
-
+    
     public void hideKeyboard() {
 
         InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (manager.isAcceptingText()) {
             manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+        getCurrentFocus().clearFocus();
     }
     
     public void setRequestCommandState(boolean displayCommands) {        

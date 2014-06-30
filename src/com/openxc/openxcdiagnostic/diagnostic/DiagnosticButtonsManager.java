@@ -134,11 +134,7 @@ public class DiagnosticButtonsManager implements DiagnosticManager{
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     String info = buttonInfo.get(button);
                     builder.setMessage(info).setTitle(infoMap.inverse().get(info));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
+                    builder.setPositiveButton("OK", null);
                     builder.create().show();
                 }
             });

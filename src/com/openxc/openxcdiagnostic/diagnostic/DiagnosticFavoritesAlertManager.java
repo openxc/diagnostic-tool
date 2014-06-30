@@ -88,12 +88,13 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
     private void setRowDataFormat(LinearLayout row) {
         int alertRowDataId = R.id.diagFavoritesAlertRowData;
         LinearLayout oldView = (LinearLayout) row.findViewById(alertRowDataId);
-        LinearLayout newView;
+        int layoutId;
         if (mDisplayCommands) {
-            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertcommanddata, null);
+            layoutId = R.layout.diagfavoritesalertcommanddata;
         } else {
-            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertrequestdata, null);
+            layoutId = R.layout.diagfavoritesalertrequestdata;
         }
+        LinearLayout newView = (LinearLayout) mContext.getLayoutInflater().inflate(layoutId, null);
         newView.setId(alertRowDataId);
         Utilities.replaceView(row, oldView, newView);
     }

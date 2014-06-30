@@ -10,6 +10,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticInputManager implements DiagnosticManager {
 
+    private static String TAG = "DiagnosticInputManager";
     private EditText mFrequencyInputText;
     private EditText mBusInputText;
     private EditText mIdInputText;
@@ -75,8 +77,10 @@ public class DiagnosticInputManager implements DiagnosticManager {
     public void populateFields(VehicleMessage message) {
         if (message instanceof DiagnosticRequest) {
             populateFields((DiagnosticRequest) message);
-        } else { 
+        } else if (message instanceof Command){ 
             populateFields((Command) message);
+        } else {
+            Log.w(TAG, "Unable to populate fields from message from favorites of type " + message.getClass().toString());
         }
     }
     
@@ -178,11 +182,13 @@ public class DiagnosticInputManager implements DiagnosticManager {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start,
                         int count, int after) {
+                    //Do nothing
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start,
                         int before, int count) {
+                    //Do nothing
                 }
 
                 @Override

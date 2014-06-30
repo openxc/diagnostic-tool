@@ -23,15 +23,13 @@ import com.openxc.messages.VehicleMessage;
 public class DiagnosticFavoritesManager {
 
     private static String TAG = "DiagnosticFavoritesManager";
-    
-    //TODO could use refactoring.  Really don't like having to pass in a context, preferable
-    //to not have to ensure that you call init before doing anything else, but good news is it crashes
-    //right away if you don't so easy to detect.  Advantageous this way because you can access favorites 
-    //from any class.  
+      
     private static ArrayList<DiagnosticRequest> sFavoriteRequests;
     private static ArrayList<Command> sFavoriteCommands;
     private static SharedPreferences sPreferences;
     
+    //Don't like having to pass in a context to a static class on init, but advantageous this 
+    //way so you can access favorites from any class.
     public static void init(DiagnosticActivity context) {
         sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sFavoriteRequests = loadFavoriteRequests();

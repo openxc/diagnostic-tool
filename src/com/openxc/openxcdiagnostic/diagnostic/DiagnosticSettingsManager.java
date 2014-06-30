@@ -16,10 +16,12 @@ public class DiagnosticSettingsManager {
 
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
+    private boolean mDisplayCommands;
     
     public DiagnosticSettingsManager(DiagnosticActivity context) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mDisplayCommands = mPreferences.getBoolean(getDisplayCommandsKey(), false);
     }
         
     public void showAlert() {
@@ -30,11 +32,7 @@ public class DiagnosticSettingsManager {
         builder.setView(settingsLayout);
 
         builder.setTitle(mContext.getResources().getString(R.string.settings_alert_label));
-        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
+        builder.setPositiveButton("Done", null);
         builder.create().show();
         
         initButtons(settingsLayout);    
@@ -71,11 +69,7 @@ public class DiagnosticSettingsManager {
                     }
                 });
                 
-                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+                builder.setPositiveButton("Cancel", null);
                 builder.create().show();
             }
         });
@@ -94,16 +88,10 @@ public class DiagnosticSettingsManager {
                     }
                 });
                 
-                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+                builder.setPositiveButton("Cancel", null);
                 builder.create().show();
             }
-        });
-        
-        
+        });        
         
         final Button responseCommandToggle = (Button) layout.findViewById(R.id.responseCommandToggleButton);
         configureToggleButton(responseCommandToggle);
@@ -113,7 +101,6 @@ public class DiagnosticSettingsManager {
                 
                 setShouldDisplayCommands(!shouldDisplayCommands());
                 configureToggleButton(responseCommandToggle);
-                mContext.setRequestCommandState(shouldDisplayCommands());
             }
         });
     }
@@ -136,14 +123,15 @@ public class DiagnosticSettingsManager {
     }
     
     public boolean shouldDisplayCommands() {
-        //TODO more efficient to store here than to read?
-        return mPreferences.getBoolean(getDisplayCommandsKey(), false);
+        return mDisplayCommands;
     }
     
     private void setShouldDisplayCommands(boolean shouldDisplay) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(getDisplayCommandsKey(), shouldDisplay);
         editor.commit();
+        mDisplayCommands = shouldDisplay;
+        mContext.setRequestCommandState(shouldDisplayCommands());
     }
     
     public boolean shouldSniff() {
