@@ -20,10 +20,12 @@
     
     <!-- Settings Strings -->
     <string name="settings_alert_label">Settings</string>
-    <string name="delete_all_responses_label">Delete all responses?</string>
+    <string name="delete_diagnostic_responses_label">Delete all diagnostic responses</string>
+    <string name="delete_command_responses_label">Delete all command responses</string>
     <string name="delete_all_responses_button_text">Delete</string>
     <string name="sniffing_label">Enable response sniffing</string>
-    <string name="delete_responses_verification">"Are you sure you want to delete all responses? This cannot be undone.</string>
+    <string name="delete_diagnostic_responses_verification">"Are you sure you want to delete all diagnostic responses? This cannot be undone.</string>
+    <string name="delete_command_responses_verification">"Are you sure you want to delete all command responses? This cannot be undone.</string>
     <string name="response_command_toggle_label">Toggle Response/Command</string>
     
     <!-- Menu Tab Strings -->

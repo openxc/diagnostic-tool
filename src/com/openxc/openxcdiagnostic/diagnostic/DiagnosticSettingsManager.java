@@ -57,13 +57,13 @@ public class DiagnosticSettingsManager {
             }
         });
         
-        final Button deleteAllResponsesButton = (Button) layout.findViewById(R.id.deleteAllResponsesButton);
-        deleteAllResponsesButton.setOnClickListener(new OnClickListener() {
+        final Button deleteResponsesButton = (Button) layout.findViewById(R.id.deleteDiagnosticResponsesButton);
+        deleteResponsesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage(mContext.getResources().getString(R.string.delete_responses_verification));
-                builder.setTitle("Delete Responses");
+                builder.setMessage(mContext.getResources().getString(R.string.delete_diagnostic_responses_verification));
+                builder.setTitle("Delete Diagnostic Responses");
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -79,6 +79,31 @@ public class DiagnosticSettingsManager {
                 builder.create().show();
             }
         });
+        
+        final Button deleteCommandResponsesButton = (Button) layout.findViewById(R.id.deleteCommandResponsesButton);
+        deleteCommandResponsesButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(mContext.getResources().getString(R.string.delete_command_responses_verification));
+                builder.setTitle("Delete Command Responses");
+                builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        mContext.clearCommandTable();
+                    }
+                });
+                
+                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+                builder.create().show();
+            }
+        });
+        
+        
         
         final Button responseCommandToggle = (Button) layout.findViewById(R.id.responseCommandToggleButton);
         configureToggleButton(responseCommandToggle);

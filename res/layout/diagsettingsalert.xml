@@ -22,11 +22,28 @@
     <LinearLayout style="@style/SettingsRow">
         <TextView
             style="@style/SettingsItemLabel"
-            android:text="@string/delete_all_responses_label" 
+            android:text="@string/delete_diagnostic_responses_label" 
             android:textIsSelectable="false"/>
         <Button
             style="@style/SettingsItemButton"
-            android:id="@+id/deleteAllResponsesButton" 
+            android:id="@+id/deleteDiagnosticResponsesButton" 
+            android:background="@drawable/delete_button_selector"
+            android:text="@string/delete_all_responses_button_text" />
+    </LinearLayout>
+    
+    <View 
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"/> 
+        
+    <LinearLayout style="@style/SettingsRow">
+        <TextView
+            style="@style/SettingsItemLabel"
+            android:text="@string/delete_command_responses_label" 
+            android:textIsSelectable="false"/>
+        <Button
+            style="@style/SettingsItemButton"
+            android:id="@+id/deleteCommandResponsesButton" 
             android:background="@drawable/delete_button_selector"
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
