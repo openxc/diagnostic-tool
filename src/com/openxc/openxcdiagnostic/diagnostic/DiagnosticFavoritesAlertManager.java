@@ -51,11 +51,7 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getResources().getString(R.string.favorites_alert_label));
-        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
+        builder.setPositiveButton("Done", null);
         builder.setView(favoritesLayout);
         
         mAlert = builder.create();
@@ -152,6 +148,9 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
             commandData.setText(Utilities.getCommandOutput((Command) reqMessage));
         }
         
+        //the columns of the table don't line up if you let android do it "on layout",
+        //so this lets android create the layout, then adjust according to the properties
+        //in the xml, then the rest of the rows' columns will adjust to match
         Iterator<Map.Entry<TextView, TextView>> it = headerMatcher.entrySet().iterator();
         while (it.hasNext()) {
             final Map.Entry<TextView, TextView> pair = it.next();
@@ -182,17 +181,16 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 String message;
+                String title;
                 if (mDisplayCommands) {
+                    title = "Delete Command?";
                     message = mContext.getResources().getString(R.string.delete_favorite_command_verification);
                 } else {
+                    title = "Delete Request?";
                     message = mContext.getResources().getString(R.string.delete_favorite_request_verification);
                 }
                 builder.setMessage(message);
-                if (mDisplayCommands) {
-                    builder.setTitle("Delete Command");
-                } else {
-                    builder.setTitle("Delete Request?");
-                }
+                builder.setTitle(title);
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -200,11 +198,7 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
                         favoritesTable.removeView(row);
                     }
                 });
-                builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+                builder.setPositiveButton("Cancel", null);
                 builder.create().show();
             }
         });
