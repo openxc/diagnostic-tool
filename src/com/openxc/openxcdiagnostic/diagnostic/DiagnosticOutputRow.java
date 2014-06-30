@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
@@ -131,12 +132,11 @@ public class DiagnosticOutputRow {
         return mView;
     }
 
-    public VehicleMessage getRequest() {
-        return mRequest;
-    }
-
-    public VehicleMessage getResponse() {
-        return mResponse;
+    public Pair getDiagnosticPair() {
+        if (mRequest instanceof DiagnosticRequest) {
+            return new DiagnosticPair((DiagnosticRequest) mRequest, (DiagnosticResponse) mResponse);
+        }
+        return new CommandPair((Command) mRequest, (CommandResponse) mResponse);
     }
 
 }

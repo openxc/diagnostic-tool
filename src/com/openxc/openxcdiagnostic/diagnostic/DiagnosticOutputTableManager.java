@@ -16,8 +16,8 @@ import com.openxc.openxcdiagnostic.R;
 public class DiagnosticOutputTableManager implements DiagnosticManager  {
 
     private DiagnosticActivity mContext;
-    private DiagnosticOutputSaver mDiagnosticSaver;
-    private CommandOutputSaver mCommandSaver;
+    private DiagnosticSaver mDiagnosticSaver;
+    private CommandSaver mCommandSaver;
     private LinearLayout mDiagnosticTable;
     private LinearLayout mCommandTable;
     private static String TAG = "DiagnosticOutputTable";
@@ -26,8 +26,8 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
 
     public DiagnosticOutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
-        mDiagnosticSaver = new DiagnosticOutputSaver(context);
-        mCommandSaver = new CommandOutputSaver(context);
+        mDiagnosticSaver = new DiagnosticSaver(context);
+        mCommandSaver = new CommandSaver(context);
         mDiagnosticTable = inflateOutputTable();
         mCommandTable = inflateOutputTable();
         outputScroll = (ScrollView) mContext.findViewById(R.id.responseOutputScroll);
@@ -37,11 +37,11 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         outputScroll.removeAllViews();
-        outputScroll.addView(selectTable(displayCommands));
+        outputScroll.addView(selectTable());
     }
     
-    private LinearLayout selectTable(boolean displayCommands) {
-        if (displayCommands) {
+    private LinearLayout selectTable() {
+        if (mDisplayCommands) {
             return  mCommandTable;
         }
         return mDiagnosticTable;
@@ -54,7 +54,7 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     public void load() {
         
         outputScroll.removeAllViews();
-        LinearLayout newView = selectTable(mDisplayCommands);
+        LinearLayout newView = selectTable();
         outputScroll.addView(newView);
         
         loadDiagnosticTable();       
@@ -64,31 +64,23 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     private void loadDiagnosticTable() {
         
         clearTable(mDiagnosticTable);
-        ArrayList<DiagnosticRequest> savedRequests = mDiagnosticSaver.getSavedRequests();
-        ArrayList<DiagnosticResponse> savedResponses = mDiagnosticSaver.getSavedResponses();
+        ArrayList<DiagnosticPair> pairs = mDiagnosticSaver.getPairs();
 
-        if (savedRequests.size() == savedResponses.size()) {
-            for (int i = savedRequests.size() - 1; i >= 0; i--) {
-                addToTable(mDiagnosticTable, savedRequests.get(i), savedResponses.get(i));
-            }
-        } else {
-            Log.e(TAG, "Mismatched requests and responses...cannot load table.");
-        }
+        for (int i = pairs.size() - 1; i >= 0; i--) {
+            DiagnosticPair pair = pairs.get(i);
+                addToTable(mDiagnosticTable, pair.getReq(), pair.getResp());
+         } 
     }
     
     private void loadCommandTable() {
         
         clearTable(mCommandTable);
-        ArrayList<Command> savedCommands = mCommandSaver.getSavedCommands();
-        ArrayList<CommandResponse> savedCommandResponses = mCommandSaver.getSavedCommandResponses();
+        ArrayList<CommandPair> pairs = mCommandSaver.getPairs();
 
-        if (savedCommands.size() == savedCommandResponses.size()) {
-            for (int i = savedCommands.size() - 1; i >= 0; i--) {
-                addToTable(mCommandTable, savedCommands.get(i), savedCommandResponses.get(i));
-            }
-        } else {
-            Log.e(TAG, "Mismatched commands and command responses...cannot load table.");
-        }
+        for (int i = pairs.size() - 1; i >= 0; i--) {
+            CommandPair pair = pairs.get(i);
+                addToTable(mCommandTable, pair.getReq(), pair.getResp());
+         } 
     }
     
     public void add(VehicleMessage req, VehicleMessage resp) {
@@ -103,12 +95,12 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     }
 
     private void add(DiagnosticRequest req, DiagnosticResponse resp) {
-        mDiagnosticSaver.add(req, resp);
+        mDiagnosticSaver.add(new DiagnosticPair(req, resp));
         addToTable(mDiagnosticTable, req, resp);
     }
     
     private void add(Command command, CommandResponse resp) {
-        mCommandSaver.add(command, resp);
+        mCommandSaver.add(new CommandPair(command, resp));
         addToTable(mCommandTable, command, resp);
     }
 
@@ -118,17 +110,19 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     }
 
     public void removeRow(DiagnosticOutputRow row) {
-        if (row.getRequest() instanceof DiagnosticRequest) {
+        
+        Pair pair = row.getDiagnosticPair();
+        
+        if (pair instanceof DiagnosticPair) {
             mDiagnosticTable.removeView(row.getView());
-            mDiagnosticSaver.remove((DiagnosticRequest)row.getRequest(), 
-                    (DiagnosticResponse) row.getResponse());
+            mDiagnosticSaver.remove((DiagnosticPair) pair);
         } else {
             mCommandTable.removeView(row.getView());
-            mCommandSaver.remove((Command) row.getRequest(), (CommandResponse) row.getResponse());
+            mCommandSaver.remove((CommandPair) pair);
         }
     }
 
-    private void deleteAllRows(LinearLayout table, OutputSaver saver) {
+    private void deleteAllRows(LinearLayout table, Saver saver) {
         clearTable(table);
         saver.removeAll();
     }
