@@ -82,7 +82,7 @@ public class DiagnosticResponseDetailsAlertManager {
                     message = "Command";
                 }
                 
-                if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+                if (!DiagnosticFavoritesManager.contains(req)) {
                     DiagnosticFavoritesManager.add(req);
                     message = message + " Added to Favorites.";
                 } else {
@@ -100,7 +100,7 @@ public class DiagnosticResponseDetailsAlertManager {
             VehicleMessage req) {
         String text;
         int backgroundSelector;
-        if (!DiagnosticFavoritesManager.containsFavorite(req)) {
+        if (!DiagnosticFavoritesManager.contains(req)) {
             backgroundSelector = R.drawable.favorites_button_selector;
             text = context.getResources().getString(R.string.add_to_favorites_button_label);
         } else {

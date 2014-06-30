@@ -106,7 +106,7 @@ public class DiagnosticFavoritesManager {
         sFavoriteCommands = newFavorites;
     }
     
-    public static boolean containsFavorite(VehicleMessage message) {
+    public static boolean contains(VehicleMessage message) {
         if (message instanceof DiagnosticRequest) {
             return containsFavoriteRequest((DiagnosticRequest) message);
         } else if (message instanceof Command) {
@@ -115,11 +115,11 @@ public class DiagnosticFavoritesManager {
         return false;
     }
     
-    public static boolean containsFavoriteRequest(DiagnosticRequest req) {
+    private static boolean containsFavoriteRequest(DiagnosticRequest req) {
         return sFavoriteRequests.contains(req);
     }
     
-    public static boolean containsFavoriteCommand(Command command) {
+    private static boolean containsFavoriteCommand(Command command) {
         return sFavoriteCommands.contains(command);
     }
     

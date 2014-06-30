@@ -136,36 +136,30 @@ public class DiagnosticInputManager implements DiagnosticManager {
     }
     
     private void initTextFields() {
-                
-        int inputTableId = R.id.inputTable;
         
+        textFields = new ArrayList<>();
+        
+        int inputTableId = R.id.inputTable;
         FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
         LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
         LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(inputTableId);
         LinearLayout newView;
         if (mDisplayCommands) {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagcommandinput, null);
+            initCommandTextFields(newView);
+            restoreCommandTextFields();
         } else {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagrequestinput, null);
+            initRequestTextFields(newView);
+            restoreRequestTextFields();
         }
         newView.setId(inputTableId);
         Utilities.replaceView(diagnosticLayout, oldView, newView);
         
-        textFields = new ArrayList<>();
-
         mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
         mFrequencyInputText.setHint("0");
         textFields.add(mFrequencyInputText);
-        
-        //TODO don't like having two ifs with the same condition
-        if (mDisplayCommands) {
-            initCommandTextFields();
-            restoreCommandTextFields();
-        } else {
-            initRequestTextFields();
-            restoreRequestTextFields();
-        }
-        
+                
         for (int i = 0; i < textFields.size(); i++) {
             final EditText textField = textFields.get(i);
             textField.setOnEditorActionListener(new OnEditorActionListener() {
@@ -199,37 +193,37 @@ public class DiagnosticInputManager implements DiagnosticManager {
         }
     }
     
-    private void initCommandTextFields() {
-        mCommandInputText = (EditText) mContext.findViewById(R.id.commandInput);
+    private void initCommandTextFields(LinearLayout parent) {
+        mCommandInputText = (EditText) parent.findViewById(R.id.commandInput);
         textFields.add(mCommandInputText);
     }
 
-    private void initRequestTextFields() {
+    private void initRequestTextFields(LinearLayout parent) {
 
-        mBusInputText = (EditText) mContext.findViewById(R.id.busInput);
+        mBusInputText = (EditText) parent.findViewById(R.id.busInput);
         mBusInputText.setHint("1 or 2");
         textFields.add(mBusInputText);
 
-        mIdInputText = (EditText) mContext.findViewById(R.id.idInput);
+        mIdInputText = (EditText) parent.findViewById(R.id.idInput);
         mIdInputText.setHint("#");
         textFields.add(mIdInputText);
 
-        mModeInputText = (EditText) mContext.findViewById(R.id.modeInput);
+        mModeInputText = (EditText) parent.findViewById(R.id.modeInput);
         mModeInputText.setHint("0x"
                 + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin())
                 + " - " + "0x"
                 + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
         textFields.add(mModeInputText);
 
-        mPidInputText = (EditText) mContext.findViewById(R.id.pidInput);
+        mPidInputText = (EditText) parent.findViewById(R.id.pidInput);
         mPidInputText.setHint("#");
         textFields.add(mPidInputText);
 
-        mPayloadInputText = (EditText) mContext.findViewById(R.id.payloadInput);
+        mPayloadInputText = (EditText) parent.findViewById(R.id.payloadInput);
         mPayloadInputText.setHint("e.g. 0x1234");
         textFields.add(mPayloadInputText);
 
-        mNameInputText = (EditText) mContext.findViewById(R.id.nameInput);
+        mNameInputText = (EditText) parent.findViewById(R.id.nameInput);
         textFields.add(mNameInputText);
     }
 
