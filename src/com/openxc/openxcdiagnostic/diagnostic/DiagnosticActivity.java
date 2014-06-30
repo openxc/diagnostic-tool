@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
-import com.openxc.messages.KeyMatcher;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
@@ -36,11 +34,16 @@ public class DiagnosticActivity extends Activity {
     private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
-    private final Handler mHandler = new Handler();
+    //private final Handler mHandler = new Handler();
     private DiagnosticOutputTable mOutputTable;
 
-    DiagnosticResponse.Listener mResponseListener = new DiagnosticResponse.Listener() {
+    //TODO
+    /*VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
+        public void receive(VehicleMessage message) {
+            
+        }
+        
         public void receive(final DiagnosticRequest request,
                 final DiagnosticResponse response) {
             mHandler.post(new Runnable() {
@@ -56,9 +59,14 @@ public class DiagnosticActivity extends Activity {
                 }
             });
         }
-    };
+    };*/
     
-    CommandResponse.Listener mCommandResponseListener = new CommandResponse.Listener() {
+    private void receive(DiagnosticRequest request, DiagnosticResponse response) {
+        mOutputTable.add(request, response);
+        scrollOutputToTop(); //TODO only if showing
+    }
+    
+    /*CommandResponse.Listener mCommandResponseListener = new CommandResponse.Listener() {
         @Override
         public void receive(final Command command, final CommandResponse response) {
             mHandler.post(new Runnable() {
@@ -69,7 +77,12 @@ public class DiagnosticActivity extends Activity {
                 }
             });
         }
-    };
+    };*/
+    
+    private void receive(Command command, CommandResponse response) {
+        mOutputTable.add(command, response);
+        scrollOutputToTop(); //TODO only if showing
+    }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -96,8 +109,12 @@ public class DiagnosticActivity extends Activity {
         ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
     }
 
-    public void deleteAllOutputResponses() {
-        mOutputTable.deleteAllRows();
+    public void clearDiagnosticTable() {
+        mOutputTable.deleteAllDiagnosticRows();
+    }
+    
+    public void clearCommandTable() {
+        mOutputTable.deleteAllCommandRows();
     }
 
     public void send(VehicleMessage request) {
@@ -107,20 +124,23 @@ public class DiagnosticActivity extends Activity {
             // registerForResponse(request);
             // mVehicleManager.request(request);
             DiagnosticRequest diagRequest = (DiagnosticRequest) request;
-            mResponseListener.receive(diagRequest, Utilities.generateRandomFakeResponse(diagRequest));
+            //mResponseListener.receive(Utilities.generateRandomFakeResponse(diagRequest));
+            receive(diagRequest, Utilities.generateRandomFakeResponse(diagRequest));
         } else if (request instanceof Command) {
     
             // TODO JUST FOR TESTING! should be
             //...something else
             Command command = (Command)request;
-            mCommandResponseListener.receive(command, Utilities.generateRandomFakeCommandResponse(command));
+            //mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
+            receive(command, Utilities.generateRandomFakeCommandResponse(command));
         } else {
             Log.w(TAG, "Unable to send unrecognized request type");
         }
     }
 
     public void registerForResponse(DiagnosticRequest request) {
-        mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
+        //mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
+        //TODO
     }
 
     // TODO i'm thinking responses registered for individually will be received
@@ -129,7 +149,8 @@ public class DiagnosticActivity extends Activity {
     // exactMatcher...both
     // will be pairs in the MessageListenerSink map
     public void registerForAllResponses() {
-        mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+        //TODO
+        //mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
 
     /**
@@ -138,7 +159,8 @@ public class DiagnosticActivity extends Activity {
      * registered individually via KeyMatcher.buildExactMatcher(KeyedMessage)
      */
     public void stopListeningForAllResponses() {
-        mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+        //mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+        //TODO
     }
 
     public void populateFields(VehicleMessage req) {
@@ -187,6 +209,7 @@ public class DiagnosticActivity extends Activity {
         //order matters here
         mInputManager.toggleRequestCommand(displayCommands);
         mButtonsManager.toggleRequestCommand(displayCommands);
+        mOutputTable.toggleRequestCommands(displayCommands);
     }
     
     @Override
@@ -202,14 +225,15 @@ public class DiagnosticActivity extends Activity {
         //order matters here
         mInputManager = new DiagnosticInputManager(this, displayCommands);
         mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
-
-        mOutputTable = new DiagnosticOutputTable(this);
+        mOutputTable = new DiagnosticOutputTable(this, displayCommands);
         mOutputTable.load();
     }
 
+
     @Override
     public void onDestroy() {
-        mVehicleManager.removeListener(mResponseListener);
+        //TODO
+        //mVehicleManager.removeListener(mResponseListener);
     }
 
     @Override

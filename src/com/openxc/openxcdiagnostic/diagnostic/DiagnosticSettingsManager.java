@@ -67,7 +67,7 @@ public class DiagnosticSettingsManager {
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mContext.deleteAllOutputResponses();
+                        mContext.clearDiagnosticTable();
                     }
                 });
                 

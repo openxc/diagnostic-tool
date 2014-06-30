@@ -4,62 +4,140 @@ import java.util.ArrayList;
 
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
+import com.openxc.messages.Command;
+import com.openxc.messages.CommandResponse;
+import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 
-public class DiagnosticOutputTable {
+public class DiagnosticOutputTable  {
 
     private DiagnosticActivity mContext;
-    private DiagnosticOutputTableSaver mSaver;
-    private LinearLayout mView;
+    private DiagnosticOutputSaver mDiagnosticSaver;
+    private CommandOutputSaver mCommandSaver;
+    private LinearLayout mDiagnosticTable;
+    private LinearLayout mCommandTable;
     private static String TAG = "DiagnosticOutputTable";
+    private ScrollView outputScroll;
 
-    public DiagnosticOutputTable(DiagnosticActivity context) {
+    public DiagnosticOutputTable(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
-        mSaver = new DiagnosticOutputTableSaver(context);
-        mView = (LinearLayout) context.findViewById(R.id.outputRows);
+        mDiagnosticSaver = new DiagnosticOutputSaver(context);
+        mCommandSaver = new CommandOutputSaver(context);
+        mDiagnosticTable = inflateOutputTable();
+        mCommandTable = inflateOutputTable();
+                
+        outputScroll = (ScrollView) context.findViewById(R.id.responseOutputScroll);
+        LinearLayout newView = selectTable(displayCommands);
+        outputScroll.addView(newView);
+    }
+    
+    private LinearLayout selectTable(boolean displayCommands) {
+        if (displayCommands) {
+            return  mCommandTable;
+        }
+        return mDiagnosticTable;
+    }
+    
+    public void toggleRequestCommands(boolean displayCommands) {
+        outputScroll.removeAllViews();
+        outputScroll.addView(selectTable(displayCommands));
+    }
+    
+    private LinearLayout inflateOutputTable() {
+        return (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagoutputtable, null);
     }
 
     public void load() {
+        loadDiagnosticTable();       
+        loadCommandTable();
+    }
 
-        clearTable();
-        ArrayList<VehicleMessage> savedRequests = mSaver.getSavedRequests();
-        ArrayList<VehicleMessage> savedResponses = mSaver.getSavedResponses();
+    private void loadDiagnosticTable() {
+        
+        clearTable(mDiagnosticTable);
+        ArrayList<DiagnosticRequest> savedRequests = mDiagnosticSaver.getSavedRequests();
+        ArrayList<DiagnosticResponse> savedResponses = mDiagnosticSaver.getSavedResponses();
 
         if (savedRequests.size() == savedResponses.size()) {
             for (int i = savedRequests.size() - 1; i >= 0; i--) {
-                addToTable(savedRequests.get(i), savedResponses.get(i));
+                addToTable(mDiagnosticTable, savedRequests.get(i), savedResponses.get(i));
             }
         } else {
-            Log.e(TAG, "Unmatched requests and responses...cannot load table.");
+            Log.e(TAG, "Mismatched requests and responses...cannot load table.");
         }
+    }
+    
+    private void loadCommandTable() {
+        
+        clearTable(mCommandTable);
+        ArrayList<Command> savedCommands = mCommandSaver.getSavedCommands();
+        ArrayList<CommandResponse> savedCommandResponses = mCommandSaver.getSavedCommandResponses();
 
+        if (savedCommands.size() == savedCommandResponses.size()) {
+            for (int i = savedCommands.size() - 1; i >= 0; i--) {
+                addToTable(mCommandTable, savedCommands.get(i), savedCommandResponses.get(i));
+            }
+        } else {
+            Log.e(TAG, "Mismatched commands and command responses...cannot load table.");
+        }
+    }
+    
+    public void add(VehicleMessage req, VehicleMessage resp) {
+        
+        if (req instanceof DiagnosticRequest && resp instanceof DiagnosticResponse) {
+            add((DiagnosticRequest) req, (DiagnosticResponse) resp);
+        } else if (req instanceof Command && resp instanceof CommandResponse) {
+            add((Command) req, (CommandResponse) resp);
+        } else {
+            Log.e(TAG, "Unable to add mismatched VehicleMessage types to table.");
+        }
     }
 
-    public void addRow(VehicleMessage req, VehicleMessage resp) {
-        addToTable(req, resp);
-        //TODO commands are getting saved
-        mSaver.add(req, resp);
+    private void add(DiagnosticRequest req, DiagnosticResponse resp) {
+        mDiagnosticSaver.add(req, resp);
+        addToTable(mDiagnosticTable, req, resp);
+    }
+    
+    private void add(Command command, CommandResponse resp) {
+        mCommandSaver.add(command, resp);
+        addToTable(mCommandTable, command, resp);
     }
 
-    private void addToTable(VehicleMessage req, VehicleMessage resp) {
+    private void addToTable(LinearLayout table, VehicleMessage req, VehicleMessage resp) {
         DiagnosticOutputRow row = new DiagnosticOutputRow(mContext, this, req, resp);
-        mView.addView(row.getView(), 0);
+        table.addView(row.getView(), 0);
     }
 
     public void removeRow(DiagnosticOutputRow row) {
-        mView.removeView(row.getView());
-        mSaver.remove(row.getRequest(), row.getResponse());
+        if (row.getRequest() instanceof DiagnosticRequest) {
+            mDiagnosticTable.removeView(row.getView());
+            mDiagnosticSaver.remove((DiagnosticRequest)row.getRequest(), 
+                    (DiagnosticResponse) row.getResponse());
+        } else {
+            mCommandTable.removeView(row.getView());
+            mCommandSaver.remove((Command) row.getRequest(), (CommandResponse) row.getResponse());
+        }
     }
 
-    public void deleteAllRows() {
-        clearTable();
-        mSaver.removeAll();
+    private void deleteAllRows(LinearLayout table, OutputSaver saver) {
+        clearTable(table);
+        saver.removeAll();
+    }
+    
+    public void deleteAllDiagnosticRows() {
+        deleteAllRows(mDiagnosticTable, mDiagnosticSaver);
+    }
+    
+    public void deleteAllCommandRows() {
+        deleteAllRows(mCommandTable, mCommandSaver);
     }
 
-    private void clearTable() {
-        mView.removeAllViews();
+    private void clearTable(LinearLayout table) {
+        table.removeAllViews();
     }
-
+    
 }
