@@ -28,7 +28,7 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
-public class DiagnosticInputManager {
+public class DiagnosticInputManager implements DiagnosticManager {
 
     private EditText mFrequencyInputText;
     private EditText mBusInputText;
@@ -42,6 +42,7 @@ public class DiagnosticInputManager {
     private static final int MAX_PAYLOAD_LENGTH_IN_CHARS = DiagnosticRequest.MAX_PAYLOAD_LENGTH_IN_BYTES * 2;
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
+    private boolean mDisplayCommands;
 
     private class InputHolder {
         private String frequencyInput = getFrequencyInput();    
@@ -63,11 +64,12 @@ public class DiagnosticInputManager {
     public DiagnosticInputManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        initTextFields(displayCommands);
+        setRequestCommandState(displayCommands);
     }
     
-    public void toggleRequestCommand(boolean displayCommands) {
-        initTextFields(displayCommands);
+    public void setRequestCommandState(boolean displayCommands) {
+        mDisplayCommands = displayCommands;
+        initTextFields();
     }
     
     public void populateFields(VehicleMessage message) {
@@ -133,15 +135,15 @@ public class DiagnosticInputManager {
         }
     }
     
-    private void initTextFields(final boolean displayCommands) {
-        
+    private void initTextFields() {
+                
         int inputTableId = R.id.inputTable;
         
         FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
         LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
         LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(inputTableId);
         LinearLayout newView;
-        if (displayCommands) {
+        if (mDisplayCommands) {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagcommandinput, null);
         } else {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagrequestinput, null);
@@ -156,7 +158,7 @@ public class DiagnosticInputManager {
         textFields.add(mFrequencyInputText);
         
         //TODO don't like having two ifs with the same condition
-        if (displayCommands) {
+        if (mDisplayCommands) {
             initCommandTextFields();
             restoreCommandTextFields();
         } else {
@@ -191,7 +193,7 @@ public class DiagnosticInputManager {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    saveFields(displayCommands);
+                    saveFields();
                 }
             });
         }
@@ -231,11 +233,11 @@ public class DiagnosticInputManager {
         textFields.add(mNameInputText);
     }
 
-    private void saveFields(boolean displayCommands) {
+    private void saveFields() {
         
         InputHolder inputHolder;
         String inputKey;
-        if (displayCommands) {
+        if (mDisplayCommands) {
             inputHolder = new CommandInputHolder();
             inputKey = getCommandInputKey();
         } else {

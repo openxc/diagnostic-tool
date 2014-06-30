@@ -13,7 +13,7 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 
-public class DiagnosticOutputTable  {
+public class DiagnosticOutputTableManager implements DiagnosticManager  {
 
     private DiagnosticActivity mContext;
     private DiagnosticOutputSaver mDiagnosticSaver;
@@ -22,17 +22,22 @@ public class DiagnosticOutputTable  {
     private LinearLayout mCommandTable;
     private static String TAG = "DiagnosticOutputTable";
     private ScrollView outputScroll;
+    private boolean mDisplayCommands;
 
-    public DiagnosticOutputTable(DiagnosticActivity context, boolean displayCommands) {
+    public DiagnosticOutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mDiagnosticSaver = new DiagnosticOutputSaver(context);
         mCommandSaver = new CommandOutputSaver(context);
         mDiagnosticTable = inflateOutputTable();
         mCommandTable = inflateOutputTable();
-                
-        outputScroll = (ScrollView) context.findViewById(R.id.responseOutputScroll);
-        LinearLayout newView = selectTable(displayCommands);
-        outputScroll.addView(newView);
+        outputScroll = (ScrollView) mContext.findViewById(R.id.responseOutputScroll);
+        setRequestCommandState(displayCommands);
+    }
+    
+    public void setRequestCommandState(boolean displayCommands) {
+        mDisplayCommands = displayCommands;
+        outputScroll.removeAllViews();
+        outputScroll.addView(selectTable(displayCommands));
     }
     
     private LinearLayout selectTable(boolean displayCommands) {
@@ -42,16 +47,16 @@ public class DiagnosticOutputTable  {
         return mDiagnosticTable;
     }
     
-    public void toggleRequestCommands(boolean displayCommands) {
-        outputScroll.removeAllViews();
-        outputScroll.addView(selectTable(displayCommands));
-    }
-    
     private LinearLayout inflateOutputTable() {
         return (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagoutputtable, null);
     }
 
     public void load() {
+        
+        outputScroll.removeAllViews();
+        LinearLayout newView = selectTable(mDisplayCommands);
+        outputScroll.addView(newView);
+        
         loadDiagnosticTable();       
         loadCommandTable();
     }
@@ -128,11 +133,11 @@ public class DiagnosticOutputTable  {
         saver.removeAll();
     }
     
-    public void deleteAllDiagnosticRows() {
+    public void deleteAllDiagnosticResponses() {
         deleteAllRows(mDiagnosticTable, mDiagnosticSaver);
     }
     
-    public void deleteAllCommandRows() {
+    public void deleteAllCommandResponses() {
         deleteAllRows(mCommandTable, mCommandSaver);
     }
 

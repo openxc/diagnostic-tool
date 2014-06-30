@@ -113,7 +113,7 @@ public class DiagnosticSettingsManager {
                 
                 setShouldDisplayCommands(!shouldDisplayCommands());
                 configureToggleButton(responseCommandToggle);
-                mContext.toggleRequestCommand(shouldDisplayCommands());
+                mContext.setRequestCommandState(shouldDisplayCommands());
             }
         });
     }
@@ -136,10 +136,11 @@ public class DiagnosticSettingsManager {
     }
     
     public boolean shouldDisplayCommands() {
+        //TODO more efficient to store here than to read?
         return mPreferences.getBoolean(getDisplayCommandsKey(), false);
     }
     
-    public void setShouldDisplayCommands(boolean shouldDisplay) {
+    private void setShouldDisplayCommands(boolean shouldDisplay) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(getDisplayCommandsKey(), shouldDisplay);
         editor.commit();

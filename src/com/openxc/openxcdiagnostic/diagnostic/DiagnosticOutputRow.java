@@ -16,12 +16,12 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 public class DiagnosticOutputRow {
 
     private LinearLayout mView;
-    private DiagnosticOutputTable mTable;
+    private DiagnosticOutputTableManager mTable;
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
 
     public DiagnosticOutputRow(DiagnosticActivity context,
-            DiagnosticOutputTable table, VehicleMessage req,
+            DiagnosticOutputTableManager table, VehicleMessage req,
             VehicleMessage resp) {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);

@@ -14,19 +14,33 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.openxc.openxcdiagnostic.R;
 
-public class DiagnosticButtonsManager {
+public class DiagnosticButtonsManager implements DiagnosticManager{
 
     private DiagnosticActivity mContext;
+    private boolean mDisplayCommands;
     
     public DiagnosticButtonsManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
-        initButtons(displayCommands);
+        setRequestCommandState(displayCommands);
+        initButtons();
+    }
+    
+    @Override
+    public void setRequestCommandState(boolean displayCommands) {
+        mDisplayCommands = displayCommands;
+        if (displayCommands) {
+            initCommandInfoButtons();
+        } else {
+            initRequestInfoButtons();
+        }
+        
+        setRequestButtonText();
     }
 
-    private void initButtons(boolean displayCommands) {
+    private void initButtons() {
 
         Button sendRequestButton = (Button) mContext.findViewById(R.id.sendRequestButton);
-        setRequestButtonText(displayCommands);
+        setRequestButtonText();
         sendRequestButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +72,7 @@ public class DiagnosticButtonsManager {
             }
         });
         
-        if (displayCommands) {
+        if (mDisplayCommands) {
             initCommandInfoButtons();
         } else {
             initRequestInfoButtons();
@@ -137,9 +151,9 @@ public class DiagnosticButtonsManager {
         }
     }
     
-    private void setRequestButtonText(boolean displayCommands) {
+    private void setRequestButtonText() {
         String label;
-        if (displayCommands) {
+        if (mDisplayCommands) {
             label = "Send Command";
         } else {
             label = "Send Request";
@@ -147,14 +161,5 @@ public class DiagnosticButtonsManager {
         
         ((Button) mContext.findViewById(R.id.sendRequestButton)).setText(label);
     }
-    
-    public void toggleRequestCommand(boolean displayCommands) {
-        if (displayCommands) {
-            initCommandInfoButtons();
-        } else {
-            initRequestInfoButtons();
-        }
-        
-        setRequestButtonText(displayCommands);
-    }
+
 }

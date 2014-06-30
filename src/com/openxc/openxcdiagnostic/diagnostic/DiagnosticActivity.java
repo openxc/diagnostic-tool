@@ -1,5 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,7 +37,9 @@ public class DiagnosticActivity extends Activity {
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     //private final Handler mHandler = new Handler();
-    private DiagnosticOutputTable mOutputTable;
+    private DiagnosticOutputTableManager mOutputTableManager;
+    
+    private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
 
     //TODO
     /*VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
@@ -62,7 +66,7 @@ public class DiagnosticActivity extends Activity {
     };*/
     
     private void receive(DiagnosticRequest request, DiagnosticResponse response) {
-        mOutputTable.add(request, response);
+        mOutputTableManager.add(request, response);
         scrollOutputToTop(); //TODO only if showing
     }
     
@@ -80,7 +84,7 @@ public class DiagnosticActivity extends Activity {
     };*/
     
     private void receive(Command command, CommandResponse response) {
-        mOutputTable.add(command, response);
+        mOutputTableManager.add(command, response);
         scrollOutputToTop(); //TODO only if showing
     }
 
@@ -110,11 +114,11 @@ public class DiagnosticActivity extends Activity {
     }
 
     public void clearDiagnosticTable() {
-        mOutputTable.deleteAllDiagnosticRows();
+        mOutputTableManager.deleteAllDiagnosticResponses();
     }
     
     public void clearCommandTable() {
-        mOutputTable.deleteAllCommandRows();
+        mOutputTableManager.deleteAllCommandResponses();
     }
 
     public void send(VehicleMessage request) {
@@ -134,7 +138,7 @@ public class DiagnosticActivity extends Activity {
             //mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
             receive(command, Utilities.generateRandomFakeCommandResponse(command));
         } else {
-            Log.w(TAG, "Unable to send unrecognized request type");
+            Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
         }
     }
 
@@ -205,11 +209,10 @@ public class DiagnosticActivity extends Activity {
         }
     }
     
-    public void toggleRequestCommand(boolean displayCommands) {
-        //order matters here
-        mInputManager.toggleRequestCommand(displayCommands);
-        mButtonsManager.toggleRequestCommand(displayCommands);
-        mOutputTable.toggleRequestCommands(displayCommands);
+    public void setRequestCommandState(boolean displayCommands) {        
+        for (int i=0; i < mManagers.size(); i++) {
+            mManagers.get(i).setRequestCommandState(displayCommands);
+        }
     }
     
     @Override
@@ -218,17 +221,25 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle diagnostic created");
 
+        mSettingsManager = new DiagnosticSettingsManager(this);
         DiagnosticFavoritesManager.init(this);
         mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
-        mSettingsManager = new DiagnosticSettingsManager(this);
-        boolean displayCommands = mSettingsManager.shouldDisplayCommands();
+        
+        boolean displayCommands = isDisplayingCommands();
         //order matters here
         mInputManager = new DiagnosticInputManager(this, displayCommands);
+        mManagers.add(mInputManager);
         mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
-        mOutputTable = new DiagnosticOutputTable(this, displayCommands);
-        mOutputTable.load();
+        mManagers.add(mButtonsManager);
+        mOutputTableManager = new DiagnosticOutputTableManager(this, displayCommands);
+        mManagers.add(mOutputTableManager);
+        mOutputTableManager.load();
+                
     }
-
+    
+    public boolean isDisplayingCommands() {
+        return mSettingsManager.shouldDisplayCommands();
+    }
 
     @Override
     public void onDestroy() {
