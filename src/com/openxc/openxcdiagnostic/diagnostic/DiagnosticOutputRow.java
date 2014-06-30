@@ -50,7 +50,7 @@ public class DiagnosticOutputRow {
         detailsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DiagnosticResponseDetailsAlertManager.show(context, req, resp);
+                ResponseDetailsAlertManager.show(context, req, resp);
             }
         });
 

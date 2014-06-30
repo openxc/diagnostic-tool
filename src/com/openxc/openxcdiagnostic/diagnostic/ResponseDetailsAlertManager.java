@@ -18,9 +18,9 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
-public class DiagnosticResponseDetailsAlertManager {
+public class ResponseDetailsAlertManager {
 
-    private DiagnosticResponseDetailsAlertManager() { }
+    private ResponseDetailsAlertManager() { }
     
     public static void show(Activity context, VehicleMessage req, VehicleMessage resp) {
         
