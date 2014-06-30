@@ -93,7 +93,7 @@ public class DiagnosticOutputRow {
                 createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
                 createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
                 createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp), resp);
-                boolean responseSuccess = resp.getSuccess();
+                boolean responseSuccess = resp.isSuccessful();
                 createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp), resp);
                 if (responseSuccess) {
                     fillOutputTableWithSuccessDetails(infoTable, context, resp);

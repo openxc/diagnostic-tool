@@ -122,7 +122,7 @@ public class DiagnosticResponseDetailsAlertManager {
             createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp), resp);
             createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp), resp);
             createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp), resp);
-            boolean responseSuccess = resp.getSuccess();
+            boolean responseSuccess = resp.isSuccessful();
             createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp), resp);
             if (responseSuccess) {
                 fillTableWithSuccessDetails(responseTable, context, resp);

@@ -81,7 +81,7 @@ public class Utilities {
     }
 
     public static String getSuccessOutput(DiagnosticResponse resp) {
-        return String.valueOf(resp.getSuccess()) + " ";
+        return String.valueOf(resp.isSuccessful()) + " ";
     }
 
     public static String getValueOutput(DiagnosticResponse resp) {
@@ -138,7 +138,7 @@ public class Utilities {
             responseCode = negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size()));
         }
 
-        DiagnosticResponse response = new DiagnosticResponse(bus, id, mode, pid, request.getPayload(), success, responseCode, value, null);
+        DiagnosticResponse response = new DiagnosticResponse(bus, id, mode, pid, request.getPayload(), responseCode, value);
         response.timestamp();
         return response;
     }
@@ -157,7 +157,7 @@ public class Utilities {
     }
 
     public static int getOutputColor(Activity context, DiagnosticResponse resp) {
-        int color = resp.getSuccess() ? R.color.lightBlue : R.color.darkRed;
+        int color = resp.isSuccessful() ? R.color.lightBlue : R.color.darkRed;
         return context.getResources().getColor(color);
     }
 
