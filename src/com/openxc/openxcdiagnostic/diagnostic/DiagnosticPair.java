@@ -28,7 +28,7 @@ public class DiagnosticPair implements Pair {
         }
 
         final DiagnosticPair other = (DiagnosticPair) obj;
-        return mRequest.equals(other.getReq()) && mResponse.equals(other.getResp());
+        return mRequest.equals(other.mRequest) && mResponse.equals(other.mResponse);
     }
     
 }
