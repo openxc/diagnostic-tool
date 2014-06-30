@@ -175,7 +175,13 @@ public class DiagnosticFavoritesAlertManager {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setMessage(mContext.getResources().getString(R.string.delete_favorite_verification));
+                String message;
+                if (displayCommands) {
+                    message = mContext.getResources().getString(R.string.delete_favorite_command_verification);
+                } else {
+                    message = mContext.getResources().getString(R.string.delete_favorite_request_verification);
+                }
+                builder.setMessage(message);
                 if (displayCommands) {
                     builder.setTitle("Delete Command");
                 } else {
