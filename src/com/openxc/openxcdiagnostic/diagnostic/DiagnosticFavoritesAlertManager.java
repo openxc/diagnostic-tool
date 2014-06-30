@@ -25,22 +25,29 @@ import com.openxc.openxcdiagnostic.util.Utilities;
  * Manager for storing favorite requests. 
  * 
  */
-public class DiagnosticFavoritesAlertManager {
+public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
 
     private AlertDialog mAlert;
     private DiagnosticActivity mContext;
+    private boolean mDisplayCommands;
     
-    public DiagnosticFavoritesAlertManager(DiagnosticActivity context) {
+    public DiagnosticFavoritesAlertManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
+        setRequestCommandState(displayCommands);
+    }
+    
+    @Override
+    public void setRequestCommandState(boolean displayCommands) {
+        mDisplayCommands = displayCommands;
     }
         
-    public void showAlert(boolean displayCommands) {
+    public void showAlert() {
 
         LinearLayout favoritesLayout = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagfavoritesalert, null);
         favoritesLayout.setMinimumHeight((int)(Utilities.getScreenHeight(mContext)));
-        setHeader(favoritesLayout, displayCommands);
-        fillTable(favoritesLayout, displayCommands);
+        setHeader(favoritesLayout);
+        fillTable(favoritesLayout);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getResources().getString(R.string.favorites_alert_label));
@@ -55,11 +62,11 @@ public class DiagnosticFavoritesAlertManager {
         mAlert.show();
     }
     
-    private void setHeader(LinearLayout favoritesLayout, boolean displayCommands) {
+    private void setHeader(LinearLayout favoritesLayout) {
         int alertHeaderId = R.id.favoritesAlertHeader;
         LinearLayout oldView = (LinearLayout) favoritesLayout.findViewById(alertHeaderId);
         LinearLayout newView;
-        if (displayCommands) {
+        if (mDisplayCommands) {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertcommandheaderrow, null);
         } else {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertrequestheaderrow, null);
@@ -68,25 +75,25 @@ public class DiagnosticFavoritesAlertManager {
         Utilities.replaceView(favoritesLayout, oldView, newView);
     }
     
-    private void fillTable(LinearLayout favoritesLayout, boolean displayCommands) {
+    private void fillTable(LinearLayout favoritesLayout) {
         
         ArrayList<? extends VehicleMessage> favs;
-        if (displayCommands)
+        if (mDisplayCommands)
             favs = DiagnosticFavoritesManager.getFavoriteCommands();
         else {
             favs = DiagnosticFavoritesManager.getFavoriteRequests();
         }
         
         for (VehicleMessage req : favs) {
-            createAndAddRowToTable(favoritesLayout, req, displayCommands);
+            createAndAddRowToTable(favoritesLayout, req);
         }
     }
     
-    private void setRowDataFormat(LinearLayout row, boolean displayCommands) {
+    private void setRowDataFormat(LinearLayout row) {
         int alertRowDataId = R.id.diagFavoritesAlertRowData;
         LinearLayout oldView = (LinearLayout) row.findViewById(alertRowDataId);
         LinearLayout newView;
-        if (displayCommands) {
+        if (mDisplayCommands) {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertcommanddata, null);
         } else {
             newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagfavoritesalertrequestdata, null);
@@ -95,15 +102,14 @@ public class DiagnosticFavoritesAlertManager {
         Utilities.replaceView(row, oldView, newView);
     }
     
-    private void createAndAddRowToTable(final LinearLayout favoritesLayout, final VehicleMessage reqMessage, 
-            final boolean displayCommands) {
+    private void createAndAddRowToTable(final LinearLayout favoritesLayout, final VehicleMessage reqMessage) {
         
         Map<TextView, TextView> headerMatcher = new HashMap<>();
         final LinearLayout favoritesTable = (LinearLayout) favoritesLayout.findViewById(R.id.favoritesAlertTable);
         final LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagfavoritesalertrow, null);
         
-        setRowDataFormat(row, displayCommands);
+        setRowDataFormat(row);
         
         if (reqMessage instanceof DiagnosticRequest) {
              
@@ -176,13 +182,13 @@ public class DiagnosticFavoritesAlertManager {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 String message;
-                if (displayCommands) {
+                if (mDisplayCommands) {
                     message = mContext.getResources().getString(R.string.delete_favorite_command_verification);
                 } else {
                     message = mContext.getResources().getString(R.string.delete_favorite_request_verification);
                 }
                 builder.setMessage(message);
-                if (displayCommands) {
+                if (mDisplayCommands) {
                     builder.setTitle("Delete Command");
                 } else {
                     builder.setTitle("Delete Request?");
@@ -205,5 +211,5 @@ public class DiagnosticFavoritesAlertManager {
 
         favoritesTable.addView(row);
     }
-    
+   
 }

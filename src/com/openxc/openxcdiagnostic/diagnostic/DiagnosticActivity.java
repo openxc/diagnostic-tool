@@ -194,7 +194,7 @@ public class DiagnosticActivity extends Activity {
     }
 
     public void takeFavoritesButtonPush() {
-        mFavoritesAlertManager.showAlert(mSettingsManager.shouldDisplayCommands());
+        mFavoritesAlertManager.showAlert();
     }
 
     public void takeSettingsButtonPush() {
@@ -223,10 +223,10 @@ public class DiagnosticActivity extends Activity {
 
         mSettingsManager = new DiagnosticSettingsManager(this);
         DiagnosticFavoritesManager.init(this);
-        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this);
-        
         boolean displayCommands = isDisplayingCommands();
         //order matters here
+        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this, displayCommands);
+        mManagers.add(mFavoritesAlertManager);
         mInputManager = new DiagnosticInputManager(this, displayCommands);
         mManagers.add(mInputManager);
         mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
