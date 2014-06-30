@@ -98,15 +98,15 @@ public class Utilities {
     }
     
     public static String getMessageOutput(CommandResponse resp) {
-        return resp.getMessage() == null ? "" : resp.getMessage();
+        return resp.getMessage() == null ? "" : resp.getMessage() + " ";
     }
     
     public static String getCommandOutput(CommandResponse resp) {
-        return resp.getCommand() == null ? "" : resp.getCommand();
+        return resp.getCommand() == null ? "" : resp.getCommand() + " ";
     }
     
     public static String getCommandOutput(Command command) {
-        return command.getCommand() == null ? "" : command.getCommand();
+        return command.getCommand() == null ? "" : command.getCommand() + " ";
     }
 
     public static String getResponseCodeOutput(DiagnosticResponse resp) {

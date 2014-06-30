@@ -8,9 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.openxc.messages.CommandResponse;
+import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticOutputRow {
@@ -43,7 +45,7 @@ public class DiagnosticOutputRow {
     private void initButtons(final DiagnosticActivity context,
             final VehicleMessage req, final VehicleMessage resp) {
 
-        Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
+        final Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
         detailsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,10 +61,17 @@ public class DiagnosticOutputRow {
             }
         });
 
-        Button resendButton = (Button) mView.findViewById(R.id.outputResendButton);
+        final Button resendButton = (Button) mView.findViewById(R.id.outputResendButton);
         resendButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                String message;
+                if (req instanceof DiagnosticRequest) {
+                    message = "Resending Request.";
+                } else {
+                    message = "Resending Command.";
+                }
+                Toaster.showToast(context, message);
                 context.send(req);
             }
         });
@@ -83,7 +92,7 @@ public class DiagnosticOutputRow {
     }
 
     private void fillOutputResponseTable(DiagnosticActivity context,
-            VehicleMessage msgResponse) {
+            final VehicleMessage msgResponse) {
 
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
             if (msgResponse instanceof DiagnosticResponse) {
