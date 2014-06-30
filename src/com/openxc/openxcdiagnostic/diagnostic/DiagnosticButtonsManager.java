@@ -71,12 +71,6 @@ public class DiagnosticButtonsManager implements DiagnosticManager{
                 mContext.takeSettingsButtonPush();
             }
         });
-        
-        if (mDisplayCommands) {
-            initCommandInfoButtons();
-        } else {
-            initRequestInfoButtons();
-        }
     }
     
     private void initCommandInfoButtons() {

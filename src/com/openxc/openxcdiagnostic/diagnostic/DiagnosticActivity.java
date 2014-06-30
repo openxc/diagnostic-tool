@@ -234,7 +234,6 @@ public class DiagnosticActivity extends Activity {
         mOutputTableManager = new DiagnosticOutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
         mOutputTableManager.load();
-                
     }
     
     public boolean isDisplayingCommands() {
