@@ -3,22 +3,24 @@ package com.openxc.openxcdiagnostic.diagnostic;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.command.ButtonCommand;
+import com.openxc.openxcdiagnostic.diagnostic.command.ClearInputFieldsCommand;
+import com.openxc.openxcdiagnostic.diagnostic.command.LaunchFavoritesDialogCommand;
+import com.openxc.openxcdiagnostic.diagnostic.command.LaunchSettingsDialogCommand;
+import com.openxc.openxcdiagnostic.diagnostic.command.RequestSendCommand;
+import com.openxc.openxcdiagnostic.util.DialogLauncher;
 
 public class DiagnosticButtonsManager implements DiagnosticManager{
 
     private DiagnosticActivity mContext;
     private boolean mDisplayCommands;
-    
+        
     public DiagnosticButtonsManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         setRequestCommandState(displayCommands);
@@ -29,7 +31,7 @@ public class DiagnosticButtonsManager implements DiagnosticManager{
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         if (displayCommands) {
-            initCommandInfoButtons();
+            initCommandInfoButton();
         } else {
             initRequestInfoButtons();
         }
@@ -38,104 +40,73 @@ public class DiagnosticButtonsManager implements DiagnosticManager{
     }
 
     private void initButtons() {
-
-        Button sendRequestButton = (Button) mContext.findViewById(R.id.sendRequestButton);
+        
         setRequestButtonText();
-        sendRequestButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.takeSendButtonPush();
-            }
-        });
-
-        Button clearButton = (Button) mContext.findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.takeClearButtonPush();
-            }
-        });
-
-        Button favoritesButton = (Button) mContext.findViewById(R.id.favoritesButton);
-        favoritesButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.takeFavoritesButtonPush();
-            }
-        });
-
-        Button settingsButton = (Button) mContext.findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.takeSettingsButtonPush();
-            }
-        });
+        
+        Map<Integer, ButtonCommand> buttonActions = new HashMap<>();
+        buttonActions.put(R.id.sendRequestButton, new RequestSendCommand(mContext));
+        buttonActions.put(R.id.clearButton, new ClearInputFieldsCommand(mContext));
+        buttonActions.put(R.id.favoritesButton, new LaunchFavoritesDialogCommand(mContext));
+        buttonActions.put(R.id.settingsButton, new LaunchSettingsDialogCommand(mContext));
+        
+        for (final Map.Entry<Integer, ButtonCommand> entry : buttonActions.entrySet()) {
+            ((Button) mContext.findViewById(entry.getKey()))
+            .setOnClickListener(new OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   entry.getValue().execute();
+               }
+            });
+        }
     }
-    
-    private void initCommandInfoButtons() {
+        
+    private void initCommandInfoButton() {
         final Resources res = mContext.getResources();
         Button commandInfoButton = (Button) mContext.findViewById(R.id.commandQuestionButton);
         commandInfoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder
-                .setMessage(res.getString(R.string.command_info))
-                .setTitle(res.getString(R.string.command_label));
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
-                builder.create().show();
+                DialogLauncher.launchAlert(mContext, res.getString(R.string.command_label), 
+                        res.getString(R.string.command_info), "OK");
             }
         });
     }
 
     private void initRequestInfoButtons() {
 
-        Resources res = mContext.getResources();
-        final BiMap<String, String> infoMap = HashBiMap.create();
-        final Map<Button, String> buttonInfo = new HashMap<>();
+        final Map<Integer, Integer> infoMap = new HashMap<>();
+        final Map<Integer, Integer> buttonInfo = new HashMap<>();
 
-        Button mFrequencyInfoButton = (Button) mContext.findViewById(R.id.frequencyQuestionButton);
-        buttonInfo.put(mFrequencyInfoButton, res.getString(R.string.frequency_info));
-        infoMap.put(res.getString(R.string.frequency_label), res.getString(R.string.frequency_info));
+        buttonInfo.put(R.id.frequencyQuestionButton, R.string.frequency_info);
+        infoMap.put(R.string.frequency_info, R.string.frequency_label);
 
-        Button mBusInfoButton = (Button) mContext.findViewById(R.id.busQuestionButton);
-        buttonInfo.put(mBusInfoButton, res.getString(R.string.bus_info));
-        infoMap.put(res.getString(R.string.bus_label), res.getString(R.string.bus_info));
+        buttonInfo.put(R.id.busQuestionButton, R.string.bus_info);
+        infoMap.put(R.string.bus_info, R.string.bus_label);
 
-        Button mIdInfoButton = (Button) mContext.findViewById(R.id.idQuestionButton);
-        buttonInfo.put(mIdInfoButton, res.getString(R.string.id_info));
-        infoMap.put(res.getString(R.string.id_label), res.getString(R.string.id_info));
+        buttonInfo.put(R.id.idQuestionButton, R.string.id_info);
+        infoMap.put(R.string.id_info, R.string.id_label);
 
-        Button mModeInfoButton = (Button) mContext.findViewById(R.id.modeQuestionButton);
-        buttonInfo.put(mModeInfoButton, res.getString(R.string.mode_info));
-        infoMap.put(res.getString(R.string.mode_label), res.getString(R.string.mode_info));
+        buttonInfo.put(R.id.modeQuestionButton, R.string.mode_info);
+        infoMap.put(R.string.mode_info, R.string.mode_label);
 
-        Button mPidInfoButton = (Button) mContext.findViewById(R.id.pidQuestionButton);
-        buttonInfo.put(mPidInfoButton, res.getString(R.string.pid_info));
-        infoMap.put(res.getString(R.string.pid_label), res.getString(R.string.pid_info));
+        buttonInfo.put(R.id.pidQuestionButton, R.string.pid_info);
+        infoMap.put(R.string.pid_info, R.string.pid_label);
 
-        Button mPayloadInfoButton = (Button) mContext.findViewById(R.id.payloadQuestionButton);
-        buttonInfo.put(mPayloadInfoButton, res.getString(R.string.payload_info));
-        infoMap.put(res.getString(R.string.payload_label), res.getString(R.string.payload_info));
+        buttonInfo.put(R.id.payloadQuestionButton, R.string.payload_info);
+        infoMap.put(R.string.payload_info, R.string.payload_label);
 
-        Button mNameInfoButton = (Button) mContext.findViewById(R.id.nameQuestionButton);
-        buttonInfo.put(mNameInfoButton, res.getString(R.string.name_info));
-        infoMap.put(res.getString(R.string.name_label), res.getString(R.string.name_info));
+        buttonInfo.put(R.id.nameQuestionButton, R.string.name_info);
+        infoMap.put(R.string.name_info, R.string.name_label);
 
-        for (final Button button : buttonInfo.keySet()) {
-            button.setOnClickListener(new OnClickListener() {
+        final Resources res = mContext.getResources();
+        for (final Integer buttonId : buttonInfo.keySet()) {
+            ((Button) mContext.findViewById(buttonId))
+            .setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    String info = buttonInfo.get(button);
-                    builder.setMessage(info).setTitle(infoMap.inverse().get(info));
-                    builder.setPositiveButton("OK", null);
-                    builder.create().show();
+                    int infoId = buttonInfo.get(buttonId);
+                    DialogLauncher.launchAlert(mContext, res.getString(infoMap.get(infoId)), 
+                            res.getString(infoId), "OK");
                 }
             });
         }
