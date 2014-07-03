@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.diagnostic;
+package com.openxc.openxcdiagnostic.diagnostic.pair;
 
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
@@ -13,11 +13,11 @@ public class DiagnosticPair implements Pair {
         mResponse = response;
     }
     
-    public DiagnosticRequest getReq() {
+    public DiagnosticRequest getRequest() {
         return mRequest;
     }
     
-    public DiagnosticResponse getResp() {
+    public DiagnosticResponse getResponse() {
         return mResponse;
     }
     

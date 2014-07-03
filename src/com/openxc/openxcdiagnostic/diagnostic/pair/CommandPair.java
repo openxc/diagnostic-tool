@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.diagnostic;
+package com.openxc.openxcdiagnostic.diagnostic.pair;
 
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
@@ -13,11 +13,11 @@ public class CommandPair implements Pair {
         mCommandResponse = response;
     }
     
-    public Command getReq() {
+    public Command getRequest() {
         return mCommand;
     }
     
-    public CommandResponse getResp() {
+    public CommandResponse getResponse() {
         return mCommandResponse;
     }
     

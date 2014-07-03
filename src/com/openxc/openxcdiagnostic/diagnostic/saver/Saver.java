@@ -1,6 +1,8 @@
-package com.openxc.openxcdiagnostic.diagnostic;
+package com.openxc.openxcdiagnostic.diagnostic.saver;
 
 import java.util.ArrayList;
+
+import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 
 public interface Saver {
 

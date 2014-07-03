@@ -13,6 +13,9 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
+import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
+import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 

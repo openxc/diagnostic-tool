@@ -14,6 +14,12 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
+import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
+import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
+import com.openxc.openxcdiagnostic.diagnostic.saver.CommandSaver;
+import com.openxc.openxcdiagnostic.diagnostic.saver.DiagnosticSaver;
+import com.openxc.openxcdiagnostic.diagnostic.saver.Saver;
 
 public class DiagnosticOutputTableManager implements DiagnosticManager  {
 
@@ -71,7 +77,7 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
            
            for (int i = pairs.size() - 1; i >= 0; i--) {
                Pair pair = pairs.get(i);
-                   addToTable(entry.getKey(), pair.getReq(), pair.getResp());
+                   addToTable(entry.getKey(), pair.getRequest(), pair.getResponse());
             } 
         }
     } 

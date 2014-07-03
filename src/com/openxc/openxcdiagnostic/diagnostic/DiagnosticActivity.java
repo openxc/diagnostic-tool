@@ -171,33 +171,23 @@ public class DiagnosticActivity extends Activity {
         mInputManager.populateFields(req);
     }
 
-    public void takeSendButtonPush() {
-        hideKeyboard();
-        
-        VehicleMessage request;
-        if (mSettingsManager.shouldDisplayCommands()) {
-            request = mInputManager.generateCommandFromInput();
-            
-        } else {
-             request = mInputManager.generateDiagnosticRequestFromInput();
-        }
-        if (request != null) {
-            send(request);
-        }
+    public Command generateCommandFromInput() {
+        return mInputManager.generateCommandFromInput();
+    }
+    
+    public DiagnosticRequest generateDiagnosticRequestFromInput() {
+        return mInputManager.generateDiagnosticRequestFromInput();
     }
 
-    public void takeClearButtonPush() {
+    public void clearFields() {
         mInputManager.clearFields();
-        hideKeyboard();
     }
 
-    public void takeFavoritesButtonPush() {
-        hideKeyboard();
+    public void launchFavorites() {
         mFavoritesAlertManager.showAlert();
     }
 
-    public void takeSettingsButtonPush() {
-        hideKeyboard();
+    public void launchSettings() {
         mSettingsManager.showAlert();
     }
     

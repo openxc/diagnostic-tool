@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.diagnostic;
+package com.openxc.openxcdiagnostic.diagnostic.saver;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
+import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
+import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 
 /**
  * 
@@ -25,7 +28,7 @@ public class CommandSaver implements Saver {
     }
     
     public void add(CommandPair pair) {   
-        commandPairs.add(pair);
+        commandPairs.add(0, pair);
         save(commandPairs);
     }
     
