@@ -128,7 +128,7 @@ public class Utilities {
         int bus = request.getBusId();
         int id = request.getId();
         int mode = request.getMode();
-        int pid = rnd.nextInt(5);
+        Integer pid = request.getPid();
         boolean success = rnd.nextBoolean();
         float value = 0;
         NegativeResponseCode responseCode = NegativeResponseCode.NONE;
@@ -138,7 +138,8 @@ public class Utilities {
             responseCode = negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size()));
         }
 
-        DiagnosticResponse response = new DiagnosticResponse(bus, id, mode, pid, request.getPayload(), responseCode, value);
+        DiagnosticResponse response = new DiagnosticResponse(bus, id, mode, pid, 
+                request.getPayload(), responseCode, value);
         response.timestamp();
         return response;
     }

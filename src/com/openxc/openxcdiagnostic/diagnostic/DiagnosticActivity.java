@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.ExactKeyMatcher;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
@@ -36,57 +38,35 @@ public class DiagnosticActivity extends Activity {
     private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
-    //private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private DiagnosticOutputTableManager mOutputTableManager;
-    
     private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
+    
+    private ArrayList<DiagnosticRequest> sentRequests = new ArrayList<>();
+    private ArrayList<Command> sentCommands = new ArrayList<>();
 
-    //TODO
-    /*VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
+    VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
-        public void receive(VehicleMessage message) {
-            
-        }
-        
-        public void receive(final DiagnosticRequest request,
-                final DiagnosticResponse response) {
+        public void receive(final VehicleMessage response) {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mOutputTable.addRow(request, response);
-                    if (request.getFrequency() == null
+                    //TODO this own't add to the table correctly if the response was
+                    //received from sniffing b/c findRequest will return null
+                    mOutputTableManager.add(findRequest(response), response);
+                    /*if (message.getFrequency() == null
                             || request.getFrequency() == 0) {
                         mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
                                 DiagnosticActivity.this.mResponseListener);
+                    }*/
+                    
+                    if (shouldScrollOutputToTop(response)) {
+                        scrollOutputToTop();
                     }
-                    scrollOutputToTop();
                 }
             });
         }
-    };*/
-    
-    private void receive(DiagnosticRequest request, DiagnosticResponse response) {
-        mOutputTableManager.add(request, response);
-        scrollOutputToTop(); //TODO only if showing
-    }
-    
-    /*CommandResponse.Listener mCommandResponseListener = new CommandResponse.Listener() {
-        @Override
-        public void receive(final Command command, final CommandResponse response) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    mOutputTable.addRow(command, response);
-                    scrollOutputToTop();
-                }
-            });
-        }
-    };*/
-    
-    private void receive(Command command, CommandResponse response) {
-        mOutputTableManager.add(command, response);
-        scrollOutputToTop(); //TODO only if showing
-    }
+    };
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -108,6 +88,11 @@ public class DiagnosticActivity extends Activity {
             mIsBound = false;
         }
     };
+    
+    private boolean shouldScrollOutputToTop(VehicleMessage response) {
+        return (response instanceof CommandResponse && isDisplayingCommands()) 
+                || (response instanceof DiagnosticResponse && !isDisplayingCommands());
+    }
 
     private void scrollOutputToTop() {
         ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
@@ -120,26 +105,50 @@ public class DiagnosticActivity extends Activity {
     public void clearCommandTable() {
         mOutputTableManager.deleteAllCommandResponses();
     }
+    
+    private VehicleMessage findRequest(VehicleMessage message) {
+        
+        if (message instanceof DiagnosticResponse) {
+            ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) message);
+            for (int i=0; i < sentRequests.size(); i++) {
+                DiagnosticRequest request = sentRequests.get(i);
+                if (matcher.matches(request)) {
+                    sentRequests.remove(request);
+                    return request;
+                }
+            }
+        } else if (message instanceof CommandResponse) {
+            ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) message);
+            for (int i=0; i < sentCommands.size(); i++) {
+                Command command = sentCommands.get(i);
+                if (matcher.matches(command)) {
+                    sentCommands.remove(command);
+                    return command;
+                }
+            }
+        }
+        return null;
+    }
 
     public void send(VehicleMessage request) {
-        
+                
         if (request instanceof DiagnosticRequest) {
-            // TODO JUST FOR TESTING! should be
-            // registerForResponse(request);
-            // mVehicleManager.request(request);
+            sentRequests.add((DiagnosticRequest) request);
+            // TODO JUST FOR TESTING!
             DiagnosticRequest diagRequest = (DiagnosticRequest) request;
-            //mResponseListener.receive(Utilities.generateRandomFakeResponse(diagRequest));
-            receive(diagRequest, Utilities.generateRandomFakeResponse(diagRequest));
+            mResponseListener.receive(Utilities.generateRandomFakeResponse(diagRequest));
         } else if (request instanceof Command) {
-    
-            // TODO JUST FOR TESTING! should be
-            //...something else
-            Command command = (Command)request;
-            //mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
-            receive(command, Utilities.generateRandomFakeCommandResponse(command));
+            sentCommands.add((Command) request);
+            // TODO JUST FOR TESTING!
+            Command command = (Command) request;
+            mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
         } else {
             Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
         }
+        
+        //TODO uncomment when actually communicating with VI
+        //registerForResponse(request);
+        //mVehicleManager.request(request);
     }
 
     public void registerForResponse(DiagnosticRequest request) {
