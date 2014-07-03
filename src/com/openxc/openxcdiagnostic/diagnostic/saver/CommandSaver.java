@@ -39,11 +39,7 @@ public class CommandSaver implements Saver {
     
     public ArrayList<Pair> getPairs() {
         //cannot cast from ArrayList<CommandPair> to ArrayList<Pair>
-        ArrayList<Pair> pairs = new ArrayList<>();
-        for (int i=0; i < commandPairs.size(); i++) {
-            pairs.add(commandPairs.get(i));
-        }
-        return pairs;
+        return new ArrayList<Pair>(commandPairs);
     }
     
     public void removeAll() {
