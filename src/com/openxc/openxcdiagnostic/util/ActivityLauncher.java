@@ -24,9 +24,7 @@ public class ActivityLauncher {
     public static void launchActivity (Activity activity, int itemId) {
         
         Class<?> newActivityClass = sActivityMap.get(Integer.valueOf(itemId));
-        if (activity.getClass().equals(newActivityClass)) {
-            return;
-        } else {
+        if (!activity.getClass().equals(newActivityClass)) {
             activity.startActivity(new Intent(activity, newActivityClass));
         }
     }
