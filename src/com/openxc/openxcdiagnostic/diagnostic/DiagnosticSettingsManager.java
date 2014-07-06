@@ -48,9 +48,9 @@ public class DiagnosticSettingsManager {
                 sniffingCheckBox.setChecked(!sniffingCheckBox.isChecked());
                 setShouldSniff(sniffingCheckBox.isChecked());
                 if (sniffingCheckBox.isChecked()) {
-                    mContext.registerForAllResponses();
+                    mContext.startSniffing();
                 } else {
-                    mContext.stopListeningForAllResponses();
+                    mContext.stopSniffing();
                 }
             }
         });

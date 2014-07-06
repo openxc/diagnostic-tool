@@ -23,6 +23,7 @@ import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.ExactKeyMatcher;
+import com.openxc.messages.KeyMatcher;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
@@ -77,7 +78,7 @@ public class DiagnosticActivity extends Activity {
             mIsBound = true;
 
             if (mSettingsManager.shouldSniff()) {
-                registerForAllResponses();
+                startSniffing();
             }
         }
 
@@ -144,16 +145,22 @@ public class DiagnosticActivity extends Activity {
             mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
         } else {
             Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
+            return;
         }
         
         //TODO uncomment when actually communicating with VI
         //registerForResponse(request);
-        //mVehicleManager.request(request);
+        //mVehicleManager.send(request);
     }
-
-    public void registerForResponse(DiagnosticRequest request) {
-        //mVehicleManager.addListener(KeyMatcher.buildExactMatcher(request), mResponseListener);
-        //TODO
+    
+    private void registerForResponse(VehicleMessage request) {
+        if (request instanceof DiagnosticRequest) {
+            mVehicleManager.addListener((DiagnosticRequest) request, mResponseListener);
+        } else if (request instanceof Command) {
+            mVehicleManager.addListener((Command) request, mResponseListener);
+        } else {
+            Log.w(TAG, "Unable to register for response of type: " + request.getClass());
+        }
     }
 
     // TODO i'm thinking responses registered for individually will be received
@@ -161,19 +168,17 @@ public class DiagnosticActivity extends Activity {
     // twice because they will match the wildcard KeyMatcher and their
     // exactMatcher...both
     // will be pairs in the MessageListenerSink map
-    public void registerForAllResponses() {
-        //TODO
-        //mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+    public void startSniffing() {
+        mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
 
     /**
      * Stops the activity listening for all responses via the wildcard
      * KeyMatcher. It DOES NOT stop the activity from listening for responses
-     * registered individually via KeyMatcher.buildExactMatcher(KeyedMessage)
+     * which were registered for individually.
      */
-    public void stopListeningForAllResponses() {
-        //mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
-        //TODO
+    public void stopSniffing() {
+        mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
 
     public void populateFields(VehicleMessage req) {
@@ -219,7 +224,7 @@ public class DiagnosticActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diagnostic);
-        Log.i(TAG, "Vehicle diagnostic created");
+        Log.i(TAG, "Vehicle Diagnostic created");
 
         mSettingsManager = new DiagnosticSettingsManager(this);
         DiagnosticFavoritesManager.init(this);
@@ -270,7 +275,6 @@ public class DiagnosticActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options, menu);
         return true;
     }
