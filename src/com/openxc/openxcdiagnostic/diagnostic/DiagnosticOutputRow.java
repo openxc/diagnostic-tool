@@ -49,24 +49,24 @@ public class DiagnosticOutputRow {
     private void initButtons(final DiagnosticActivity context,
             final VehicleMessage req, final VehicleMessage resp) {
 
-        final Button detailsButton = (Button) mView.findViewById(R.id.outputMoreButton);
-        detailsButton.setOnClickListener(new OnClickListener() {
+        ((Button) mView.findViewById(R.id.outputMoreButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 ResponseDetailsAlertManager.show(context, req, resp);
             }
         });
 
-        final Button deleteButton = (Button) mView.findViewById(R.id.responseDeleteButton);
-        deleteButton.setOnClickListener(new OnClickListener() {
+        ((Button) mView.findViewById(R.id.responseDeleteButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mTableManager.removeRow(DiagnosticOutputRow.this);
             }
         });
 
-        final Button resendButton = (Button) mView.findViewById(R.id.outputResendButton);
-        resendButton.setOnClickListener(new OnClickListener() {
+        ((Button) mView.findViewById(R.id.outputResendButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String message;
