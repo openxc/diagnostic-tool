@@ -42,8 +42,8 @@ public class DiagnosticActivity extends Activity {
     private DiagnosticOutputTableManager mOutputTableManager;
     private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
     
-    private ArrayList<DiagnosticRequest> sentRequests = new ArrayList<>();
-    private ArrayList<Command> sentCommands = new ArrayList<>();
+    private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
+    private ArrayList<Command> outstandingCommands = new ArrayList<>();
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -51,7 +51,7 @@ public class DiagnosticActivity extends Activity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    //TODO this own't add to the table correctly if the response was
+                    //TODO this won't add to the table correctly if the response was
                     //received from sniffing b/c findRequest will return null
                     mOutputTableManager.add(findRequest(response), response);
                     /*if (message.getFrequency() == null
@@ -110,19 +110,19 @@ public class DiagnosticActivity extends Activity {
         
         if (message instanceof DiagnosticResponse) {
             ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) message);
-            for (int i=0; i < sentRequests.size(); i++) {
-                DiagnosticRequest request = sentRequests.get(i);
+            for (int i=0; i < outstandingRequests.size(); i++) {
+                DiagnosticRequest request = outstandingRequests.get(i);
                 if (matcher.matches(request)) {
-                    sentRequests.remove(request);
+                    outstandingRequests.remove(request);
                     return request;
                 }
             }
         } else if (message instanceof CommandResponse) {
             ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) message);
-            for (int i=0; i < sentCommands.size(); i++) {
-                Command command = sentCommands.get(i);
+            for (int i=0; i < outstandingCommands.size(); i++) {
+                Command command = outstandingCommands.get(i);
                 if (matcher.matches(command)) {
-                    sentCommands.remove(command);
+                    outstandingCommands.remove(command);
                     return command;
                 }
             }
@@ -133,14 +133,14 @@ public class DiagnosticActivity extends Activity {
     public void send(VehicleMessage request) {
                 
         if (request instanceof DiagnosticRequest) {
-            sentRequests.add((DiagnosticRequest) request);
             // TODO JUST FOR TESTING!
             DiagnosticRequest diagRequest = (DiagnosticRequest) request;
+            outstandingRequests.add(diagRequest);
             mResponseListener.receive(Utilities.generateRandomFakeResponse(diagRequest));
         } else if (request instanceof Command) {
-            sentCommands.add((Command) request);
             // TODO JUST FOR TESTING!
             Command command = (Command) request;
+            outstandingCommands.add(command);
             mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
         } else {
             Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
