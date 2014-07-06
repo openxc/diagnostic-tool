@@ -29,7 +29,7 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
-public class DiagnosticInputManager implements DiagnosticManager {
+public class InputManager implements DiagnosticManager {
 
     private static String TAG = "DiagnosticInputManager";
     private EditText mFrequencyInputText;
@@ -63,7 +63,7 @@ public class DiagnosticInputManager implements DiagnosticManager {
         private String commandInput = getCommandInput();
     }
 
-    public DiagnosticInputManager(DiagnosticActivity context, boolean displayCommands) {
+    public InputManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         setRequestCommandState(displayCommands);

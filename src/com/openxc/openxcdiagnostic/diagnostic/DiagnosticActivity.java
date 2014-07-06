@@ -33,14 +33,14 @@ public class DiagnosticActivity extends Activity {
 
     private static String TAG = "VehicleDashboard";
 
-    private DiagnosticSettingsManager mSettingsManager;
-    private DiagnosticInputManager mInputManager;
-    private DiagnosticButtonsManager mButtonsManager;
-    private DiagnosticFavoritesAlertManager mFavoritesAlertManager;
+    private SettingsManager mSettingsManager;
+    private InputManager mInputManager;
+    private ButtonsManager mButtonsManager;
+    private FavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
-    private DiagnosticOutputTableManager mOutputTableManager;
+    private OutputTableManager mOutputTableManager;
     private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
     
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
@@ -226,17 +226,17 @@ public class DiagnosticActivity extends Activity {
         setContentView(R.layout.diagnostic);
         Log.i(TAG, "Vehicle Diagnostic created");
 
-        mSettingsManager = new DiagnosticSettingsManager(this);
-        DiagnosticFavoritesManager.init(this);
+        mSettingsManager = new SettingsManager(this);
+        FavoritesManager.init(this);
         boolean displayCommands = isDisplayingCommands();
         //order matters here
-        mFavoritesAlertManager = new DiagnosticFavoritesAlertManager(this, displayCommands);
+        mFavoritesAlertManager = new FavoritesAlertManager(this, displayCommands);
         mManagers.add(mFavoritesAlertManager);
-        mInputManager = new DiagnosticInputManager(this, displayCommands);
+        mInputManager = new InputManager(this, displayCommands);
         mManagers.add(mInputManager);
-        mButtonsManager = new DiagnosticButtonsManager(this, displayCommands);
+        mButtonsManager = new ButtonsManager(this, displayCommands);
         mManagers.add(mButtonsManager);
-        mOutputTableManager = new DiagnosticOutputTableManager(this, displayCommands);
+        mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
         mOutputTableManager.load();
     }

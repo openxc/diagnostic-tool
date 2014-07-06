@@ -82,11 +82,11 @@ public class ResponseDetailsAlertManager {
                     message = "Command";
                 }
                 
-                if (!DiagnosticFavoritesManager.contains(req)) {
-                    DiagnosticFavoritesManager.add(req);
+                if (!FavoritesManager.contains(req)) {
+                    FavoritesManager.add(req);
                     message = message + " Added to Favorites.";
                 } else {
-                    DiagnosticFavoritesManager.remove(req);
+                    FavoritesManager.remove(req);
                     message = message + " Removed from Favorites.";
                 }
                 Toaster.showToast(context, message);
@@ -100,7 +100,7 @@ public class ResponseDetailsAlertManager {
             VehicleMessage req) {
         String text;
         int backgroundSelector;
-        if (!DiagnosticFavoritesManager.contains(req)) {
+        if (!FavoritesManager.contains(req)) {
             backgroundSelector = R.drawable.favorites_button_selector;
             text = context.getResources().getString(R.string.add_to_favorites_button_label);
         } else {

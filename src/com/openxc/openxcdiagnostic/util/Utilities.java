@@ -30,11 +30,11 @@ public class Utilities {
 
     // TODO this contains NegativeResponseCode.None, but ok because it's just
     // for testing anyway
-    private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes = Collections.unmodifiableList(Arrays.asList(DiagnosticResponse.NegativeResponseCode.values()));
+    private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes 
+    = Collections.unmodifiableList(Arrays.asList(DiagnosticResponse.NegativeResponseCode.values()));
 
     // all these outputs are italicized so the space prevents them from being
-    // cut off
-    // at the end (mostly)
+    // cut off at the end (mostly)
     public static String getBusOutput(DiagnosticRequest req) {
         return String.valueOf(req.getBusId()) + " ";
     }
@@ -174,7 +174,7 @@ public class Utilities {
         return displayRect.width();
     }
     
-    public static void replaceView(LinearLayout layout, final View oldView, final View newView) {
+    public static void replaceView(LinearLayout layout, View oldView, View newView) {
         layout.addView(newView, layout.indexOfChild(oldView));
         layout.removeView(oldView);
     }

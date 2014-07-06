@@ -19,15 +19,15 @@ import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
-public class DiagnosticOutputRow {
+public class OutputRow {
 
     private LinearLayout mView;
-    private DiagnosticOutputTableManager mTableManager;
+    private OutputTableManager mTableManager;
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
 
-    public DiagnosticOutputRow(DiagnosticActivity context,
-            DiagnosticOutputTableManager tableManager, VehicleMessage req,
+    public OutputRow(DiagnosticActivity context,
+            OutputTableManager tableManager, VehicleMessage req,
             VehicleMessage resp) {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
@@ -61,7 +61,7 @@ public class DiagnosticOutputRow {
         .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTableManager.removeRow(DiagnosticOutputRow.this);
+                mTableManager.removeRow(OutputRow.this);
             }
         });
 

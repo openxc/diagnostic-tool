@@ -25,13 +25,13 @@ import com.openxc.openxcdiagnostic.util.Utilities;
  * Manager for storing favorite requests. 
  * 
  */
-public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
+public class FavoritesAlertManager implements DiagnosticManager {
 
     private AlertDialog mAlert;
     private DiagnosticActivity mContext;
     private boolean mDisplayCommands;
     
-    public DiagnosticFavoritesAlertManager(DiagnosticActivity context, boolean displayCommands) {
+    public FavoritesAlertManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         setRequestCommandState(displayCommands);
     }
@@ -75,9 +75,9 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
         
         ArrayList<? extends VehicleMessage> favs;
         if (mDisplayCommands)
-            favs = DiagnosticFavoritesManager.getFavoriteCommands();
+            favs = FavoritesManager.getFavoriteCommands();
         else {
-            favs = DiagnosticFavoritesManager.getFavoriteRequests();
+            favs = FavoritesManager.getFavoriteRequests();
         }
         
         for (VehicleMessage req : favs) {
@@ -195,7 +195,7 @@ public class DiagnosticFavoritesAlertManager implements DiagnosticManager {
                 builder.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        DiagnosticFavoritesManager.remove(reqMessage);
+                        FavoritesManager.remove(reqMessage);
                         favoritesTable.removeView(row);
                     }
                 });

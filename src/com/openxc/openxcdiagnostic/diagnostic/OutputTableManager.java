@@ -21,7 +21,7 @@ import com.openxc.openxcdiagnostic.diagnostic.saver.CommandSaver;
 import com.openxc.openxcdiagnostic.diagnostic.saver.DiagnosticSaver;
 import com.openxc.openxcdiagnostic.diagnostic.saver.Saver;
 
-public class DiagnosticOutputTableManager implements DiagnosticManager  {
+public class OutputTableManager implements DiagnosticManager  {
 
     private DiagnosticActivity mContext;
     private DiagnosticSaver mDiagnosticSaver;
@@ -33,7 +33,7 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     private boolean mDisplayCommands;
     private Map<LinearLayout, Saver> tablesAndSavers = new HashMap<>();
 
-    public DiagnosticOutputTableManager(DiagnosticActivity context, boolean displayCommands) {
+    public OutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mDiagnosticTable = inflateOutputTable();
         mDiagnosticSaver = new DiagnosticSaver(context);
@@ -104,11 +104,11 @@ public class DiagnosticOutputTableManager implements DiagnosticManager  {
     }
 
     private void addToTable(LinearLayout table, VehicleMessage req, VehicleMessage resp) {
-        DiagnosticOutputRow row = new DiagnosticOutputRow(mContext, this, req, resp);
+        OutputRow row = new OutputRow(mContext, this, req, resp);
         table.addView(row.getView(), 0);
     }
 
-    public void removeRow(DiagnosticOutputRow row) {
+    public void removeRow(OutputRow row) {
         
         Pair pair = row.getDiagnosticPair();
         

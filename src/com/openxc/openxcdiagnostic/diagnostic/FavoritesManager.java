@@ -20,7 +20,7 @@ import com.openxc.messages.VehicleMessage;
  * Manager for storing favorite requests and commands. 
  * 
  */
-public class DiagnosticFavoritesManager {
+public class FavoritesManager {
 
     private static String TAG = "DiagnosticFavoritesManager";
       

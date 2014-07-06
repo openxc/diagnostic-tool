@@ -12,13 +12,13 @@ import android.widget.LinearLayout;
 
 import com.openxc.openxcdiagnostic.R;
 
-public class DiagnosticSettingsManager {
+public class SettingsManager {
 
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
     private boolean mDisplayCommands;
     
-    public DiagnosticSettingsManager(DiagnosticActivity context) {
+    public SettingsManager(DiagnosticActivity context) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         mDisplayCommands = mPreferences.getBoolean(getDisplayCommandsKey(), false);
