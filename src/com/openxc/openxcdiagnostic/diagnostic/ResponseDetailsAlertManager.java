@@ -46,7 +46,7 @@ public class ResponseDetailsAlertManager {
         
         if (reqMessage instanceof DiagnosticRequest) {
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
-            createAndAddHeaderRow(context, requestTable, "REQUEST");
+            createAndAddHeaderRow(context, requestTable, context.getResources().getString(R.string.alert_request_header));
             createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req), req);
             createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req), req);
             createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req), req);
@@ -56,7 +56,7 @@ public class ResponseDetailsAlertManager {
             createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
         } else if (reqMessage instanceof Command) {
             Command command = (Command) reqMessage;
-            createAndAddHeaderRow(context, requestTable, "COMMAND");
+            createAndAddHeaderRow(context, requestTable, context.getResources().getString(R.string.alert_command_header));
             createAndAddRow(context, requestTable, "command", Utilities.getCommandOutput(command), command);
         }
         createAndAddButtonsRow(context, requestTable, reqMessage);
@@ -115,7 +115,7 @@ public class ResponseDetailsAlertManager {
     private static void fillResponseTable(LinearLayout alertLayout, Activity context, VehicleMessage respMessage) {
         
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
-        createAndAddHeaderRow(context, responseTable, "RESPONSE");
+        createAndAddHeaderRow(context, responseTable, context.getResources().getString(R.string.alert_response_header));
         if (respMessage instanceof DiagnosticResponse) {
             DiagnosticResponse resp = (DiagnosticResponse) respMessage;
             createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp), resp);

@@ -43,6 +43,7 @@
     <string name="name_label">Name</string>
     <string name="command_label">Command</string>
     <string name="alert_request_header">REQUEST</string>
+    <string name="alert_command_header">COMMAND</string>
     <string name="alert_response_header">RESPONSE</string>
     
     <!-- Info Strings -->
