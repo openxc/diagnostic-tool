@@ -13,10 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
-
 import com.openxc.VehicleManager;
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
@@ -26,6 +23,7 @@ import com.openxc.messages.ExactKeyMatcher;
 import com.openxc.messages.KeyMatcher;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -96,7 +94,8 @@ public class DiagnosticActivity extends Activity {
     }
 
     private void scrollOutputToTop() {
-        ((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
+        //TODO
+        //((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
     }
 
     public void clearDiagnosticTable() {
@@ -238,7 +237,6 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mButtonsManager);
         mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
-        mOutputTableManager.load();
     }
     
     public boolean isDisplayingCommands() {

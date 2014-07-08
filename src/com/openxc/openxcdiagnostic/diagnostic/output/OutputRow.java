@@ -1,4 +1,4 @@
-package com.openxc.openxcdiagnostic.diagnostic;
+package com.openxc.openxcdiagnostic.diagnostic.output;
 
 import android.app.Activity;
 import android.view.View;
@@ -13,6 +13,8 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
+import com.openxc.openxcdiagnostic.diagnostic.ResponseDetailsAlertManager;
 import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
@@ -135,7 +137,7 @@ public class OutputRow {
         return mView;
     }
 
-    public Pair getDiagnosticPair() {
+    public Pair getPair() {
         if (mRequest instanceof DiagnosticRequest) {
             return new DiagnosticPair((DiagnosticRequest) mRequest, (DiagnosticResponse) mResponse);
         }

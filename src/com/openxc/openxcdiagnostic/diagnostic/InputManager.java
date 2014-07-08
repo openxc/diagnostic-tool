@@ -406,7 +406,8 @@ public class InputManager implements DiagnosticManager {
         if (commandInput.equals("")) {
             return failAndToastCommandError("Command cannot be empty.");
         }
-        return new Command(commandInput);
+        //TODO
+        return new Command(Command.CommandType.DEVICE_ID);
     }
 
     private String getFrequencyInput() {

@@ -111,11 +111,11 @@
 		
     </LinearLayout>
     
-    <ScrollView 
+    <ListView 
 	    android:id="@+id/responseOutputScroll"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	
-	</ScrollView>
+	</ListView>
 	
 </LinearLayout>
