@@ -37,19 +37,25 @@ public class OutputTableManager implements DiagnosticManager  {
     
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
-        updateAdapter();
+        setAdapter();
     }
     
-    private void updateAdapter() {
-        
+    public void scrollToTop() {
+        mOutputList.setSelection(0);
+    }
+    
+    private void setAdapter() {    
         TableAdapter adapter;
         if (mDisplayCommands) {
             adapter = new TableAdapter(mContext, mCommandRows);
         } else {
             adapter = new TableAdapter(mContext, mDiagnosticRows);
-        }
-            
+        }  
         mOutputList.setAdapter(adapter);
+    }
+    
+    private void updateAdapter() {
+        ((TableAdapter) mOutputList.getAdapter()).notifyDataSetChanged();
     }
     
     private ArrayList<OutputRow> loadSavedCommandRows() {  

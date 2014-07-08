@@ -94,8 +94,7 @@ public class DiagnosticActivity extends Activity {
     }
 
     private void scrollOutputToTop() {
-        //TODO
-        //((ScrollView) findViewById(R.id.responseOutputScroll)).fullScroll(View.FOCUS_UP);
+        mOutputTableManager.scrollToTop();
     }
 
     public void clearDiagnosticTable() {
@@ -205,7 +204,6 @@ public class DiagnosticActivity extends Activity {
     }
     
     public void hideKeyboard() {
-
         InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (manager.isAcceptingText()) {
             manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);

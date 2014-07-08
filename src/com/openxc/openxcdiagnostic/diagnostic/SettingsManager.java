@@ -30,11 +30,9 @@ public class SettingsManager {
         LinearLayout settingsLayout = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagsettingsalert, null);
                         
         builder.setView(settingsLayout);
-
         builder.setTitle(mContext.getResources().getString(R.string.settings_alert_label));
         builder.setPositiveButton("Done", null);
         builder.create().show();
-        
         initButtons(settingsLayout);    
     }
     
@@ -55,8 +53,8 @@ public class SettingsManager {
             }
         });
         
-        final Button deleteResponsesButton = (Button) layout.findViewById(R.id.deleteDiagnosticResponsesButton);
-        deleteResponsesButton.setOnClickListener(new OnClickListener() {
+        ((Button) layout.findViewById(R.id.deleteDiagnosticResponsesButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -74,8 +72,8 @@ public class SettingsManager {
             }
         });
         
-        final Button deleteCommandResponsesButton = (Button) layout.findViewById(R.id.deleteCommandResponsesButton);
-        deleteCommandResponsesButton.setOnClickListener(new OnClickListener() {
+        ((Button) layout.findViewById(R.id.deleteCommandResponsesButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
