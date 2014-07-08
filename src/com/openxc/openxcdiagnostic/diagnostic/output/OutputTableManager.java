@@ -22,17 +22,17 @@ public class OutputTableManager implements DiagnosticManager  {
     private DiagnosticActivity mContext;
     private TableSaver mSaver;
     private static String TAG = "DiagnosticOutputTable";
-    private ListView outputList;
+    private ListView mOutputList;
     private boolean mDisplayCommands;
-    private ArrayList<OutputRow> diagnosticRows;
-    private ArrayList<OutputRow> commandRows;
+    private ArrayList<OutputRow> mDiagnosticRows;
+    private ArrayList<OutputRow> mCommandRows;
 
     public OutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         mSaver = new TableSaver(context);
-        outputList = (ListView) mContext.findViewById(R.id.responseOutputScroll);
-        diagnosticRows = loadSavedDiagnosticRows();
-        commandRows = loadSavedCommandRows();
+        mOutputList = (ListView) mContext.findViewById(R.id.responseOutputScroll);
+        mDiagnosticRows = loadSavedDiagnosticRows();
+        mCommandRows = loadSavedCommandRows();
         setRequestCommandState(displayCommands);
     }
     
@@ -45,34 +45,28 @@ public class OutputTableManager implements DiagnosticManager  {
         
         TableAdapter adapter;
         if (mDisplayCommands) {
-            adapter = new TableAdapter(mContext, commandRows);
+            adapter = new TableAdapter(mContext, mCommandRows);
         } else {
-            adapter = new TableAdapter(mContext, diagnosticRows);
+            adapter = new TableAdapter(mContext, mDiagnosticRows);
         }
             
-        outputList.setAdapter(adapter);
+        mOutputList.setAdapter(adapter);
     }
     
-    private ArrayList<OutputRow> loadSavedCommandRows() {
-        
-        ArrayList<OutputRow> rows = new ArrayList<>();
-        ArrayList<CommandPair> commandPairs = mSaver.getCommandPairs();
-        
-        for (int i=0; i < commandPairs.size(); i++) {
-            Pair pair = commandPairs.get(i);
-            rows.add(new OutputRow(mContext, this, pair.getRequest(), pair.getResponse()));
-        }
-        
-        return rows;
+    private ArrayList<OutputRow> loadSavedCommandRows() {  
+        return generateRowsFromPairs(mSaver.getCommandPairs());
     }
     
-    private ArrayList<OutputRow> loadSavedDiagnosticRows() {
+    private ArrayList<OutputRow> loadSavedDiagnosticRows() {   
+        return generateRowsFromPairs(mSaver.getDiagnosticPairs());
+    }
+    
+    private ArrayList<OutputRow> generateRowsFromPairs(ArrayList<? extends Pair> pairs) {
         
         ArrayList<OutputRow> rows = new ArrayList<>();
-        ArrayList<DiagnosticPair> diagnosticPairs = mSaver.getDiagnosticPairs();
-        
-        for (int i=0; i < diagnosticPairs.size(); i++) {
-            Pair pair = diagnosticPairs.get(i);
+
+        for (int i=0; i < pairs.size(); i++) {
+            Pair pair = pairs.get(i);
             rows.add(new OutputRow(mContext, this, pair.getRequest(), pair.getResponse()));
         }
         
@@ -93,9 +87,9 @@ public class OutputTableManager implements DiagnosticManager  {
     private void save(VehicleMessage req, VehicleMessage resp) {   
         OutputRow row = new OutputRow(mContext, this, req, resp);
         if (row.getPair() instanceof DiagnosticPair) {
-            diagnosticRows.add(0, row);
+            mDiagnosticRows.add(0, row);
         } else {
-            commandRows.add(0, row);
+            mCommandRows.add(0, row);
         }
         
         mSaver.add(row);
@@ -105,9 +99,9 @@ public class OutputTableManager implements DiagnosticManager  {
     public void removeRow(OutputRow row) {
         
         if (row.getPair() instanceof DiagnosticPair) {
-            diagnosticRows.remove(row);
+            mDiagnosticRows.remove(row);
         } else {
-            commandRows.remove(row);
+            mCommandRows.remove(row);
         }
         
         mSaver.remove(row);
@@ -115,13 +109,13 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     public void deleteAllDiagnosticResponses() {
-        diagnosticRows = new ArrayList<>();
+        mDiagnosticRows = new ArrayList<>();
         mSaver.deleteAllDiagnosticRows();
         updateAdapter();
     }
     
     public void deleteAllCommandResponses() {
-        commandRows = new ArrayList<>();
+        mCommandRows = new ArrayList<>();
         mSaver.deleteAllCommandRows();
         updateAdapter();
     }

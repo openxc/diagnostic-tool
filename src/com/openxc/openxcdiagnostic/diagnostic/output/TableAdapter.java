@@ -14,15 +14,12 @@ public class TableAdapter extends ArrayAdapter<OutputRow> {
     private final ArrayList<OutputRow> mRows;
 
     public TableAdapter(Context context, ArrayList<OutputRow> rows) {
-
         super(context, R.layout.diagoutputrow, rows);
         mRows = rows;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         return mRows.get(position).getView();
-
     }
 }

@@ -15,7 +15,7 @@ import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 
 /**
  * 
- * Manager for storing Diagnostic Responses and Requests for the table.
+ * Manager for storing Requests and Responses for the table.
  * 
  */
 public class TableSaver {
@@ -69,18 +69,17 @@ public class TableSaver {
         saveDiagnosticPairs();
     }
     
-    private void saveDiagnosticPairs() {
-        
-        Editor prefsEditor = sPreferences.edit();
-        String json = (new Gson()).toJson(diagnosticPairs);
-        prefsEditor.putString(getSavedDiagnosticRowsKey(), json);
-        prefsEditor.commit();
+    private void saveDiagnosticPairs() {  
+        save(getSavedDiagnosticRowsKey(), (new Gson()).toJson(diagnosticPairs));
     }
     
     private void saveCommandPairs() {
+        save(getSavedCommandRowsKey(), (new Gson()).toJson(commandPairs));
+    }
+    
+    private void save(String key, String jsonString) {
         Editor prefsEditor = sPreferences.edit();
-        String json = (new Gson()).toJson(commandPairs);
-        prefsEditor.putString(getSavedCommandRowsKey(), json);
+        prefsEditor.putString(key, jsonString);
         prefsEditor.commit();
     }
     
