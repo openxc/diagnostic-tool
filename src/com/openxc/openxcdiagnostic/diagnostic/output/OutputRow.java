@@ -116,7 +116,7 @@ public class OutputRow {
                 }
             } else if (msgResponse instanceof CommandResponse ){
                 CommandResponse cmdResponse = (CommandResponse) msgResponse;
-                createAndAddRowToOutput(context, infoTable, "command response", 
+                createAndAddRowToOutput(context, infoTable, cmdResponse.getCommand().toString(), 
                         Utilities.getMessageOutput(cmdResponse), cmdResponse);
             }
     }

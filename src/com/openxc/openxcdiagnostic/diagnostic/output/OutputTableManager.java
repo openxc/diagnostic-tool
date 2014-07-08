@@ -13,7 +13,6 @@ import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticManager;
-import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 
