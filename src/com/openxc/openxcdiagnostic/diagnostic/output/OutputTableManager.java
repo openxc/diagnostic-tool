@@ -3,6 +3,7 @@ package com.openxc.openxcdiagnostic.diagnostic.output;
 import java.util.ArrayList;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import com.openxc.messages.Command;
@@ -40,8 +41,10 @@ public class OutputTableManager implements DiagnosticManager  {
         setAdapter();
     }
     
-    public void scrollToTop() {
-        mOutputList.setSelection(0);
+    private boolean shouldScrollToTop(VehicleMessage response) {
+        return ((response instanceof CommandResponse && mContext.isDisplayingCommands()) 
+                || (response instanceof DiagnosticResponse && !mContext.isDisplayingCommands()))
+                && mContext.shouldScroll();
     }
     
     private void setAdapter() {    
@@ -52,10 +55,6 @@ public class OutputTableManager implements DiagnosticManager  {
             adapter = new TableAdapter(mContext, mDiagnosticRows);
         }  
         mOutputList.setAdapter(adapter);
-    }
-    
-    private void updateAdapter() {
-        ((TableAdapter) mOutputList.getAdapter()).notifyDataSetChanged();
     }
     
     private ArrayList<OutputRow> loadSavedCommandRows() {  
@@ -69,7 +68,6 @@ public class OutputTableManager implements DiagnosticManager  {
     private ArrayList<OutputRow> generateRowsFromPairs(ArrayList<? extends Pair> pairs) {
         
         ArrayList<OutputRow> rows = new ArrayList<>();
-
         for (int i=0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
             rows.add(new OutputRow(mContext, this, pair.getRequest(), pair.getResponse()));
@@ -80,15 +78,25 @@ public class OutputTableManager implements DiagnosticManager  {
     
     public void add(VehicleMessage req, VehicleMessage resp) {
         
-        if (req instanceof DiagnosticRequest && resp instanceof DiagnosticResponse) {
-            save((DiagnosticRequest) req, (DiagnosticResponse) resp);
-        } else if (req instanceof Command && resp instanceof CommandResponse) {
-            save((Command) req, (CommandResponse) resp);
+        //if pairs correspond correctly
+        if ((req instanceof DiagnosticRequest && resp instanceof DiagnosticResponse) || 
+                (req instanceof Command && resp instanceof CommandResponse)) {
+            
+            //fix scroll position of table after adding row
+            int index = 0;
+            int distance = 0;
+            if (!shouldScrollToTop(resp)) {
+                index = mOutputList.getFirstVisiblePosition();
+                View v = mOutputList.getChildAt(0);
+                distance = (v == null) ? 0 : v.getTop() - v.getHeight();
+            }
+            save(req, resp);
+            mOutputList.setSelectionFromTop(index, distance);
         } else {
             Log.e(TAG, "Unable to add mismatched VehicleMessage types to table.");
         }
     }
-
+    
     private void save(VehicleMessage req, VehicleMessage resp) {   
         OutputRow row = new OutputRow(mContext, this, req, resp);
         if (row.getPair() instanceof DiagnosticPair) {
@@ -98,7 +106,7 @@ public class OutputTableManager implements DiagnosticManager  {
         }
         
         mSaver.add(row);
-        updateAdapter();
+        setAdapter();
     }
 
     public void removeRow(OutputRow row) {
@@ -110,19 +118,19 @@ public class OutputTableManager implements DiagnosticManager  {
         }
         
         mSaver.remove(row);
-        updateAdapter();
+        setAdapter();
     }
     
     public void deleteAllDiagnosticResponses() {
         mDiagnosticRows = new ArrayList<>();
         mSaver.deleteAllDiagnosticRows();
-        updateAdapter();
+        setAdapter();
     }
     
     public void deleteAllCommandResponses() {
         mCommandRows = new ArrayList<>();
         mSaver.deleteAllCommandRows();
-        updateAdapter();
+        setAdapter();
     }
     
 }

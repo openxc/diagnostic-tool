@@ -17,6 +17,18 @@
     <include layout="@layout/horizontalline" />
     
     <LinearLayout style="@style/SettingsRow">
+        <CheckedTextView 
+            style="@style/SettingsItemLabel"
+            android:id="@+id/responseScrollCheckBox"
+            android:text="@string/response_scroll_label" 
+            android:textIsSelectable="false" 
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="true"/>
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+    
+    <LinearLayout style="@style/SettingsRow">
         <TextView
             style="@style/SettingsItemLabel"
             android:text="@string/delete_diagnostic_responses_label" 

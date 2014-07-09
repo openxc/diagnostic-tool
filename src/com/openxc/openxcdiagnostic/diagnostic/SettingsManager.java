@@ -16,11 +16,20 @@ public class SettingsManager {
 
     private SharedPreferences mPreferences;
     private DiagnosticActivity mContext;
+    //this value is requested a lot, so more efficient to store and save when needed than to read 
+    //from preferences every time
     private boolean mDisplayCommands;
     
     public SettingsManager(DiagnosticActivity context) {
         mContext = context;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        
+        if (!mPreferences.contains(getSniffingCheckboxKey())) {
+            setShouldSniff(false);
+        }
+        if (!mPreferences.contains(getScrollingCheckboxKey())) {
+            setShouldScroll(true);
+        }
         mDisplayCommands = mPreferences.getBoolean(getDisplayCommandsKey(), false);
     }
         
@@ -50,6 +59,16 @@ public class SettingsManager {
                 } else {
                     mContext.stopSniffing();
                 }
+            }
+        });
+        
+        final CheckedTextView scrollingCheckBox = (CheckedTextView) layout.findViewById(R.id.responseScrollCheckBox);
+        scrollingCheckBox.setChecked(shouldScroll());
+        scrollingCheckBox.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollingCheckBox.setChecked(!scrollingCheckBox.isChecked());
+                setShouldScroll(scrollingCheckBox.isChecked());
             }
         });
         
@@ -125,9 +144,7 @@ public class SettingsManager {
     }
     
     private void setShouldDisplayCommands(boolean shouldDisplay) {
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(getDisplayCommandsKey(), shouldDisplay);
-        editor.commit();
+        save(getDisplayCommandsKey(), shouldDisplay);
         mDisplayCommands = shouldDisplay;
         mContext.setRequestCommandState(shouldDisplayCommands());
     }
@@ -136,9 +153,21 @@ public class SettingsManager {
         return mPreferences.getBoolean(getSniffingCheckboxKey(), false);
     }
     
-    public void setShouldSniff(boolean shouldSniff) {
+    public boolean shouldScroll() {
+        return mPreferences.getBoolean(getScrollingCheckboxKey(), true);
+    }
+    
+    private void setShouldSniff(boolean shouldSniff) {
+        save(getSniffingCheckboxKey(), shouldSniff);
+    }
+    
+    private void setShouldScroll(boolean shouldScroll) {
+        save(getScrollingCheckboxKey(), shouldScroll);
+    }
+    
+    private void save(String key, boolean value) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(getSniffingCheckboxKey(), shouldSniff);
+        editor.putBoolean(key, value);
         editor.commit();
     }
     
@@ -148,6 +177,10 @@ public class SettingsManager {
     
     private String getSniffingCheckboxKey() {
         return "sniffing_checkbox_key";
+    }
+    
+    private String getScrollingCheckboxKey() {
+        return "scrolling_checkbox_key";
     }
 
 }

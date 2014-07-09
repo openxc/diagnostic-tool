@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 
 public class TableAdapter extends ArrayAdapter<OutputRow> {
     
-    private final ArrayList<OutputRow> mRows;
+    private ArrayList<OutputRow> mRows;
 
     public TableAdapter(Context context, ArrayList<OutputRow> rows) {
         super(context, R.layout.diagoutputrow, rows);
@@ -21,5 +21,10 @@ public class TableAdapter extends ArrayAdapter<OutputRow> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return mRows.get(position).getView();
+    }
+    
+    public void refresh(ArrayList<OutputRow> rows) {
+        mRows = rows;
+        notifyDataSetChanged();
     }
 }

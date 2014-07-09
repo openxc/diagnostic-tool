@@ -58,10 +58,6 @@ public class DiagnosticActivity extends Activity {
                         mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
                                 DiagnosticActivity.this.mResponseListener);
                     }*/
-                    
-                    if (shouldScrollOutputToTop(response)) {
-                        scrollOutputToTop();
-                    }
                 }
             });
         }
@@ -88,13 +84,8 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
-    private boolean shouldScrollOutputToTop(VehicleMessage response) {
-        return (response instanceof CommandResponse && isDisplayingCommands()) 
-                || (response instanceof DiagnosticResponse && !isDisplayingCommands());
-    }
-
-    private void scrollOutputToTop() {
-        mOutputTableManager.scrollToTop();
+    public boolean shouldScroll() {
+        return mSettingsManager.shouldScroll();
     }
 
     public void clearDiagnosticTable() {
