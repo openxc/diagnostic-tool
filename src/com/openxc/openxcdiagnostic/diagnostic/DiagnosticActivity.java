@@ -43,6 +43,8 @@ public class DiagnosticActivity extends Activity {
     
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
+    
+    boolean emulate = false;
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -84,18 +86,6 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
-    public boolean shouldScroll() {
-        return mSettingsManager.shouldScroll();
-    }
-
-    public void clearDiagnosticTable() {
-        mOutputTableManager.deleteAllDiagnosticResponses();
-    }
-    
-    public void clearCommandTable() {
-        mOutputTableManager.deleteAllCommandResponses();
-    }
-    
     private VehicleMessage findRequest(VehicleMessage message) {
         
         if (message instanceof DiagnosticResponse) {
@@ -123,23 +113,24 @@ public class DiagnosticActivity extends Activity {
     public void send(VehicleMessage request) {
                 
         if (request instanceof DiagnosticRequest) {
-            // TODO JUST FOR TESTING!
-            DiagnosticRequest diagRequest = (DiagnosticRequest) request;
-            outstandingRequests.add(diagRequest);
-            mResponseListener.receive(Utilities.generateRandomFakeResponse(diagRequest));
+            outstandingRequests.add((DiagnosticRequest) request);
+            if (emulate) {
+                mResponseListener.receive(Utilities.generateRandomFakeResponse((DiagnosticRequest) request));
+            }
         } else if (request instanceof Command) {
-            // TODO JUST FOR TESTING!
-            Command command = (Command) request;
-            outstandingCommands.add(command);
-            mResponseListener.receive(Utilities.generateRandomFakeCommandResponse(command));
+            outstandingCommands.add((Command) request);
+            if (emulate) {
+                mResponseListener.receive(Utilities.generateRandomFakeCommandResponse((Command) request));
+            }
         } else {
             Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
             return;
         }
         
-        //TODO uncomment when actually communicating with VI
-        //registerForResponse(request);
-        //mVehicleManager.send(request);
+        if (!emulate) {
+            registerForResponse(request);
+            mVehicleManager.send(request);
+        }
     }
     
     private void registerForResponse(VehicleMessage request) {
@@ -192,6 +183,18 @@ public class DiagnosticActivity extends Activity {
 
     public void launchSettings() {
         mSettingsManager.showAlert();
+    }
+    
+    public boolean shouldScroll() {
+        return mSettingsManager.shouldScroll();
+    }
+
+    public void clearDiagnosticTable() {
+        mOutputTableManager.deleteAllDiagnosticResponses();
+    }
+    
+    public void clearCommandTable() {
+        mOutputTableManager.deleteAllCommandResponses();
     }
     
     public void hideKeyboard() {

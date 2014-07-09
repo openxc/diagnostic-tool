@@ -314,7 +314,7 @@ public class InputManager implements DiagnosticManager {
             return failAndToastError("Entered Bus does not appear to be an integer.");
         }
         try {
-            id = Integer.parseInt(getIdInput());
+            id = Integer.parseInt(getIdInput(), 16);
             if (id < 0) {
                 return failAndToastError("Id cannot be negative.");
             }
@@ -405,9 +405,16 @@ public class InputManager implements DiagnosticManager {
         String commandInput = getCommandInput();
         if (commandInput.equals("")) {
             return failAndToastCommandError("Command cannot be empty.");
+        } 
+        
+        Command.CommandType[] values = Command.CommandType.values();
+        for (int i=0; i < values.length; i++) {
+            Command.CommandType type = values[i];
+            if (type.toString().equals(commandInput)) {
+                return new Command(type);
+            }
         }
-        //TODO
-        return new Command(Command.CommandType.DEVICE_ID);
+       return null;
     }
 
     private String getFrequencyInput() {
