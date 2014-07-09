@@ -29,7 +29,9 @@
         <EditText
             android:id="@+id/idInput"
             style="@style/DiagInputText"
-            android:inputType="number"/>    
+            android:digits="0123456789ABCDEF"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="2"/>    
         
     </LinearLayout>
              
