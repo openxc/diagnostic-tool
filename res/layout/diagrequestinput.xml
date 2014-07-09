@@ -31,7 +31,7 @@
             style="@style/DiagInputText"
             android:digits="0123456789ABCDEF"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="2"/>    
+            android:maxLength="4"/>    
         
     </LinearLayout>
              
