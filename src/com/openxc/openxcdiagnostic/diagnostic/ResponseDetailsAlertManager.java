@@ -15,6 +15,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -47,17 +48,17 @@ public class ResponseDetailsAlertManager {
         if (reqMessage instanceof DiagnosticRequest) {
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
             createAndAddHeaderRow(context, requestTable, context.getResources().getString(R.string.alert_request_header));
-            createAndAddRow(context, requestTable, "bus", Utilities.getBusOutput(req), req);
-            createAndAddRow(context, requestTable, "id", Utilities.getIdOutput(req), req);
-            createAndAddRow(context, requestTable, "mode", Utilities.getModeOutput(req), req);
-            createAndAddRow(context, requestTable, "pid", Utilities.getPidOutput(req), req);
-            createAndAddRow(context, requestTable, "payload", Utilities.getPayloadOutput(req), req);
-            createAndAddRow(context, requestTable, "frequency", Utilities.getFrequencyOutput(req), req);
-            createAndAddRow(context, requestTable, "name", Utilities.getNameOutput(req), req);
+            createAndAddRow(context, requestTable, "bus", Formatter.getBusOutput(req), req);
+            createAndAddRow(context, requestTable, "id", Formatter.getIdOutput(req), req);
+            createAndAddRow(context, requestTable, "mode", Formatter.getModeOutput(req), req);
+            createAndAddRow(context, requestTable, "pid", Formatter.getPidOutput(req), req);
+            createAndAddRow(context, requestTable, "payload", Formatter.getPayloadOutput(req), req);
+            createAndAddRow(context, requestTable, "frequency", Formatter.getFrequencyOutput(req), req);
+            createAndAddRow(context, requestTable, "name", Formatter.getNameOutput(req), req);
         } else if (reqMessage instanceof Command) {
             Command command = (Command) reqMessage;
             createAndAddHeaderRow(context, requestTable, context.getResources().getString(R.string.alert_command_header));
-            createAndAddRow(context, requestTable, "command", Utilities.getCommandOutput(command), command);
+            createAndAddRow(context, requestTable, "command", Formatter.getCommandOutput(command), command);
         }
         createAndAddButtonsRow(context, requestTable, reqMessage);
     }
@@ -118,12 +119,12 @@ public class ResponseDetailsAlertManager {
         createAndAddHeaderRow(context, responseTable, context.getResources().getString(R.string.alert_response_header));
         if (respMessage instanceof DiagnosticResponse) {
             DiagnosticResponse resp = (DiagnosticResponse) respMessage;
-            createAndAddRow(context, responseTable, "bus", Utilities.getBusOutput(resp), resp);
-            createAndAddRow(context, responseTable, "id", Utilities.getIdOutput(resp), resp);
-            createAndAddRow(context, responseTable, "mode", Utilities.getModeOutput(resp), resp);
-            createAndAddRow(context, responseTable, "pid", Utilities.getPidOutput(resp), resp);
+            createAndAddRow(context, responseTable, "bus", Formatter.getBusOutput(resp), resp);
+            createAndAddRow(context, responseTable, "id", Formatter.getIdOutput(resp), resp);
+            createAndAddRow(context, responseTable, "mode", Formatter.getModeOutput(resp), resp);
+            createAndAddRow(context, responseTable, "pid", Formatter.getPidOutput(resp), resp);
             boolean responseSuccess = resp.isSuccessful();
-            createAndAddRow(context, responseTable, "success", Utilities.getSuccessOutput(resp), resp);
+            createAndAddRow(context, responseTable, "success", Formatter.getSuccessOutput(resp), resp);
             if (responseSuccess) {
                 fillTableWithSuccessDetails(responseTable, context, resp);
             } else {
@@ -131,18 +132,18 @@ public class ResponseDetailsAlertManager {
             }
         } else if (respMessage instanceof CommandResponse) {
             CommandResponse resp = (CommandResponse) respMessage;
-            createAndAddRow(context, responseTable, "message", Utilities.getMessageOutput(resp), resp);
+            createAndAddRow(context, responseTable, "message", Formatter.getMessageOutput(resp), resp);
         }
     }
     
     private static void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         
-        createAndAddRow(context, responseTable, "payload", Utilities.getPayloadOutput(resp), resp);
-        createAndAddRow(context, responseTable, "value", Utilities.getValueOutput(resp), resp);
+        createAndAddRow(context, responseTable, "payload", Formatter.getPayloadOutput(resp), resp);
+        createAndAddRow(context, responseTable, "value", Formatter.getValueOutput(resp), resp);
     }
     
     private static void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
-        createAndAddRow(context, responseTable, "code", Utilities.getResponseCodeOutput(resp), 
+        createAndAddRow(context, responseTable, "code", Formatter.getResponseCodeOutput(resp), 
                 resp);
     }
 
@@ -154,7 +155,7 @@ public class ResponseDetailsAlertManager {
         TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
         valueText.setText(value);
         if (msg instanceof DiagnosticResponse) {
-            valueText.setTextColor(Utilities.getOutputColor(context, 
+            valueText.setTextColor(Formatter.getOutputColor(context, 
                     (DiagnosticResponse) msg));
         } 
         parent.addView(row);

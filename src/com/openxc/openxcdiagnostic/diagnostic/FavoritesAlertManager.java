@@ -18,6 +18,7 @@ import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
@@ -115,38 +116,38 @@ public class FavoritesAlertManager implements DiagnosticManager {
             final TextView nameData = (TextView) row.findViewById(R.id.favoritesNameData);
             TextView nameHeader = (TextView) favoritesLayout.findViewById(R.id.nameHeader);
             headerMatcher.put(nameHeader, nameData);
-            nameData.setText(Utilities.getNameOutput(req));
+            nameData.setText(Formatter.getNameOutput(req));
             
             final TextView busData = (TextView) row.findViewById(R.id.favoritesBusData);
             TextView busHeader = (TextView) favoritesLayout.findViewById(R.id.busHeader);
             headerMatcher.put(busHeader, busData);
-            busData.setText(Utilities.getBusOutput(req));
+            busData.setText(Formatter.getBusOutput(req));
             
             final TextView idData = (TextView) row.findViewById(R.id.favoritesIdData);
             TextView idHeader = (TextView) favoritesLayout.findViewById(R.id.idHeader);
             headerMatcher.put(idHeader, idData);
-            idData.setText(Utilities.getIdOutput(req));
+            idData.setText(Formatter.getIdOutput(req));
             
             final TextView modeData = (TextView) row.findViewById(R.id.favoritesModeData);
             TextView modeHeader = (TextView) favoritesLayout.findViewById(R.id.modeHeader);
             headerMatcher.put(modeHeader, modeData);
-            modeData.setText(Utilities.getModeOutput(req));
+            modeData.setText(Formatter.getModeOutput(req));
             
             final TextView pidData = (TextView) row.findViewById(R.id.favoritesPidData);
             TextView pidHeader = (TextView) favoritesLayout.findViewById(R.id.pidHeader);
             headerMatcher.put(pidHeader, pidData);
-            pidData.setText(Utilities.getPidOutput(req));
+            pidData.setText(Formatter.getPidOutput(req));
             
             final TextView payloadData = (TextView) row.findViewById(R.id.favoritesPayloadData);
             TextView payloadHeader = (TextView) favoritesLayout.findViewById(R.id.payloadHeader);
             headerMatcher.put(payloadHeader, payloadData);
-            payloadData.setText(Utilities.getPayloadOutput(req));   
+            payloadData.setText(Formatter.getPayloadOutput(req));   
         } else {
                         
             final TextView commandData = (TextView) row.findViewById(R.id.favoritesCommandData);
             TextView commandHeader = (TextView) favoritesLayout.findViewById(R.id.commandHeader);
             headerMatcher.put(commandHeader, commandData);
-            commandData.setText(Utilities.getCommandOutput((Command) reqMessage));
+            commandData.setText(Formatter.getCommandOutput((Command) reqMessage));
         }
         
         //the columns of the table don't line up if you let android do it "on layout",

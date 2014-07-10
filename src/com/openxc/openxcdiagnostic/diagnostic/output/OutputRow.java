@@ -18,6 +18,7 @@ import com.openxc.openxcdiagnostic.diagnostic.ResponseDetailsAlertManager;
 import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
+import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -92,7 +93,7 @@ public class OutputRow {
         TextView valueText = (TextView) row.findViewById(R.id.outputTableRowValue);
         valueText.setText(value);
         if (msg instanceof DiagnosticResponse) {
-            valueText.setTextColor(Utilities.getOutputColor(context, (DiagnosticResponse) msg));
+            valueText.setTextColor(Formatter.getOutputColor(context, (DiagnosticResponse) msg));
         }
         parent.addView(row);
     }
@@ -103,12 +104,12 @@ public class OutputRow {
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
             if (msgResponse instanceof DiagnosticResponse) {
                 DiagnosticResponse resp = (DiagnosticResponse) msgResponse;
-                createAndAddRowToOutput(context, infoTable, "bus", Utilities.getBusOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "id", Utilities.getIdOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "mode", Utilities.getModeOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "pid", Utilities.getPidOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "bus", Formatter.getBusOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "id", Formatter.getIdOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "mode", Formatter.getModeOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "pid", Formatter.getPidOutput(resp), resp);
                 boolean responseSuccess = resp.isSuccessful();
-                createAndAddRowToOutput(context, infoTable, "success", Utilities.getSuccessOutput(resp), resp);
+                createAndAddRowToOutput(context, infoTable, "success", Formatter.getSuccessOutput(resp), resp);
                 if (responseSuccess) {
                     fillOutputTableWithSuccessDetails(infoTable, context, resp);
                 } else {
@@ -117,20 +118,20 @@ public class OutputRow {
             } else if (msgResponse instanceof CommandResponse ){
                 CommandResponse cmdResponse = (CommandResponse) msgResponse;
                 createAndAddRowToOutput(context, infoTable, cmdResponse.getCommand().toString(), 
-                        Utilities.getMessageOutput(cmdResponse), cmdResponse);
+                        Formatter.getMessageOutput(cmdResponse), cmdResponse);
             }
     }
 
     private void fillOutputTableWithSuccessDetails(LinearLayout responseTable,
             Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "payload", Utilities.getPayloadOutput(resp), resp);
-        createAndAddRowToOutput(context, responseTable, "value", Utilities.getValueOutput(resp), resp);
+        createAndAddRowToOutput(context, responseTable, "payload", Formatter.getPayloadOutput(resp), resp);
+        createAndAddRowToOutput(context, responseTable, "value", Formatter.getValueOutput(resp), resp);
     }
 
     private void fillOutputTableWithFailureDetails(LinearLayout responseTable,
             Activity context, DiagnosticResponse resp) {
         createAndAddRowToOutput(context, responseTable, "neg. resp. code", 
-                Utilities.getOutputTableResponseCodeOutput(resp), resp);
+                Formatter.getOutputTableResponseCodeOutput(resp), resp);
     }
 
     public LinearLayout getView() {

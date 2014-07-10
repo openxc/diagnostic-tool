@@ -44,7 +44,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = false;
+    boolean emulate = true;
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
