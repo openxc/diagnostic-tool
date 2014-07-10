@@ -17,7 +17,6 @@ import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.Toaster;
-import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class ResponseDetailsAlertManager {
 

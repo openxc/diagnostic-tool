@@ -19,7 +19,6 @@ import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
-import com.openxc.openxcdiagnostic.R;
 
 public class Utilities {
 
