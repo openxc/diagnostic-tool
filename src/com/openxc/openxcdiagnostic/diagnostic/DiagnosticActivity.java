@@ -237,6 +237,7 @@ public class DiagnosticActivity extends Activity {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         //TODO
         //mVehicleManager.removeListener(mResponseListener);
     }
