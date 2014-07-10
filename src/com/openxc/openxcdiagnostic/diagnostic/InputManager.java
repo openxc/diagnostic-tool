@@ -211,7 +211,7 @@ public class InputManager implements DiagnosticManager {
         textFields.add(mBusInputText);
 
         mIdInputText = (EditText) parent.findViewById(R.id.idInput);
-        mIdInputText.setHint("#");
+        mIdInputText.setHint("0x");
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) parent.findViewById(R.id.modeInput);

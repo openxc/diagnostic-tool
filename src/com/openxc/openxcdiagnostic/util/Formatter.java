@@ -30,11 +30,13 @@ public class Formatter {
     }
 
     public static String getIdOutput(DiagnosticRequest req) {
-        return padRight(String.valueOf(req.getId()));
+        return padRight("0x"
+                + Integer.toHexString(req.getId()).toUpperCase(Locale.US));
     }
 
     public static String getIdOutput(DiagnosticResponse resp) {
-        return padRight(String.valueOf(resp.getId()));
+        return padRight("0x"
+                + Integer.toHexString(resp.getId()).toUpperCase(Locale.US));
     }
 
     public static String getModeOutput(DiagnosticRequest req) {
