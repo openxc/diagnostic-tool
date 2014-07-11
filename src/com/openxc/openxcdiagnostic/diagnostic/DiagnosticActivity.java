@@ -21,6 +21,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.ExactKeyMatcher;
 import com.openxc.messages.KeyMatcher;
+import com.openxc.messages.KeyedMessage;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
@@ -44,7 +45,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = true;
+    boolean emulate = false;
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -238,8 +239,14 @@ public class DiagnosticActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //TODO
-        //mVehicleManager.removeListener(mResponseListener);
+        removeListener(outstandingCommands, mResponseListener);
+        removeListener(outstandingRequests, mResponseListener);
+    }
+    
+    private void removeListener(ArrayList<? extends KeyedMessage> commands, VehicleMessage.Listener listener) {
+        for (int i=0; i < commands.size(); i++) {
+            mVehicleManager.removeListener(commands.get(i), listener);
+        }
     }
 
     @Override
