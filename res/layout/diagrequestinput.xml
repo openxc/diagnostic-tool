@@ -62,7 +62,9 @@
         <EditText
             android:id="@+id/pidInput"
             style="@style/DiagInputText"
-            android:inputType="number"/>    
+            android:digits="0123456789ABCDEF"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="4"/>    
                  
     </LinearLayout>
              

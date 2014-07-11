@@ -365,7 +365,7 @@ public class InputManager implements DiagnosticManager {
             String pidInput = getPidInput();
             // pid is optional, ok if empty
             if (!pidInput.equals("")) {
-                int pid = Integer.parseInt(pidInput);
+                int pid = Integer.parseInt(pidInput, 16);
                 if (pid > 0) {
                     request.setPid(pid);
                 } else {
