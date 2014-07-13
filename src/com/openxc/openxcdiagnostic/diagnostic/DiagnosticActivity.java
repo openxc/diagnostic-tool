@@ -207,11 +207,13 @@ public class DiagnosticActivity extends Activity {
     
     public void hideKeyboard() {
 
-        InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        if (manager.isAcceptingText()) {
-            manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if(getCurrentFocus() != null) {
+            InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            if (manager.isAcceptingText()) {
+                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+            getCurrentFocus().clearFocus();
         }
-        getCurrentFocus().clearFocus();
     }
     
     public void setRequestCommandState(boolean displayCommands) {        
