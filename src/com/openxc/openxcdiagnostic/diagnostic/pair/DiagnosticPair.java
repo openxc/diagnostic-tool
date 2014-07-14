@@ -1,5 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic.pair;
 
+import com.google.common.base.Objects;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 
@@ -28,7 +29,7 @@ public class DiagnosticPair implements Pair {
         }
 
         final DiagnosticPair other = (DiagnosticPair) obj;
-        return mRequest.equals(other.mRequest) && mResponse.equals(other.mResponse);
+        return Objects.equal(mRequest, other.mRequest) && mResponse.equals(other.mResponse);
     }
     
 }

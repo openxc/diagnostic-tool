@@ -75,11 +75,14 @@ public class OutputRow {
                 String message;
                 if (req instanceof DiagnosticRequest) {
                     message = "Resending Request.";
-                } else {
+                    context.send(req);
+                } else if (req instanceof Command) {
                     message = "Resending Command.";
+                    context.send(req);
+                } else {
+                    message = "Cannot be resent...no request/command found.";
                 }
                 Toaster.showToast(context, message);
-                context.send(req);
             }
         });
     }
@@ -139,10 +142,11 @@ public class OutputRow {
     }
 
     public Pair getPair() {
-        if (mRequest instanceof DiagnosticRequest) {
-            return new DiagnosticPair((DiagnosticRequest) mRequest, (DiagnosticResponse) mResponse);
+        if (mResponse instanceof DiagnosticResponse) {
+            return new DiagnosticPair(mRequest == null ? null : (DiagnosticRequest) mRequest,
+                    (DiagnosticResponse) mResponse);
         }
-        return new CommandPair((Command) mRequest, (CommandResponse) mResponse);
+        return new CommandPair(mRequest == null ? null : (Command) mRequest, (CommandResponse) mResponse);
     }
 
 }

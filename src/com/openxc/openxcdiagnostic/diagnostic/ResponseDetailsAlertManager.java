@@ -22,7 +22,7 @@ public class ResponseDetailsAlertManager {
 
     private ResponseDetailsAlertManager() { }
     
-    public static void show(Activity context, VehicleMessage req, VehicleMessage resp) {
+    public static void show(DiagnosticActivity context, VehicleMessage req, VehicleMessage resp) {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LinearLayout alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
@@ -40,7 +40,7 @@ public class ResponseDetailsAlertManager {
         builder.create().show();
     }
     
-    private static void fillRequestTable(LinearLayout alertLayout, Activity context, VehicleMessage reqMessage) {
+    private static void fillRequestTable(LinearLayout alertLayout, DiagnosticActivity context, VehicleMessage reqMessage) {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
         
@@ -54,12 +54,21 @@ public class ResponseDetailsAlertManager {
             createAndAddRow(context, requestTable, "payload", Formatter.getPayloadOutput(req), req);
             createAndAddRow(context, requestTable, "frequency", Formatter.getFrequencyOutput(req), req);
             createAndAddRow(context, requestTable, "name", Formatter.getNameOutput(req), req);
+            createAndAddButtonsRow(context, requestTable, reqMessage);
         } else if (reqMessage instanceof Command) {
             Command command = (Command) reqMessage;
             createAndAddHeaderRow(context, requestTable, context.getResources().getString(R.string.alert_command_header));
             createAndAddRow(context, requestTable, "command", Formatter.getCommandOutput(command), command);
+            createAndAddButtonsRow(context, requestTable, reqMessage);
+        } else if (reqMessage == null) {
+            String message;
+            if (context.isDisplayingCommands()) {
+                message = "No Command Found";
+            } else {
+                message = "No Request Found";
+            }
+            createAndAddHeaderRow(context, requestTable, message);
         }
-        createAndAddButtonsRow(context, requestTable, reqMessage);
     }
     
     private static void createAndAddButtonsRow(final Activity context, LinearLayout parent,

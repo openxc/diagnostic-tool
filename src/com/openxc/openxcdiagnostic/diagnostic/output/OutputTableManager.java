@@ -79,8 +79,7 @@ public class OutputTableManager implements DiagnosticManager  {
     public void add(VehicleMessage req, VehicleMessage resp) {
         
         //if pairs correspond correctly
-        if ((req instanceof DiagnosticRequest && resp instanceof DiagnosticResponse) || 
-                (req instanceof Command && resp instanceof CommandResponse)) {
+        if (correspond(req, resp)) {
             
             //fix scroll position of table after adding row
             int index = 0;
@@ -95,6 +94,29 @@ public class OutputTableManager implements DiagnosticManager  {
         } else {
             Log.e(TAG, "Unable to add mismatched VehicleMessage types to table.");
         }
+    }
+    
+    private boolean correspond(VehicleMessage req, VehicleMessage resp) {
+        boolean bothValid = (isDiagnosticRequest(req) && isDiagnosticResponse(resp)) || 
+        (isCommand(req) && isCommandResponse(resp));
+        boolean nullReqValidResp = (req == null && (isDiagnosticResponse(resp) || isCommandResponse(resp)));
+        return bothValid || nullReqValidResp;
+    }
+    
+    private boolean isCommand(VehicleMessage msg) {
+        return msg instanceof Command;
+    }
+    
+    private boolean isDiagnosticRequest(VehicleMessage msg) {
+        return msg instanceof DiagnosticRequest;
+    }
+    
+    private boolean isDiagnosticResponse(VehicleMessage msg) {
+        return msg instanceof DiagnosticResponse;
+    }
+    
+    private boolean isCommandResponse(VehicleMessage msg) {
+        return msg instanceof CommandResponse;
     }
     
     private void save(VehicleMessage req, VehicleMessage resp) {   

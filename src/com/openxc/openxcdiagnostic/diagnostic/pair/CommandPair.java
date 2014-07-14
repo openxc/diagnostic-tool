@@ -1,5 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic.pair;
 
+import com.google.common.base.Objects;
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 
@@ -27,8 +28,9 @@ public class CommandPair implements Pair {
             return false;
         }
 
+        
         final CommandPair other = (CommandPair) obj;
-        return mCommand.equals(other.mCommand) && mCommandResponse.equals(other.mCommandResponse);
+        return Objects.equal(mCommand, other.mCommand) && mCommandResponse.equals(other.mCommandResponse);
     }
-    
+
 }
