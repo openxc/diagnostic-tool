@@ -1,5 +1,8 @@
 package com.openxc.openxcdiagnostic.util;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -43,10 +46,12 @@ public class Utilities {
         int mode = request.getMode();
         Integer pid = request.getPid();
         boolean success = rnd.nextBoolean();
-        float value = 0;
+        double value = 0;
         NegativeResponseCode responseCode = NegativeResponseCode.NONE;
         if (success) {
-            value = rnd.nextFloat();
+            BigDecimal bd = new BigDecimal(rnd.nextFloat());
+            bd = bd.round(new MathContext(4, RoundingMode.HALF_UP));
+            value = bd.doubleValue();
         } else {
             responseCode = negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size()));
         }
