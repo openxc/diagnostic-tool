@@ -168,8 +168,8 @@ public class FavoritesAlertManager implements DiagnosticManager {
             }); 
         }
         
-        Button selectButton =  (Button) row.findViewById(R.id.favoritesRowSelectButton);
-        selectButton.setOnClickListener(new OnClickListener() {
+        ((Button) row.findViewById(R.id.favoritesRowSelectButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAlert.cancel();
@@ -177,8 +177,8 @@ public class FavoritesAlertManager implements DiagnosticManager {
             }
         });
         
-        Button deleteButton =  (Button) row.findViewById(R.id.favoritesRowDeleteButton);
-        deleteButton.setOnClickListener(new OnClickListener() {
+        ((Button) row.findViewById(R.id.favoritesRowDeleteButton))
+        .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
