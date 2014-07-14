@@ -41,7 +41,7 @@ public class Formatter {
     }
 
     public static String getPidOutput(DiagnosticMessage msg) {
-        return msg.getPid() == null ? "" : padRight(String.valueOf(msg.getPid()));
+        return msg.getPid() == null ? "" : padRight("0x" + Integer.toHexString(msg.getPid()).toUpperCase(Locale.US));
     }
 
     public static String getPayloadOutput(DiagnosticMessage msg) {

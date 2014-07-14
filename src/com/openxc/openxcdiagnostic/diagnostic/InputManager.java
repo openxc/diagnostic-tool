@@ -90,15 +90,11 @@ public class InputManager implements DiagnosticManager {
 
     private void populateFields(DiagnosticRequest req) {
         mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));
-        mBusInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getBusId())));
-        mIdInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getId())));
-        mModeInputText.setText(selfOrEmptyIfNull(Integer.toHexString(req.getMode()).toUpperCase(Locale.US)));
-        mPidInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getPid())));
-        if (req.getPayload() != null) {
-            mPayloadInputText.setText(selfOrEmptyIfNull(new String(req.getPayload())));
-        } else {
-            mPayloadInputText.setText("");
-        }
+        mBusInputText.setText(String.valueOf(req.getBusId()));
+        mIdInputText.setText(Integer.toHexString(req.getId()).toUpperCase(Locale.US));
+        mModeInputText.setText(Integer.toHexString(req.getMode()).toUpperCase(Locale.US));
+        mPidInputText.setText(req.getPid() == null ? "" : Integer.toHexString(req.getPid()).toUpperCase(Locale.US));
+        mPayloadInputText.setText(req.getPayload() == null ? "" : new String(req.getPayload()));
         mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
     
@@ -222,7 +218,7 @@ public class InputManager implements DiagnosticManager {
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) parent.findViewById(R.id.pidInput);
-        mPidInputText.setHint("#");
+        mPidInputText.setHint("0x");
         textFields.add(mPidInputText);
 
         mPayloadInputText = (EditText) parent.findViewById(R.id.payloadInput);
