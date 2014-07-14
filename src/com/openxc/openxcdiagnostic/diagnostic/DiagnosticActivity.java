@@ -89,7 +89,7 @@ public class DiagnosticActivity extends Activity {
     
     private VehicleMessage findRequest(VehicleMessage message) {
         
-        if (message instanceof DiagnosticResponse) {
+        if (Utilities.isDiagnosticResponse(message)) {
             ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) message);
             for (int i=0; i < outstandingRequests.size(); i++) {
                 DiagnosticRequest request = outstandingRequests.get(i);
@@ -98,7 +98,7 @@ public class DiagnosticActivity extends Activity {
                     return request;
                 }
             }
-        } else if (message instanceof CommandResponse) {
+        } else if (Utilities.isCommandResponse(message)) {
             ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) message);
             for (int i=0; i < outstandingCommands.size(); i++) {
                 Command command = outstandingCommands.get(i);
@@ -113,12 +113,12 @@ public class DiagnosticActivity extends Activity {
 
     public void send(VehicleMessage request) {
                 
-        if (request instanceof DiagnosticRequest) {
+        if (Utilities.isDiagnosticRequest(request)) {
             outstandingRequests.add((DiagnosticRequest) request);
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeResponse((DiagnosticRequest) request));
             }
-        } else if (request instanceof Command) {
+        } else if (Utilities.isCommand(request)) {
             outstandingCommands.add((Command) request);
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeCommandResponse((Command) request));
@@ -135,9 +135,9 @@ public class DiagnosticActivity extends Activity {
     }
     
     private void registerForResponse(VehicleMessage request) {
-        if (request instanceof DiagnosticRequest) {
+        if (Utilities.isDiagnosticRequest(request)) {
             mVehicleManager.addListener((DiagnosticRequest) request, mResponseListener);
-        } else if (request instanceof Command) {
+        } else if (Utilities.isCommand(request)) {
             mVehicleManager.addListener((Command) request, mResponseListener);
         } else {
             Log.w(TAG, "Unable to register for response of type: " + request.getClass());

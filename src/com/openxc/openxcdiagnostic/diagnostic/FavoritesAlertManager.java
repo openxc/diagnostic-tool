@@ -109,7 +109,7 @@ public class FavoritesAlertManager implements DiagnosticManager {
         
         setRowDataFormat(row);
         
-        if (reqMessage instanceof DiagnosticRequest) {
+        if (Utilities.isDiagnosticRequest(reqMessage)) {
              
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
             

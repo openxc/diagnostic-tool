@@ -75,9 +75,9 @@ public class InputManager implements DiagnosticManager {
     }
     
     public void populateFields(VehicleMessage message) {
-        if (message instanceof DiagnosticRequest) {
+        if (Utilities.isDiagnosticRequest(message)) {
             populateFields((DiagnosticRequest) message);
-        } else if (message instanceof Command){ 
+        } else if (Utilities.isCommand(message)){ 
             populateFields((Command) message);
         } else {
             Log.w(TAG, "Unable to populate fields from message from favorites of type " + message.getClass().toString());

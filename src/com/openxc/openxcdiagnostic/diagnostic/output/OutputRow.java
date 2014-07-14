@@ -73,10 +73,10 @@ public class OutputRow {
             @Override
             public void onClick(View v) {
                 String message;
-                if (req instanceof DiagnosticRequest) {
+                if (Utilities.isDiagnosticRequest(req)) {
                     message = "Resending Request.";
                     context.send(req);
-                } else if (req instanceof Command) {
+                } else if (Utilities.isCommand(req)) {
                     message = "Resending Command.";
                     context.send(req);
                 } else {
@@ -95,7 +95,7 @@ public class OutputRow {
 
         TextView valueText = (TextView) row.findViewById(R.id.outputTableRowValue);
         valueText.setText(value);
-        if (msg instanceof DiagnosticResponse) {
+        if (Utilities.isDiagnosticResponse(msg)) {
             valueText.setTextColor(Formatter.getOutputColor(context, (DiagnosticResponse) msg));
         }
         parent.addView(row);
@@ -105,7 +105,7 @@ public class OutputRow {
             final VehicleMessage msgResponse) {
 
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-            if (msgResponse instanceof DiagnosticResponse) {
+            if (Utilities.isDiagnosticResponse(msgResponse)) {
                 DiagnosticResponse resp = (DiagnosticResponse) msgResponse;
                 createAndAddRowToOutput(context, infoTable, "bus", Formatter.getBusOutput(resp), resp);
                 createAndAddRowToOutput(context, infoTable, "id", Formatter.getIdOutput(resp), resp);
@@ -118,7 +118,7 @@ public class OutputRow {
                 } else {
                     fillOutputTableWithFailureDetails(infoTable, context, resp);
                 }
-            } else if (msgResponse instanceof CommandResponse ){
+            } else if (Utilities.isCommandResponse(msgResponse)){
                 CommandResponse cmdResponse = (CommandResponse) msgResponse;
                 createAndAddRowToOutput(context, infoTable, cmdResponse.getCommand().toString(), 
                         Formatter.getMessageOutput(cmdResponse), cmdResponse);
@@ -142,7 +142,7 @@ public class OutputRow {
     }
 
     public Pair getPair() {
-        if (mResponse instanceof DiagnosticResponse) {
+        if (Utilities.isDiagnosticResponse(mResponse)) {
             return new DiagnosticPair(mRequest == null ? null : (DiagnosticRequest) mRequest,
                     (DiagnosticResponse) mResponse);
         }

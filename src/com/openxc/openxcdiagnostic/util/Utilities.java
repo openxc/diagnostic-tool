@@ -21,6 +21,7 @@ import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.VehicleMessage;
 import com.openxc.messages.DiagnosticResponse.NegativeResponseCode;
 
 public class Utilities {
@@ -28,6 +29,22 @@ public class Utilities {
     private static Random rnd = new Random();
 
     private Utilities() {
+    }
+    
+    public static boolean isCommand(VehicleMessage msg) {
+        return msg instanceof Command;
+    }
+    
+    public static boolean isDiagnosticRequest(VehicleMessage msg) {
+        return msg instanceof DiagnosticRequest;
+    }
+    
+    public static boolean isDiagnosticResponse(VehicleMessage msg) {
+        return msg instanceof DiagnosticResponse;
+    }
+    
+    public static boolean isCommandResponse(VehicleMessage msg) {
+        return msg instanceof CommandResponse;
     }
 
     // this contains NegativeResponseCode.None, but ok because it's just

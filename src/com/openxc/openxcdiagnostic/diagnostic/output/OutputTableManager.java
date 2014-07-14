@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
-import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
@@ -16,6 +14,7 @@ import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticManager;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class OutputTableManager implements DiagnosticManager  {
 
@@ -42,8 +41,8 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     private boolean shouldScrollToTop(VehicleMessage response) {
-        return ((response instanceof CommandResponse && mContext.isDisplayingCommands()) 
-                || (response instanceof DiagnosticResponse && !mContext.isDisplayingCommands()))
+        return ((Utilities.isCommandResponse(response) && mContext.isDisplayingCommands()) 
+                || (Utilities.isDiagnosticResponse(response) && !mContext.isDisplayingCommands()))
                 && mContext.shouldScroll();
     }
     
@@ -97,26 +96,11 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     private boolean correspond(VehicleMessage req, VehicleMessage resp) {
-        boolean bothValid = (isDiagnosticRequest(req) && isDiagnosticResponse(resp)) || 
-        (isCommand(req) && isCommandResponse(resp));
-        boolean nullReqValidResp = (req == null && (isDiagnosticResponse(resp) || isCommandResponse(resp)));
+        boolean bothValid = (Utilities.isDiagnosticRequest(req) && Utilities.isDiagnosticResponse(resp)) || 
+        (Utilities.isCommand(req) && Utilities.isCommandResponse(resp));
+        boolean nullReqValidResp = (req == null && (Utilities.isDiagnosticResponse(resp) 
+                || Utilities.isCommandResponse(resp)));
         return bothValid || nullReqValidResp;
-    }
-    
-    private boolean isCommand(VehicleMessage msg) {
-        return msg instanceof Command;
-    }
-    
-    private boolean isDiagnosticRequest(VehicleMessage msg) {
-        return msg instanceof DiagnosticRequest;
-    }
-    
-    private boolean isDiagnosticResponse(VehicleMessage msg) {
-        return msg instanceof DiagnosticResponse;
-    }
-    
-    private boolean isCommandResponse(VehicleMessage msg) {
-        return msg instanceof CommandResponse;
     }
     
     private void save(VehicleMessage req, VehicleMessage resp) {   
