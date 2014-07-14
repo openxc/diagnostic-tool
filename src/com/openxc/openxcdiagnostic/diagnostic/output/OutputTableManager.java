@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.openxc.messages.CommandResponse;
-import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
