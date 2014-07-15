@@ -45,7 +45,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = true;
+    boolean emulate = false;
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -53,8 +53,6 @@ public class DiagnosticActivity extends Activity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    //TODO this won't add to the table correctly if the response was
-                    //received from sniffing b/c findRequest will return null
                     mOutputTableManager.add(findRequest(response), response);
                     /*if (message.getFrequency() == null
                             || request.getFrequency() == 0) {
