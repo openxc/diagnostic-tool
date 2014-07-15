@@ -25,6 +25,7 @@ import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
+import com.openxc.messages.formatters.ByteAdapter;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
@@ -376,8 +377,7 @@ public class InputManager implements DiagnosticManager {
         if (!payloadString.equals("")) {
             if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
-                    // TODO these can't be the right bytes but idk
-                    request.setPayload(payloadString.getBytes());
+                    request.setPayload(ByteAdapter.hexStringToByteArray(payloadString));
                 } else {
                     return failAndToastError("Payload must have an even number of digits.");
                 }
