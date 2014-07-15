@@ -53,7 +53,16 @@ public class DiagnosticActivity extends Activity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mOutputTableManager.add(findRequest(response), response);
+                    //prevent trying to add, for example, SimpleVehicleMessages received
+                    //due to sniffing
+                    if (Utilities.isDiagnosticResponse(response) 
+                            || Utilities.isCommandResponse(response)) {
+                        //prevent same response from being added to table twice due to sniffing
+                        //and sending an explicit request
+                        if (!mOutputTableManager.containsResponse(response)) {
+                            mOutputTableManager.add(findRequest(response), response);
+                        }
+                    }
                     /*if (message.getFrequency() == null
                             || request.getFrequency() == 0) {
                         mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
@@ -141,12 +150,7 @@ public class DiagnosticActivity extends Activity {
             Log.w(TAG, "Unable to register for response of type: " + request.getClass());
         }
     }
-
-    // TODO i'm thinking responses registered for individually will be received
-    // by the listener
-    // twice because they will match the wildcard KeyMatcher and their
-    // exactMatcher...both
-    // will be pairs in the MessageListenerSink map
+    
     public void startSniffing() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }

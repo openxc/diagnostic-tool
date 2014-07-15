@@ -43,7 +43,7 @@ public class OutputTableManager implements DiagnosticManager  {
                 || (Utilities.isDiagnosticResponse(response) && !mContext.isDisplayingCommands()))
                 && mContext.shouldScroll();
     }
-    
+        
     private void setAdapter() {    
         TableAdapter adapter;
         if (mDisplayCommands) {
@@ -75,7 +75,7 @@ public class OutputTableManager implements DiagnosticManager  {
     
     public void add(VehicleMessage req, VehicleMessage resp) {
         
-        //if pairs correspond correctly
+        //if pair corresponds correctly
         if (correspond(req, resp)) {
             
             //fix scroll position of table after adding row
@@ -111,6 +111,23 @@ public class OutputTableManager implements DiagnosticManager  {
         
         mSaver.add(row);
         setAdapter();
+    }
+    
+    public boolean containsResponse(VehicleMessage response) {
+                
+        ArrayList<OutputRow> rowsToSearch;
+        if (Utilities.isDiagnosticResponse(response)) {
+            rowsToSearch = mDiagnosticRows;
+        } else {
+            rowsToSearch = mCommandRows;
+        }
+        
+        for (int i = 0; i < rowsToSearch.size(); i++) {
+            if (response.equals(rowsToSearch.get(i).getPair().getResponse())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void removeRow(OutputRow row) {
