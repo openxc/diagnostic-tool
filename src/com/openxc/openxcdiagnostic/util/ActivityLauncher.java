@@ -6,6 +6,7 @@ import java.util.Map;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.dash.DashboardActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
+import com.openxc.openxcdiagnostic.dump.DumpActivity;
 import com.openxc.openxcdiagnostic.menu.MenuActivity;
 
 import android.app.Activity;
@@ -19,6 +20,7 @@ public class ActivityLauncher {
         sActivityMap.put(R.id.Diagnostic, DiagnosticActivity.class);
         sActivityMap.put(R.id.Menu, MenuActivity.class);
         sActivityMap.put(R.id.Dashboard, DashboardActivity.class);
+        sActivityMap.put(R.id.Dump, DumpActivity.class);
     }
 
     public static void launchActivity (Activity activity, int itemId) {

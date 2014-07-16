@@ -5,6 +5,8 @@
     <string name="diagnostic_label">OpenXC Diagnostics</string>
     <string name="dash_label">OpenXC Dash</string>
     <string name="menu_label">OpenXC Menu</string>
+    <string name="graph_label">OpenXC Graph</string>
+    <string name="dump_label">OpenXC Dump</string>
     <string name="request_button_label">Send Request</string>
     <string name="details_button_label">Details</string>
     
@@ -33,6 +35,7 @@
     <string name="dashboard">Dash</string>
     <string name="diagnostic">Diagnostic</string>
     <string name="menu">Menu</string>
+    <string name="dump">Dump</string>
     
     <!-- Diagnostic Strings -->
     <string name="frequency_label">Frequency</string>

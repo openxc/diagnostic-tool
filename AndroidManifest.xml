@@ -38,8 +38,13 @@
       	
         <activity 
             android:name="com.openxc.openxcdiagnostic.menu.GrapherActivity"
-            android:label="@string/menu_label" >
+            android:label="@string/graph_label" >
       	</activity>
+      	
+        <activity 
+            android:name="com.openxc.openxcdiagnostic.dump.DumpActivity"
+            android:label="@string/dump_label" >
+        </activity>
 
         <service android:name="com.openxc.VehicleManager"/>
     </application>

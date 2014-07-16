@@ -30,7 +30,7 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticActivity extends Activity {
 
-    private static String TAG = "VehicleDashboard";
+    private static String TAG = "DiagnosticActivity";
 
     private SettingsManager mSettingsManager;
     private InputManager mInputManager;

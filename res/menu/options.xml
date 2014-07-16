@@ -10,13 +10,18 @@
 		android:title="@string/menu">
 	</item>
 	<item 
+        android:id="@+id/Dashboard"
+        android:showAsAction="ifRoom|withText" 
+        android:title="@string/dashboard">
+    </item>
+	<item 
 	    android:id="@+id/Diagnostic"
 		android:showAsAction="ifRoom|withText" 
 		android:title="@string/diagnostic">
 	</item>
 	<item 
-	    android:id="@+id/Dashboard"
-		android:showAsAction="ifRoom|withText" 
-		android:title="@string/dashboard">
-	</item>
+        android:id="@+id/Dump"
+        android:showAsAction="ifRoom|withText" 
+        android:title="@string/dump">
+    </item>
 </menu>
