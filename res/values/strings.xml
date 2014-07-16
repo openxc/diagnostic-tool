@@ -20,7 +20,7 @@
     <string name="delete_favorite_request_verification">"Are you sure you want to delete this request? This cannot be undone.</string>
     <string name="delete_favorite_command_verification">Are you sure you want to delete this command? This cannot be undone.</string>   
     
-    <!-- Settings Strings -->
+    <!-- Diag Settings Strings -->
     <string name="settings_alert_label">Settings</string>
     <string name="delete_diagnostic_responses_label">Delete all Diagnostic Responses</string>
     <string name="delete_command_responses_label">Delete all Command Responses</string>
@@ -30,6 +30,10 @@
     <string name="delete_diagnostic_responses_verification">"Are you sure you want to delete all diagnostic responses? This cannot be undone.</string>
     <string name="delete_command_responses_verification">"Are you sure you want to delete all command responses? This cannot be undone.</string>
     <string name="response_command_toggle_label">Toggle Response/Command</string>
+    
+    <!-- Dump Settings Strings -->
+    <string name="num_messages_label"># Messages to Display</string>
+    <string name="dump_settings_alert_label">Dump Settings</string>
     
     <!-- Menu Tab Strings -->
     <string name="dashboard">Dash</string>

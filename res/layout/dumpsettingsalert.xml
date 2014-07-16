@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout style="@style/SettingsRow">
+        <TextView
+            style="@style/SettingsItemLabel"
+            android:text="@string/num_messages_label" 
+            android:textIsSelectable="false"/>
+        <EditText
+            style="@style/SettingsItemButton"
+            android:id="@+id/numMessagesInput" 
+            android:text="@string/delete_all_responses_button_text" 
+            android:inputType="number" 
+            android:maxLength="3"/>
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+
+</LinearLayout>

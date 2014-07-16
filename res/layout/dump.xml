@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/dump"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@color/black"
     android:focusable="true"
@@ -47,7 +47,6 @@
 	        <Button
 	            android:id="@+id/dumpPauseButton"
 	            style="?android:attr/buttonBarButtonStyle"
-	            android:background="@drawable/pause_button_selector"
 	            android:layout_margin="5dp"
 	            android:state_pressed="false"
 	            android:layout_width="40dp"

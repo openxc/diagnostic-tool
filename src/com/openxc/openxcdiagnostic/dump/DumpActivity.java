@@ -11,6 +11,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +32,8 @@ public class DumpActivity extends Activity {
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
     private LinearLayout mDumpLayout;
+    private SettingsManager mSettingsManager;
+    private boolean isPaused = false;
     
     VehicleMessage.Listener mDumpListener = new VehicleMessage.Listener() {
         @Override
@@ -36,11 +41,14 @@ public class DumpActivity extends Activity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    TextView newRow = new TextView(DumpActivity.this);
-                    newRow.setText(JsonFormatter.serialize(response));
-                    newRow.setTextColor(DumpActivity.this.getResources().getColor(R.color.lightBlue));
-                    newRow.setTextSize(18f);
-                    mDumpLayout.addView(newRow, 0);
+                    if (!isPaused) {
+                        TextView newRow = new TextView(DumpActivity.this);
+                        newRow.setText(JsonFormatter.serialize(response));
+                        newRow.setTextColor(DumpActivity.this.getResources().getColor(R.color.lightBlue));
+                        newRow.setTextSize(18f);
+                        mDumpLayout.addView(newRow, 0);
+                        limitMessageCount(mSettingsManager.getNumMessages());
+                    }
                 }
             });
         }
@@ -63,12 +71,62 @@ public class DumpActivity extends Activity {
             mIsBound = false;
         }
     };
+    
+    public void limitMessageCount(int numMessages) {
+        while (mDumpLayout.getChildCount() > numMessages) {
+            mDumpLayout.removeViewAt(numMessages - 1);
+        }
+    }
+    
+    private void initButtons() {
+                
+        ((Button) findViewById(R.id.dumpClearButton))
+        .setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDumpLayout.removeAllViews();
+            }
+        });
+        
+        final Button pauseButton = (Button) findViewById(R.id.dumpPauseButton);
+        pauseButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPaused = !isPaused;
+                setPauseButtonSelector();
+            }
+        });
+        setPauseButtonSelector();
+
+        ((Button) findViewById(R.id.dumpSettingsButton))
+        .setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSettingsManager.showAlert();
+            }
+        });
+        
+    }
+    
+    private void setPauseButtonSelector() {
+        
+        int drawable;
+
+        if (isPaused) {
+            drawable = R.drawable.play_button_selector;
+        } else {
+            drawable = R.drawable.pause_button_selector;
+        }
+        ((Button) findViewById(R.id.dumpPauseButton)).setBackground(getResources().getDrawable(drawable));
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dump);
         mDumpLayout = (LinearLayout) findViewById(R.id.dumpOutput);
+        mSettingsManager = new SettingsManager(this);
+        initButtons();
         Log.i(TAG, "Vehicle Dump Created");
     }
     
