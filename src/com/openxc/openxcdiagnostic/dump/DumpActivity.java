@@ -11,9 +11,13 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.openxc.VehicleManager;
 import com.openxc.messages.KeyMatcher;
 import com.openxc.messages.VehicleMessage;
+import com.openxc.messages.formatters.JsonFormatter;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 
@@ -24,6 +28,7 @@ public class DumpActivity extends Activity {
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
     private final Handler mHandler = new Handler();
+    private LinearLayout mDumpLayout;
     
     VehicleMessage.Listener mDumpListener = new VehicleMessage.Listener() {
         @Override
@@ -31,7 +36,11 @@ public class DumpActivity extends Activity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    
+                    TextView newRow = new TextView(DumpActivity.this);
+                    newRow.setText(JsonFormatter.serialize(response));
+                    newRow.setTextColor(DumpActivity.this.getResources().getColor(R.color.lightBlue));
+                    newRow.setTextSize(18f);
+                    mDumpLayout.addView(newRow, 0);
                 }
             });
         }
@@ -59,6 +68,7 @@ public class DumpActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dump);
+        mDumpLayout = (LinearLayout) findViewById(R.id.dumpOutput);
         Log.i(TAG, "Vehicle Dump Created");
     }
     

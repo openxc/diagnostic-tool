@@ -1,12 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/dump"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     android:background="@color/black"
-    android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true" >
+	
+    <LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="fill_horizontal"
+		android:layout_gravity="center_vertical"
+		android:baselineAligned="false" >
+           
+        <LinearLayout
+	        android:layout_width="0dp"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:gravity="left"
+	        android:layout_gravity="center_vertical" >
+        
+	        <Button
+	            android:id="@+id/dumpClearButton"
+	            style="?android:attr/buttonBarButtonStyle"
+	            android:background="@drawable/clear_button_selector"
+	            android:layout_margin="5dp"
+	            android:state_pressed="false"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp" >
+	       </Button>
+	    </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center_vertical" >
+        
+	        <Button
+	            android:id="@+id/dumpPauseButton"
+	            style="?android:attr/buttonBarButtonStyle"
+	            android:background="@drawable/pause_button_selector"
+	            android:layout_margin="5dp"
+	            android:state_pressed="false"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp" >
+	       </Button>
+	       
+	    </LinearLayout>
+	    
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="right"
+            android:layout_gravity="center_vertical" >
+        
+	        <Button
+	            android:id="@+id/dumpSettingsButton"
+	            style="?android:attr/buttonBarButtonStyle"
+	            android:background="@drawable/settings_button_selector"
+	            android:layout_margin="5dp"
+	            android:state_pressed="false"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp" >
+	        </Button> 
+	        
+	    </LinearLayout>
+           
+    </LinearLayout>
     
-</ListView>
+    <ScrollView 
+        android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+    
+		<LinearLayout
+		    android:id="@+id/dumpOutput"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" >
+		        
+		</LinearLayout>
+	
+	</ScrollView>
+
+</LinearLayout>
