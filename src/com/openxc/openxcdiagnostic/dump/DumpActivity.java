@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.openxc.VehicleManager;
 import com.openxc.messages.KeyMatcher;
 import com.openxc.messages.VehicleMessage;
-import com.openxc.messages.formatters.JsonFormatter;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 
