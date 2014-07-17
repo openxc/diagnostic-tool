@@ -12,7 +12,6 @@
         <EditText
             style="@style/SettingsItemButton"
             android:id="@+id/numMessagesInput" 
-            android:text="@string/delete_all_responses_button_text" 
             android:inputType="number" 
             android:maxLength="3"/>
     </LinearLayout>

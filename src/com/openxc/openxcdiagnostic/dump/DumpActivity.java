@@ -43,7 +43,7 @@ public class DumpActivity extends Activity {
                 public void run() {
                     if (!isPaused) {
                         TextView newRow = new TextView(DumpActivity.this);
-                        newRow.setText(JsonFormatter.serialize(response));
+                        newRow.setText(response.toString());
                         newRow.setTextColor(DumpActivity.this.getResources().getColor(R.color.lightBlue));
                         newRow.setTextSize(18f);
                         mDumpLayout.addView(newRow, 0);

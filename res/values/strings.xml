@@ -32,7 +32,7 @@
     <string name="response_command_toggle_label">Toggle Response/Command</string>
     
     <!-- Dump Settings Strings -->
-    <string name="num_messages_label"># Messages to Display</string>
+    <string name="num_messages_label">Message Buffer</string>
     <string name="dump_settings_alert_label">Dump Settings</string>
     
     <!-- Menu Tab Strings -->
