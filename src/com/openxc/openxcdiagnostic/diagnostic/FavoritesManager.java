@@ -49,13 +49,49 @@ public class FavoritesManager {
     
     private static void addFavoriteRequest(DiagnosticRequest req) {
         ArrayList<DiagnosticRequest> newFavorites = sFavoriteRequests;
-        newFavorites.add(0, req);
+        newFavorites.add(findAlphabeticPosition(req), req);
         setFavoriteRequests(newFavorites);
     }
     
+    private static boolean isOrdered(String s1, String s2) {     
+        if (s1 == null || s1.trim() == "") {
+            return false;
+        } 
+        
+        if (s2 == null || s2.trim() == "") {
+            return true;
+        }
+        
+        return s1.compareToIgnoreCase(s2) < 0;
+    }
+    
+    private static int findAlphabeticPosition(DiagnosticRequest req) {
+        
+        int position = 0;
+        for (;position < sFavoriteRequests.size(); position++) {
+            if (isOrdered(req.getName(),
+                    sFavoriteRequests.get(position).getName())) {
+                break;
+            }
+        }
+        return position;
+    } 
+    
+    private static int findAlphabeticPosition(Command command) {
+        
+        int position = 0;
+        for (;position < sFavoriteCommands.size(); position++) {
+            if (isOrdered(command.getCommand().toString(),
+                    sFavoriteCommands.get(position).getCommand().toString())) {
+                break;
+            }
+        }
+        return position;
+    } 
+    
     private static void addFavoriteCommand(Command command) {
         ArrayList<Command> newFavorites = sFavoriteCommands;
-        newFavorites.add(0, command);
+        newFavorites.add(findAlphabeticPosition(command), command);
         setFavoriteCommands(newFavorites);
     }
     
