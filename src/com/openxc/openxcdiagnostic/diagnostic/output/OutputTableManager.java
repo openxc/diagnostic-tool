@@ -1,9 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
