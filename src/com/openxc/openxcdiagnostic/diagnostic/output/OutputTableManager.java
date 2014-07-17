@@ -1,6 +1,8 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,7 @@ public class OutputTableManager implements DiagnosticManager  {
     private boolean mDisplayCommands;
     private ArrayList<OutputRow> mDiagnosticRows;
     private ArrayList<OutputRow> mCommandRows;
+    private Map<Boolean, ArrayList<OutputRow>> rowsToDisplay;
 
     public OutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
@@ -30,6 +33,9 @@ public class OutputTableManager implements DiagnosticManager  {
         mOutputList = (ListView) mContext.findViewById(R.id.responseOutputScroll);
         mDiagnosticRows = loadSavedDiagnosticRows();
         mCommandRows = loadSavedCommandRows();
+        rowsToDisplay = new HashMap<>();
+        rowsToDisplay.put(Boolean.valueOf(true), mCommandRows);
+        rowsToDisplay.put(Boolean.valueOf(false), mDiagnosticRows);
         setRequestCommandState(displayCommands);
     }
     
@@ -44,14 +50,15 @@ public class OutputTableManager implements DiagnosticManager  {
                 && mContext.shouldScroll();
     }
         
-    private void setAdapter() {    
-        TableAdapter adapter;
-        if (mDisplayCommands) {
-            adapter = new TableAdapter(mContext, mCommandRows);
-        } else {
-            adapter = new TableAdapter(mContext, mDiagnosticRows);
-        }  
-        mOutputList.setAdapter(adapter);
+    private void setAdapter() {            
+        mOutputList.setAdapter(new TableAdapter(mContext, rowsToDisplay.get(mDisplayCommands)));
+    }
+    
+    private void updateAdapter() {
+        TableAdapter adapter = (TableAdapter) mOutputList.getAdapter();
+        if (adapter != null) {
+            adapter.refresh(rowsToDisplay.get(mDisplayCommands));
+        }
     }
     
     private ArrayList<OutputRow> loadSavedCommandRows() {  
@@ -139,7 +146,7 @@ public class OutputTableManager implements DiagnosticManager  {
         }
         
         mSaver.remove(row);
-        setAdapter();
+        updateAdapter();
     }
     
     public void deleteAllDiagnosticResponses() {
