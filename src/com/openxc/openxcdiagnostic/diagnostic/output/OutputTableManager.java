@@ -25,7 +25,6 @@ public class OutputTableManager implements DiagnosticManager  {
     private boolean mDisplayCommands;
     private ArrayList<OutputRow> mDiagnosticRows;
     private ArrayList<OutputRow> mCommandRows;
-    private Map<Boolean, ArrayList<OutputRow>> rowsToDisplay;
 
     public OutputTableManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
@@ -33,9 +32,6 @@ public class OutputTableManager implements DiagnosticManager  {
         mOutputList = (ListView) mContext.findViewById(R.id.responseOutputScroll);
         mDiagnosticRows = loadSavedDiagnosticRows();
         mCommandRows = loadSavedCommandRows();
-        rowsToDisplay = new HashMap<>();
-        rowsToDisplay.put(Boolean.valueOf(true), mCommandRows);
-        rowsToDisplay.put(Boolean.valueOf(false), mDiagnosticRows);
         setRequestCommandState(displayCommands);
     }
     
@@ -51,13 +47,26 @@ public class OutputTableManager implements DiagnosticManager  {
     }
         
     private void setAdapter() {            
-        mOutputList.setAdapter(new TableAdapter(mContext, rowsToDisplay.get(mDisplayCommands)));
+        ArrayList<OutputRow> rows;
+        if (mDisplayCommands) {
+            rows = mCommandRows;
+        } else {
+            rows = mDiagnosticRows;
+        }        
+        
+        mOutputList.setAdapter(new TableAdapter(mContext, rows));
     }
     
     private void updateAdapter() {
         TableAdapter adapter = (TableAdapter) mOutputList.getAdapter();
         if (adapter != null) {
-            adapter.refresh(rowsToDisplay.get(mDisplayCommands));
+            ArrayList<OutputRow> rows;
+            if (mDisplayCommands) {
+                rows = mCommandRows;
+            } else {
+                rows = mDiagnosticRows;
+            }    
+            adapter.refresh(rows);
         }
     }
     
