@@ -141,7 +141,13 @@ public class FavoritesAlertManager implements DiagnosticManager {
             final TextView payloadData = (TextView) row.findViewById(R.id.favoritesPayloadData);
             TextView payloadHeader = (TextView) favoritesLayout.findViewById(R.id.payloadHeader);
             headerMatcher.put(payloadHeader, payloadData);
-            payloadData.setText(Formatter.getPayloadOutput(req));   
+            payloadData.setText(Formatter.getPayloadOutput(req));
+            
+            final TextView frequencyData = (TextView) row.findViewById(R.id.favoritesFrequencyData);
+            TextView frequencyHeader = (TextView) favoritesLayout.findViewById(R.id.frequencyHeader);
+            headerMatcher.put(frequencyHeader, frequencyData);
+            frequencyData.setText(Formatter.getFrequencyOutput(req));
+            
         } else {
                         
             final TextView commandData = (TextView) row.findViewById(R.id.favoritesCommandData);

@@ -43,7 +43,14 @@
 	<TextView
 	    android:id="@+id/favoritesPayloadData"
 	    style="@style/FavoriteDataItem">
-	</TextView>    
+	</TextView>  
+	
+	<include layout="@layout/verticalline" />
+    
+    <TextView
+        android:id="@+id/favoritesFrequencyData"
+        style="@style/FavoriteDataItem">
+    </TextView> 
               
 </LinearLayout>
       

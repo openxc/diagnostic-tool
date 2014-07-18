@@ -51,7 +51,6 @@ public class DiagnosticActivity extends Activity {
     boolean emulate = true;
     private Timer mTimer = new Timer();
 
-
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
         public void receive(final VehicleMessage response) {

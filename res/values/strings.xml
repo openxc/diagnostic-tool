@@ -19,6 +19,7 @@
     <string name="add_to_favorites_button_label">Add To Favorites</string>
     <string name="delete_favorite_request_verification">"Are you sure you want to delete this request? This cannot be undone.</string>
     <string name="delete_favorite_command_verification">Are you sure you want to delete this command? This cannot be undone.</string>   
+    <string name="frequency_favorites_label">Freq.</string>
     
     <!-- Diag Settings Strings -->
     <string name="settings_alert_label">Settings</string>

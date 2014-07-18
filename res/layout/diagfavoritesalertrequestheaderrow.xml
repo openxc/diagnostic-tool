@@ -50,5 +50,13 @@
           android:id="@+id/payloadHeader"
           android:text="@string/payload_label">
       </TextView>
+      
+      <include layout="@layout/verticalline" />
+      
+      <TextView
+          style="@style/FavoriteDataLabel"
+          android:id="@+id/frequencyHeader"
+          android:text="@string/frequency_favorites_label">
+      </TextView>
           
 </LinearLayout>
