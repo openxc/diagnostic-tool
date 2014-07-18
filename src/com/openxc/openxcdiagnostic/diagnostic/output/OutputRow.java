@@ -131,9 +131,9 @@ public class OutputRow {
                 ((TextView) infoTable.findViewById(R.id.valueValue)).setText(Formatter.getValueOutput(resp));
             } else if (Utilities.isCommandResponse(mResponse)){
                 CommandResponse cmdResponse = (CommandResponse) mResponse;
-                ((TextView) infoTable.findViewById(R.id.commandLabel)).setText( 
-                        Formatter.getCommandOutput(cmdResponse));
                 ((TextView) infoTable.findViewById(R.id.commandValue)).setText( 
+                        Formatter.getCommandOutput(cmdResponse));
+                ((TextView) infoTable.findViewById(R.id.commandResponseValue)).setText( 
                         Formatter.getMessageOutput(cmdResponse));
             }
     }
