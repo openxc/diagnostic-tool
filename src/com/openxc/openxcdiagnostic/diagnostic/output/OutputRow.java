@@ -50,6 +50,11 @@ public class OutputRow {
             public void run() {
                 mRequest = pair.getRequest();
                 mResponse = pair.getResponse();
+                
+                if(ResponseDetailsAlertManager.isShowing()) {
+                    ResponseDetailsAlertManager.refresh(mRequest, mResponse);
+                }
+                
                 fillOutputResponseTable();
                 setTimestamp();
             }
