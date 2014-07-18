@@ -1,5 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class OutputRow {
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
     private DiagnosticActivity mContext;
+    private Handler mHandler = new Handler();
 
     public OutputRow(DiagnosticActivity context,
             OutputTableManager tableManager, VehicleMessage req,
@@ -43,11 +45,15 @@ public class OutputRow {
         setTimestamp();
     }
     
-    public void setPair(Pair pair) {
-        mRequest = pair.getRequest();
-        mResponse = pair.getResponse();
-        fillOutputResponseTable();
-        setTimestamp();
+    public void setPair(final Pair pair) {
+        mHandler.post(new Runnable() {
+            public void run() {
+                mRequest = pair.getRequest();
+                mResponse = pair.getResponse();
+                fillOutputResponseTable();
+                setTimestamp();
+            }
+        });
     }
     
     private void setTimestamp() {
