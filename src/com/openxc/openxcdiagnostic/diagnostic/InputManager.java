@@ -348,7 +348,7 @@ public class InputManager implements DiagnosticManager {
             // frequency is optional, ok if empty
             if (!freqInput.equals("")) {
                 double frequency = Double.parseDouble(freqInput);
-                if (frequency > 0) {
+                if (frequency >= 0) {
                     request.setFrequency(frequency);
                 } else {
                     return failAndToastError("Frequency cannot be negative.");
