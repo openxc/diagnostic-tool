@@ -3,6 +3,7 @@ package com.openxc.openxcdiagnostic.diagnostic;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class ResponseDetailsAlertManager {
     private static LinearLayout alertLayout; 
     private static VehicleMessage sRequest;
     private static boolean isShowing = false;
+    private static Handler sHandler = new Handler();
     
     public static void show(DiagnosticActivity context, VehicleMessage req, VehicleMessage resp) {
         
@@ -54,8 +56,12 @@ public class ResponseDetailsAlertManager {
         return isShowing && request.equals(sRequest);
     }
     
-    public static void refresh(VehicleMessage req, VehicleMessage resp) {
-        fill(req, resp);
+    public static void refresh(final VehicleMessage req, final VehicleMessage resp) {
+        sHandler.post(new Runnable() {
+            public void run() {
+                fill(req, resp);
+            }
+        });
     }
     
     private static void fill(VehicleMessage req, VehicleMessage resp) {
