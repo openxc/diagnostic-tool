@@ -82,13 +82,11 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     private ArrayList<OutputRow> generateRowsFromPairs(ArrayList<? extends Pair> pairs) {
-        
         ArrayList<OutputRow> rows = new ArrayList<>();
         for (int i=0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
             rows.add(new OutputRow(mContext, this, pair.getRequest(), pair.getResponse()));
         }
-        
         return rows;
     }
     
@@ -105,7 +103,7 @@ public class OutputTableManager implements DiagnosticManager  {
                 View v = mOutputList.getChildAt(0);
                 distance = (v == null) ? 0 : v.getTop() - v.getHeight();
             }
-            save(req, resp);
+            addToTable(req, resp);
             mOutputList.setSelectionFromTop(index, distance);
         } else {
             Log.e(TAG, "Unable to add mismatched VehicleMessage types to table.");
@@ -121,6 +119,7 @@ public class OutputTableManager implements DiagnosticManager  {
                 DiagnosticPair pair = (DiagnosticPair) row.getPair();
                 if (responseMatcher.matches((DiagnosticResponse) pair.getResponse())) {
                     row.setPair(new DiagnosticPair((DiagnosticRequest) req, (DiagnosticResponse) resp));
+                    mSaver.saveDiagnosticRows(mDiagnosticRows);
                     return true;
                 }
             }
@@ -131,6 +130,7 @@ public class OutputTableManager implements DiagnosticManager  {
                 CommandPair pair = (CommandPair) row.getPair();
                 if (responseMatcher.matches(pair.getResponse())) {
                     row.setPair(new CommandPair((Command) req, (CommandResponse) resp));
+                    mSaver.saveCommandRows(mCommandRows);
                     return true;
                 }
             }
@@ -146,15 +146,16 @@ public class OutputTableManager implements DiagnosticManager  {
         return bothValid || nullReqValidResp;
     }
     
-    private void save(VehicleMessage req, VehicleMessage resp) {   
+    private void addToTable(VehicleMessage req, VehicleMessage resp) {   
         OutputRow row = new OutputRow(mContext, this, req, resp);
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.add(0, row);
+            mSaver.saveDiagnosticRows(mDiagnosticRows);
         } else {
             mCommandRows.add(0, row);
+            mSaver.saveCommandRows(mCommandRows);
         }
         
-        mSaver.add(row);
         setAdapter();
     }
 
@@ -162,23 +163,24 @@ public class OutputTableManager implements DiagnosticManager  {
         
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.remove(row);
+            mSaver.saveDiagnosticRows(mDiagnosticRows);
         } else {
             mCommandRows.remove(row);
+            mSaver.saveCommandRows(mCommandRows);
         }
         
-        mSaver.remove(row);
         updateAdapter();
     }
     
     public void deleteAllDiagnosticResponses() {
         mDiagnosticRows = new ArrayList<>();
-        mSaver.deleteAllDiagnosticRows();
+        mSaver.saveDiagnosticRows(mDiagnosticRows);
         setAdapter();
     }
     
     public void deleteAllCommandResponses() {
         mCommandRows = new ArrayList<>();
-        mSaver.deleteAllCommandRows();
+        mSaver.saveCommandRows(mCommandRows);
         setAdapter();
     }
     

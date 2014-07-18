@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
-import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 
 /**
  * 
@@ -30,25 +29,20 @@ public class TableSaver {
         commandPairs = loadCommandPairs();
     }
     
-    public void add(OutputRow row) { 
-        if (row.getPair() instanceof DiagnosticPair) {
-            diagnosticPairs.add(0, (DiagnosticPair) row.getPair());
-            saveDiagnosticPairs();
-        } else {
-            commandPairs.add(0, (CommandPair) row.getPair());
-            saveCommandPairs();
+    public void saveDiagnosticRows(ArrayList<OutputRow> rows) {
+        diagnosticPairs = new ArrayList<>();
+        for (int i=0; i < rows.size(); i++) {
+            diagnosticPairs.add((DiagnosticPair) rows.get(i).getPair());
         }
+        saveDiagnosticPairs();
     }
     
-    public void remove(OutputRow row) { 
-        Pair pair = row.getPair();
-        if (pair instanceof DiagnosticPair) {
-            diagnosticPairs.remove(pair);
-            saveDiagnosticPairs();
-        } else {
-            commandPairs.remove(pair);
-            saveCommandPairs();
+    public void saveCommandRows(ArrayList<OutputRow> rows) {
+        commandPairs = new ArrayList<>();
+        for (int i=0; i < rows.size(); i++) {
+            commandPairs.add((CommandPair) rows.get(i).getPair());
         }
+        saveCommandPairs();
     }
     
     public ArrayList<DiagnosticPair> getDiagnosticPairs() {
@@ -57,16 +51,6 @@ public class TableSaver {
    
     public ArrayList<CommandPair> getCommandPairs() {
         return commandPairs;
-    }
-    
-    public void deleteAllCommandRows() {
-        commandPairs = new ArrayList<CommandPair>();
-        saveCommandPairs();
-    }
-    
-    public void deleteAllDiagnosticRows() {
-        diagnosticPairs = new ArrayList<DiagnosticPair>() ;
-        saveDiagnosticPairs();
     }
     
     private void saveDiagnosticPairs() {  
