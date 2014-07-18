@@ -5,10 +5,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.openxc.messages.Command;
+import com.openxc.messages.CommandResponse;
+import com.openxc.messages.DiagnosticRequest;
+import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.ExactKeyMatcher;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity;
 import com.openxc.openxcdiagnostic.diagnostic.DiagnosticManager;
+import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.Utilities;
@@ -106,6 +112,32 @@ public class OutputTableManager implements DiagnosticManager  {
         }
     }
     
+    public boolean replaceIfMatchesExisting(VehicleMessage req, VehicleMessage resp) {
+        
+        if (Utilities.isDiagnosticResponse(resp)) {
+            ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) resp);
+            for (int i = 0; i < mDiagnosticRows.size(); i++) {
+                OutputRow row = mDiagnosticRows.get(i);
+                DiagnosticPair pair = (DiagnosticPair) row.getPair();
+                if (responseMatcher.matches((DiagnosticResponse) pair.getResponse())) {
+                    row.setPair(new DiagnosticPair((DiagnosticRequest) req, (DiagnosticResponse) resp));
+                    return true;
+                }
+            }
+        } else if (Utilities.isCommandResponse(resp)){
+            ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) resp);
+            for (int i = 0; i < mCommandRows.size(); i++) {
+                OutputRow row = mCommandRows.get(i);
+                CommandPair pair = (CommandPair) row.getPair();
+                if (responseMatcher.matches(pair.getResponse())) {
+                    row.setPair(new CommandPair((Command) req, (CommandResponse) resp));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     private boolean correspond(VehicleMessage req, VehicleMessage resp) {
         boolean bothValid = (Utilities.isDiagnosticRequest(req) && Utilities.isDiagnosticResponse(resp)) || 
         (Utilities.isCommand(req) && Utilities.isCommandResponse(resp));
@@ -124,23 +156,6 @@ public class OutputTableManager implements DiagnosticManager  {
         
         mSaver.add(row);
         setAdapter();
-    }
-    
-    public boolean containsResponse(VehicleMessage response) {
-                
-        ArrayList<OutputRow> rowsToSearch;
-        if (Utilities.isDiagnosticResponse(response)) {
-            rowsToSearch = mDiagnosticRows;
-        } else {
-            rowsToSearch = mCommandRows;
-        }
-        
-        for (int i = 0; i < rowsToSearch.size(); i++) {
-            if (response.equals(rowsToSearch.get(i).getPair().getResponse())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void removeRow(OutputRow row) {

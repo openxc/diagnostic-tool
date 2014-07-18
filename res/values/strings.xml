@@ -48,6 +48,8 @@
     <string name="mode_label">Mode</string>
     <string name="pid_label">PID</string>
     <string name="payload_label">Payload</string>
+    <string name="value_label">Value</string>
+    <string name="success_label">Success</string>
     <string name="name_label">Name</string>
     <string name="command_label">Command</string>
     <string name="alert_request_header">REQUEST</string>

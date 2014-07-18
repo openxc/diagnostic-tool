@@ -1,12 +1,10 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticRequest;
@@ -28,6 +26,7 @@ public class OutputRow {
     private OutputTableManager mTableManager;
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
+    private DiagnosticActivity mContext;
 
     public OutputRow(DiagnosticActivity context,
             OutputTableManager tableManager, VehicleMessage req,
@@ -37,26 +36,37 @@ public class OutputRow {
         mTableManager = tableManager;
         mResponse = resp;
         mRequest = req;
+        mContext = context;
 
-        initButtons(context, req, resp);
-        fillOutputResponseTable(context, resp);
+        initButtons();
+        fillOutputResponseTable();
+        setTimestamp();
+    }
+    
+    public void setPair(Pair pair) {
+        mRequest = pair.getRequest();
+        mResponse = pair.getResponse();
+        fillOutputResponseTable();
+        setTimestamp();
+    }
+    
+    private void setTimestamp() {
         String timestampString;
-        if (resp.getTimestamp() != null) {
-            timestampString = Utilities.epochTimeToTime(resp.getTimestamp());
+        if (mResponse.getTimestamp() != null) {
+            timestampString = Utilities.epochTimeToTime(mResponse.getTimestamp());
         } else {
             timestampString = "0:00";
         }
         ((TextView) mView.findViewById(R.id.outputRowTimestamp)).setText(timestampString);
     }
 
-    private void initButtons(final DiagnosticActivity context,
-            final VehicleMessage req, final VehicleMessage resp) {
+    private void initButtons() {
 
         ((Button) mView.findViewById(R.id.outputMoreButton))
         .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResponseDetailsAlertManager.show(context, req, resp);
+                ResponseDetailsAlertManager.show(mContext, mRequest, mResponse);
             }
         });
 
@@ -73,69 +83,66 @@ public class OutputRow {
             @Override
             public void onClick(View v) {
                 String message;
-                if (Utilities.isDiagnosticRequest(req)) {
+                if (Utilities.isDiagnosticRequest(mRequest)) {
                     message = "Resending Request.";
-                    context.send(req);
-                } else if (Utilities.isCommand(req)) {
+                    mContext.send(mRequest);
+                } else if (Utilities.isCommand(mRequest)) {
                     message = "Resending Command.";
-                    context.send(req);
+                    mContext.send(mRequest);
                 } else {
                     message = "Cannot be resent...no request/command found.";
                 }
-                Toaster.showToast(context, message);
+                Toaster.showToast(mContext, message);
             }
         });
     }
-
-    private void createAndAddRowToOutput(Activity context, LinearLayout parent,
-            String label, String value, VehicleMessage msg) {
-
-        LinearLayout row = (LinearLayout) context.getLayoutInflater().inflate(R.layout.outputresponsetablerow, null);
-        ((TextView) row.findViewById(R.id.outputTableRowLabel)).setText(label);
-
-        TextView valueText = (TextView) row.findViewById(R.id.outputTableRowValue);
-        valueText.setText(value);
-        if (Utilities.isDiagnosticResponse(msg)) {
-            valueText.setTextColor(Formatter.getOutputColor(context, (DiagnosticResponse) msg));
+    
+    private void setOutputInfoFormat() {
+        LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
+        int layoutId;
+        if (Utilities.isDiagnosticResponse(mResponse)) {
+            layoutId = R.layout.diagresponseoutputinfo;
+        } else {
+            layoutId = R.layout.commandresponseoutputinfo;
         }
-        parent.addView(row);
+        LinearLayout newView = (LinearLayout) mContext.getLayoutInflater().inflate(layoutId, null);
+        infoTable.removeAllViews();
+        infoTable.addView(newView);
     }
 
-    private void fillOutputResponseTable(DiagnosticActivity context,
-            final VehicleMessage msgResponse) {
-
+    private void fillOutputResponseTable() {
+        
+        setOutputInfoFormat();
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-            if (Utilities.isDiagnosticResponse(msgResponse)) {
-                DiagnosticResponse resp = (DiagnosticResponse) msgResponse;
-                createAndAddRowToOutput(context, infoTable, "bus", Formatter.getBusOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "id", Formatter.getIdOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "mode", Formatter.getModeOutput(resp), resp);
-                createAndAddRowToOutput(context, infoTable, "pid", Formatter.getPidOutput(resp), resp);
-                boolean responseSuccess = resp.isSuccessful();
-                createAndAddRowToOutput(context, infoTable, "success", Formatter.getSuccessOutput(resp), resp);
-                if (responseSuccess) {
-                    fillOutputTableWithSuccessDetails(infoTable, context, resp);
-                } else {
-                    fillOutputTableWithFailureDetails(infoTable, context, resp);
-                }
-            } else if (Utilities.isCommandResponse(msgResponse)){
-                CommandResponse cmdResponse = (CommandResponse) msgResponse;
-                createAndAddRowToOutput(context, infoTable, cmdResponse.getCommand().toString(), 
-                        Formatter.getMessageOutput(cmdResponse), cmdResponse);
+            if (Utilities.isDiagnosticResponse(mResponse)) {
+                DiagnosticResponse resp = (DiagnosticResponse) mResponse;
+                ((TextView) infoTable.findViewById(R.id.busValue)).setText(Formatter.getBusOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.idValue)).setText(Formatter.getIdOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.modeValue)).setText(Formatter.getModeOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.pidValue)).setText(Formatter.getPidOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.successValue)).setText(Formatter.getSuccessOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.payloadValue)).setText(Formatter.getPayloadOutput(resp));
+                ((TextView) infoTable.findViewById(R.id.valueValue)).setText(Formatter.getValueOutput(resp));
+            } else if (Utilities.isCommandResponse(mResponse)){
+                CommandResponse cmdResponse = (CommandResponse) mResponse;
+                ((TextView) infoTable.findViewById(R.id.commandLabel)).setText( 
+                        Formatter.getCommandOutput(cmdResponse));
+                ((TextView) infoTable.findViewById(R.id.commandValue)).setText( 
+                        Formatter.getMessageOutput(cmdResponse));
             }
     }
 
-    private void fillOutputTableWithSuccessDetails(LinearLayout responseTable,
-            Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "payload", Formatter.getPayloadOutput(resp), resp);
-        createAndAddRowToOutput(context, responseTable, "value", Formatter.getValueOutput(resp), resp);
+    /*private void fillOutputTableWithSuccessDetails(LinearLayout responseTable,
+            DiagnosticResponse resp) {
+        createAndAddRowToOutput(responseTable, "payload", Formatter.getPayloadOutput(resp), resp);
+        createAndAddRowToOutput(responseTable, "value", Formatter.getValueOutput(resp), resp);
     }
 
     private void fillOutputTableWithFailureDetails(LinearLayout responseTable,
-            Activity context, DiagnosticResponse resp) {
-        createAndAddRowToOutput(context, responseTable, "neg. resp. code", 
+            DiagnosticResponse resp) {
+        createAndAddRowToOutput(responseTable, "neg. resp. code", 
                 Formatter.getOutputTableResponseCodeOutput(resp), resp);
-    }
+    }*/
 
     public LinearLayout getView() {
         return mView;

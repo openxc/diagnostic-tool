@@ -1,6 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -26,6 +27,7 @@ import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
+import com.openxc.openxcdiagnostic.util.RecurringResponseGenerator;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class DiagnosticActivity extends Activity {
@@ -45,7 +47,9 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = false;
+    boolean emulate = true;
+    private RecurringResponseGenerator mGenerator;
+    private Timer mTimer;
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -57,9 +61,9 @@ public class DiagnosticActivity extends Activity {
                     //due to sniffing
                     if (Utilities.isDiagnosticResponse(response) 
                             || Utilities.isCommandResponse(response)) {
-                        //prevent same response from being added to table twice due to sniffing
-                        //and sending an explicit request
-                        if (!mOutputTableManager.containsResponse(response)) {
+                        
+                        //update response if old one is in table
+                        if (!mOutputTableManager.replaceIfMatchesExisting(findRequest(response), response)) {;
                             mOutputTableManager.add(findRequest(response), response);
                         }
                     }
@@ -138,6 +142,15 @@ public class DiagnosticActivity extends Activity {
         if (!emulate) {
             registerForResponse(request);
             mVehicleManager.send(request);
+        } else {
+            if (Utilities.isDiagnosticRequest(request)) {
+                DiagnosticRequest diagReq = (DiagnosticRequest) request;
+                if (diagReq.getFrequency() != null && diagReq.getFrequency() > 0) {
+                    mGenerator = new RecurringResponseGenerator(diagReq, mResponseListener);
+                    mTimer = new Timer();
+                    mTimer.schedule(mGenerator, 100, 1000);
+                }
+            }
         }
     }
     
@@ -234,6 +247,7 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mButtonsManager);
         mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
+       
     }
     
     public boolean isDisplayingCommands() {
