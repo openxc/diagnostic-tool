@@ -51,7 +51,7 @@ public class OutputRow {
                 mRequest = pair.getRequest();
                 mResponse = pair.getResponse();
                 
-                if(ResponseDetailsAlertManager.isShowing()) {
+                if(ResponseDetailsAlertManager.isShowing(mRequest)) {
                     ResponseDetailsAlertManager.refresh(mRequest, mResponse);
                 }
                 

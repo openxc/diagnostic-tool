@@ -25,12 +25,14 @@ public class ResponseDetailsAlertManager {
     
     private static DiagnosticActivity sContext;
     private static LinearLayout alertLayout; 
+    private static VehicleMessage sRequest;
     private static boolean isShowing = false;
     
     public static void show(DiagnosticActivity context, VehicleMessage req, VehicleMessage resp) {
         
         isShowing = true;
         sContext = context;
+        sRequest = req;
         alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
         
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -48,8 +50,8 @@ public class ResponseDetailsAlertManager {
         builder.create().show();
     }
     
-    public static boolean isShowing() {
-        return isShowing;
+    public static boolean isShowing(VehicleMessage request) {
+        return isShowing && request.equals(sRequest);
     }
     
     public static void refresh(VehicleMessage req, VehicleMessage resp) {
