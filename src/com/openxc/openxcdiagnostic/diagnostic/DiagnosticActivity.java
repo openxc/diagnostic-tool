@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.openxc.VehicleManager;
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
+import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.ExactKeyMatcher;
@@ -48,8 +49,8 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
     boolean emulate = true;
-    private RecurringResponseGenerator mGenerator;
-    private Timer mTimer;
+    private Timer mTimer = new Timer();
+
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -62,16 +63,24 @@ public class DiagnosticActivity extends Activity {
                     if (Utilities.isDiagnosticResponse(response) 
                             || Utilities.isCommandResponse(response)) {
                         
-                        //update response if old one is in table
-                        if (!mOutputTableManager.replaceIfMatchesExisting(findRequest(response), response)) {;
-                            mOutputTableManager.add(findRequest(response), response);
+                        VehicleMessage request = findRequestThatMatchesResponse(response);
+                        //update response if old one is in table, otherwise just add it
+                        if (!mOutputTableManager.replaceIfMatchesExisting(request, response)) {
+                            mOutputTableManager.add(request, response);
+                        }
+                    
+                        //unregister listener if frequency of request is 0 or null b/c no more should come
+                        if (Utilities.isDiagnosticRequest(request)) {
+                            DiagnosticRequest diagReq = (DiagnosticRequest) request;
+                            if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
+                                mVehicleManager.removeListener(diagReq, 
+                                    DiagnosticActivity.this.mResponseListener);
+                            }
+                        } else if (Utilities.isCommand(request)) {
+                            mVehicleManager.removeListener((Command) request, 
+                                    DiagnosticActivity.this.mResponseListener);
                         }
                     }
-                    /*if (message.getFrequency() == null
-                            || request.getFrequency() == 0) {
-                        mVehicleManager.removeListener(KeyMatcher.buildExactMatcher(request), 
-                                DiagnosticActivity.this.mResponseListener);
-                    }*/
                 }
             });
         }
@@ -98,25 +107,47 @@ public class DiagnosticActivity extends Activity {
         }
     };
     
-    private VehicleMessage findRequest(VehicleMessage message) {
+    private VehicleMessage findRequestThatMatchesResponse(VehicleMessage response) {
         
-        if (Utilities.isDiagnosticResponse(message)) {
-            ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) message);
-            for (int i=0; i < outstandingRequests.size(); i++) {
-                DiagnosticRequest request = outstandingRequests.get(i);
-                if (matcher.matches(request)) {
-                    outstandingRequests.remove(request);
-                    return request;
-                }
+        if (Utilities.isDiagnosticResponse(response)) {
+            return findMatchingRequest((DiagnosticResponse) response);
+        } else if (Utilities.isCommandResponse(response)) {
+            return findMatchingCommand((CommandResponse) response);
+        }
+        return null;
+    }
+    
+    private Command findMatchingCommand(VehicleMessage msg) {
+        
+        ExactKeyMatcher matcher;
+        if (Utilities.isCommand(msg)) {
+            matcher = ExactKeyMatcher.buildExactMatcher((Command) msg);
+        } else {
+            matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) msg);  
+        } 
+        
+        for (int i=0; i < outstandingCommands.size(); i++) {
+            Command command = outstandingCommands.get(i);
+            if (matcher.matches(command)) {
+                return command;
             }
-        } else if (Utilities.isCommandResponse(message)) {
-            ExactKeyMatcher matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) message);
-            for (int i=0; i < outstandingCommands.size(); i++) {
-                Command command = outstandingCommands.get(i);
-                if (matcher.matches(command)) {
-                    outstandingCommands.remove(command);
-                    return command;
-                }
+        }
+        return null;
+    }
+    
+    private DiagnosticRequest findMatchingRequest(DiagnosticMessage msg) {
+        
+        ExactKeyMatcher matcher;
+        if (Utilities.isDiagnosticRequest(msg)) {
+            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticRequest) msg);
+        } else {
+            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) msg);  
+        } 
+        
+        for (int i=0; i < outstandingRequests.size(); i++) {
+            DiagnosticRequest request = outstandingRequests.get(i);
+            if (matcher.matches(request)) {
+                return request;
             }
         }
         return null;
@@ -125,6 +156,10 @@ public class DiagnosticActivity extends Activity {
     public void send(VehicleMessage request) {
                 
         if (Utilities.isDiagnosticRequest(request)) {
+            DiagnosticRequest diagReq = findMatchingRequest((DiagnosticRequest) request);
+            if (diagReq != null) {
+                outstandingRequests.remove(diagReq);
+            }
             outstandingRequests.add((DiagnosticRequest) request);
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeResponse((DiagnosticRequest) request));
@@ -146,9 +181,8 @@ public class DiagnosticActivity extends Activity {
             if (Utilities.isDiagnosticRequest(request)) {
                 DiagnosticRequest diagReq = (DiagnosticRequest) request;
                 if (diagReq.getFrequency() != null && diagReq.getFrequency() > 0) {
-                    mGenerator = new RecurringResponseGenerator(diagReq, mResponseListener);
-                    mTimer = new Timer();
-                    mTimer.schedule(mGenerator, 100, 1000);
+                    RecurringResponseGenerator generator = new RecurringResponseGenerator(diagReq, mResponseListener);
+                    mTimer.schedule(generator, 100, 1000);
                 }
             }
         }
@@ -247,7 +281,6 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mButtonsManager);
         mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
-       
     }
     
     public boolean isDisplayingCommands() {
