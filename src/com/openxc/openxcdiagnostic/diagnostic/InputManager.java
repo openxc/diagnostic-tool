@@ -104,17 +104,17 @@ public class InputManager implements DiagnosticManager {
         mFrequencyInputText.setText(holder.frequencyInput);
 
         if (holder instanceof RequestInputHolder) {
-            populateFields((RequestInputHolder) holder);
+            populateRequestFields((RequestInputHolder) holder);
         } else {
-            populateFields((CommandInputHolder) holder);
+            populateCommandFields((CommandInputHolder) holder);
         }
     }
     
-    private void populateFields(CommandInputHolder holder) {
+    private void populateCommandFields(CommandInputHolder holder) {
         mCommandInputText.setText(holder.commandInput);
     }
 
-    private void populateFields(RequestInputHolder holder) {
+    private void populateRequestFields(RequestInputHolder holder) {
         mBusInputText.setText(holder.busInput);
         mIdInputText.setText(holder.idInput);
         mModeInputText.setText(holder.modeInput);
@@ -140,6 +140,10 @@ public class InputManager implements DiagnosticManager {
         
         textFields = new ArrayList<>();
         
+        mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
+        mFrequencyInputText.setHint("0");
+        textFields.add(mFrequencyInputText);
+        
         int inputTableId = R.id.inputTable;
         FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
         LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
@@ -156,10 +160,6 @@ public class InputManager implements DiagnosticManager {
         }
         newView.setId(inputTableId);
         Utilities.replaceView(diagnosticLayout, oldView, newView);
-        
-        mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
-        mFrequencyInputText.setHint("0");
-        textFields.add(mFrequencyInputText);
                 
         for (int i = 0; i < textFields.size(); i++) {
             final EditText textField = textFields.get(i);
