@@ -1,6 +1,5 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -47,19 +46,15 @@ public class OutputRow {
     }
     
     public void setPair(final Pair pair) {
-        (new Handler()).post(new Runnable() {
-            public void run() {
-                mRequest = pair.getRequest();
-                mResponse = pair.getResponse();
-                
-                if(mAlertManager.isShowing()) {
-                    mAlertManager.refresh(mRequest, mResponse);
-                }
-                
-                fillOutputResponseTable();
-                setTimestamp();
-            }
-        });
+        mRequest = pair.getRequest();
+        mResponse = pair.getResponse();
+        
+        if(mAlertManager.isShowing()) {
+            mAlertManager.refresh(mRequest, mResponse);
+        }
+        
+        fillOutputResponseTable();
+        setTimestamp();
     }
     
     private void setTimestamp() {
