@@ -72,6 +72,25 @@ public class SettingsManager {
             }
         });
         
+        ((Button) layout.findViewById(R.id.cancelRecurringRequestsButton))
+        .setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(mContext.getResources().getString(R.string.cancel_recurring_requests_verification));
+                builder.setTitle(mContext.getResources().getString(R.string.cancel_recurring_requests_label));
+                builder.setNegativeButton("Yes, Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        mContext.cancelRecurringRequests();
+                    }
+                });
+                
+                builder.setPositiveButton("Don't Cancel", null);
+                builder.create().show();
+            }
+        });
+        
         ((Button) layout.findViewById(R.id.deleteDiagnosticResponsesButton))
         .setOnClickListener(new OnClickListener() {
             @Override

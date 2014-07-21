@@ -31,6 +31,20 @@
     <LinearLayout style="@style/SettingsRow">
         <TextView
             style="@style/SettingsItemLabel"
+            android:text="@string/cancel_recurring_requests_label" 
+            android:textIsSelectable="false"/>
+        <Button
+            style="@style/SettingsItemButton"
+            android:id="@+id/cancelRecurringRequestsButton" 
+            android:background="@drawable/cancel_button_selector"
+            android:text="@string/cancel_recurring_requests_button_text" />
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+    
+    <LinearLayout style="@style/SettingsRow">
+        <TextView
+            style="@style/SettingsItemLabel"
             android:text="@string/delete_diagnostic_responses_label" 
             android:textIsSelectable="false"/>
         <Button

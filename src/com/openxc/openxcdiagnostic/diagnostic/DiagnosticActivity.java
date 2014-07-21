@@ -303,6 +303,16 @@ public class DiagnosticActivity extends Activity {
     public boolean isDisplayingCommands() {
         return mSettingsManager.shouldDisplayCommands();
     }
+    
+    public void cancelRecurringRequests() {
+        for (int i=0; i < outstandingRequests.size(); i++) {
+            DiagnosticRequest req = outstandingRequests.get(i);
+            if (req.getFrequency() != null && req.getFrequency() > 0) {
+                req.setFrequency(null);
+                send(req);
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {
