@@ -28,7 +28,7 @@ public class OutputRow {
     private VehicleMessage mResponse;
     private VehicleMessage mRequest;
     private DiagnosticActivity mContext;
-    private Handler mHandler = new Handler();
+    private ResponseDetailsAlertManager mAlertManager;
 
     public OutputRow(DiagnosticActivity context,
             OutputTableManager tableManager, VehicleMessage req,
@@ -36,6 +36,7 @@ public class OutputRow {
 
         mView = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagoutputrow, null);
         mTableManager = tableManager;
+        mAlertManager = new ResponseDetailsAlertManager(context, req, resp);
         mResponse = resp;
         mRequest = req;
         mContext = context;
@@ -46,13 +47,13 @@ public class OutputRow {
     }
     
     public void setPair(final Pair pair) {
-        mHandler.post(new Runnable() {
+        (new Handler()).post(new Runnable() {
             public void run() {
                 mRequest = pair.getRequest();
                 mResponse = pair.getResponse();
                 
-                if(ResponseDetailsAlertManager.isShowing(mRequest)) {
-                    ResponseDetailsAlertManager.refresh(mRequest, mResponse);
+                if(mAlertManager.isShowing()) {
+                    mAlertManager.refresh(mRequest, mResponse);
                 }
                 
                 fillOutputResponseTable();
@@ -77,7 +78,7 @@ public class OutputRow {
         .setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResponseDetailsAlertManager.show(mContext, mRequest, mResponse);
+                mAlertManager.show();
             }
         });
 

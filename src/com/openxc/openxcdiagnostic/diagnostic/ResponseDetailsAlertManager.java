@@ -21,28 +21,30 @@ import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class ResponseDetailsAlertManager {
-
-    private ResponseDetailsAlertManager() { }
     
-    private static DiagnosticActivity sContext;
-    private static LinearLayout alertLayout; 
-    private static VehicleMessage sRequest;
-    private static boolean isShowing = false;
-    private static Handler sHandler = new Handler();
+    private DiagnosticActivity mContext;
+    private LinearLayout alertLayout; 
+    private VehicleMessage mRequest;
+    private VehicleMessage mResponse;
+    private boolean isShowing = false;
+    private Handler mHandler = new Handler();
     
-    public static void show(DiagnosticActivity context, VehicleMessage req, VehicleMessage resp) {
+    public ResponseDetailsAlertManager(DiagnosticActivity context, VehicleMessage req, VehicleMessage resp) {
+        mRequest = req;
+        mResponse = resp;
+        mContext = context;
+    }
+    
+    public void show() {
         
         isShowing = true;
-        sContext = context;
-        sRequest = req;
-        alertLayout = (LinearLayout) context.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
-        
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                
-        fill(req, resp);
+
+        alertLayout = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagdetailsalert, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);       
+        fill(mRequest, mResponse);
         
         builder.setView(alertLayout);
-        builder.setTitle(context.getResources().getString(R.string.details_button_label));
+        builder.setTitle(mContext.getResources().getString(R.string.details_button_label));
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -52,30 +54,32 @@ public class ResponseDetailsAlertManager {
         builder.create().show();
     }
     
-    public static boolean isShowing(VehicleMessage request) {
-        return isShowing && request.equals(sRequest);
+    public boolean isShowing() {
+        return isShowing;
     }
     
-    public static void refresh(final VehicleMessage req, final VehicleMessage resp) {
-        sHandler.post(new Runnable() {
+    public void refresh(final VehicleMessage req, final VehicleMessage resp) {
+        mRequest = req;
+        mResponse = resp;
+        mHandler.post(new Runnable() {
             public void run() {
                 fill(req, resp);
             }
         });
     }
     
-    private static void fill(VehicleMessage req, VehicleMessage resp) {
+    private void fill(VehicleMessage req, VehicleMessage resp) {
         fillRequestTable(req);
         fillResponseTable(resp);
     }
     
-    private static void fillRequestTable(VehicleMessage reqMessage) {
+    private void fillRequestTable(VehicleMessage reqMessage) {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
         requestTable.removeAllViews();
         if (Utilities.isDiagnosticRequest(reqMessage)) {
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
-            createAndAddHeaderRow(requestTable, sContext.getResources().getString(R.string.alert_request_header));
+            createAndAddHeaderRow(requestTable, mContext.getResources().getString(R.string.alert_request_header));
             createAndAddRow(requestTable, "bus", Formatter.getBusOutput(req), req);
             createAndAddRow(requestTable, "id", Formatter.getIdOutput(req), req);
             createAndAddRow(requestTable, "mode", Formatter.getModeOutput(req), req);
@@ -86,12 +90,12 @@ public class ResponseDetailsAlertManager {
             createAndAddButtonsRow(requestTable, reqMessage);
         } else if (Utilities.isCommand(reqMessage)) {
             Command command = (Command) reqMessage;
-            createAndAddHeaderRow(requestTable, sContext.getResources().getString(R.string.alert_command_header));
+            createAndAddHeaderRow(requestTable, mContext.getResources().getString(R.string.alert_command_header));
             createAndAddRow(requestTable, "command", Formatter.getCommandOutput(command), command);
             createAndAddButtonsRow(requestTable, reqMessage);
         } else if (reqMessage == null) {
             String message;
-            if (sContext.isDisplayingCommands()) {
+            if (mContext.isDisplayingCommands()) {
                 message = "No Command Found";
             } else {
                 message = "No Request Found";
@@ -100,9 +104,9 @@ public class ResponseDetailsAlertManager {
         }
     }
     
-    private static void createAndAddButtonsRow(LinearLayout parent,
+    private void createAndAddButtonsRow(LinearLayout parent,
             final VehicleMessage req) {
-        LinearLayout row = (LinearLayout) sContext.getLayoutInflater()
+        LinearLayout row = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagdetailsalertbuttonrow, null);
         final Button addToFavoritesButton =  (Button) row.findViewById(R.id.addToFavoritesButton);
         
@@ -127,33 +131,33 @@ public class ResponseDetailsAlertManager {
                     FavoritesManager.remove(req);
                     message = message + " Removed from Favorites.";
                 }
-                Toaster.showToast(sContext, message);
+                Toaster.showToast(mContext, message);
                 configureFavoritesButton(addToFavoritesButton, req);
             }
         });
         parent.addView(row);
     }
        
-    private static void configureFavoritesButton(Button button, VehicleMessage req) {
+    private void configureFavoritesButton(Button button, VehicleMessage req) {
         String text;
         int backgroundSelector;
         if (!FavoritesManager.contains(req)) {
             backgroundSelector = R.drawable.favorites_button_selector;
-            text = sContext.getResources().getString(R.string.add_to_favorites_button_label);
+            text = mContext.getResources().getString(R.string.add_to_favorites_button_label);
         } else {
             backgroundSelector = R.drawable.delete_button_selector;
-            text = sContext.getResources().getString(R.string.remove_from_favorites_button_label);
+            text = mContext.getResources().getString(R.string.remove_from_favorites_button_label);
         }
-        button.setBackground(sContext.getResources()
+        button.setBackground(mContext.getResources()
                 .getDrawable(backgroundSelector));
         button.setText(text);
     }
     
-    private static void fillResponseTable(VehicleMessage respMessage) {
+    private void fillResponseTable(VehicleMessage respMessage) {
         
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         responseTable.removeAllViews();
-        createAndAddHeaderRow(responseTable, sContext.getResources().getString(R.string.alert_response_header));
+        createAndAddHeaderRow(responseTable, mContext.getResources().getString(R.string.alert_response_header));
         if (Utilities.isDiagnosticResponse(respMessage)) {
             DiagnosticResponse resp = (DiagnosticResponse) respMessage;
             createAndAddRow(responseTable, "bus", Formatter.getBusOutput(resp), resp);
@@ -163,9 +167,9 @@ public class ResponseDetailsAlertManager {
             boolean responseSuccess = resp.isSuccessful();
             createAndAddRow(responseTable, "success", Formatter.getSuccessOutput(resp), resp);
             if (responseSuccess) {
-                fillTableWithSuccessDetails(responseTable, sContext, resp);
+                fillTableWithSuccessDetails(responseTable, mContext, resp);
             } else {
-                fillTableWithFailureDetails(responseTable, sContext, resp);
+                fillTableWithFailureDetails(responseTable, mContext, resp);
             }
         } else if (Utilities.isCommandResponse(respMessage)) {
             CommandResponse resp = (CommandResponse) respMessage;
@@ -173,33 +177,33 @@ public class ResponseDetailsAlertManager {
         }
     }
     
-    private static void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+    private void fillTableWithSuccessDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         
         createAndAddRow(responseTable, "payload", Formatter.getPayloadOutput(resp), resp);
         createAndAddRow(responseTable, "value", Formatter.getValueOutput(resp), resp);
     }
     
-    private static void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
+    private void fillTableWithFailureDetails(LinearLayout responseTable, Activity context, DiagnosticResponse resp) {
         createAndAddRow(responseTable, "code", Formatter.getResponseCodeOutput(resp), 
                 resp);
     }
 
-    private static void createAndAddRow(LinearLayout parent, String label, 
+    private void createAndAddRow(LinearLayout parent, String label, 
             String value, VehicleMessage msg) {
     
-        LinearLayout row = (LinearLayout) sContext.getLayoutInflater().inflate(R.layout.diagdetailsalertrow, null);
+        LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagdetailsalertrow, null);
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
         valueText.setText(value);
         if (Utilities.isDiagnosticResponse(msg)) {
-            valueText.setTextColor(Formatter.getOutputColor(sContext, 
+            valueText.setTextColor(Formatter.getOutputColor(mContext, 
                     (DiagnosticResponse) msg));
         } 
         parent.addView(row);
     }
     
-    private static void createAndAddHeaderRow(LinearLayout parent, String header) {
-        LinearLayout headerRow = (LinearLayout) sContext.getLayoutInflater().inflate(R.layout.diagdetailsalertheaderrow, null);
+    private void createAndAddHeaderRow(LinearLayout parent, String header) {
+        LinearLayout headerRow = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagdetailsalertheaderrow, null);
         ((TextView) headerRow.findViewById(R.id.alertHeaderLabel)).setText(header);
         parent.addView(headerRow);
     }
