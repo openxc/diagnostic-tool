@@ -22,5 +22,4 @@ public class DialogLauncher {
         builder.create().show();
     }
     
-    
 }

@@ -28,6 +28,7 @@ import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
+import com.openxc.openxcdiagnostic.util.DialogLauncher;
 import com.openxc.openxcdiagnostic.util.RecurringResponseGenerator;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -48,7 +49,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = true;
+    boolean emulate = false;
     private Timer mTimer = new Timer();
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
@@ -59,8 +60,7 @@ public class DiagnosticActivity extends Activity {
                 public void run() {
                     //prevent trying to add, for example, SimpleVehicleMessages received
                     //due to sniffing
-                    if (Utilities.isDiagnosticResponse(response) 
-                            || Utilities.isCommandResponse(response)) {
+                    if (shouldBeReceived(response)) {
                         
                         VehicleMessage request = findRequestThatMatchesResponse(response);
                         //update response if old one is in table, otherwise just add it
@@ -151,13 +151,47 @@ public class DiagnosticActivity extends Activity {
         }
         return null;
     }
+    
+    private boolean canBeSent(VehicleMessage msg) {
+        return Utilities.isDiagnosticRequest(msg) || Utilities.isCommand(msg);
+    }
+    
+    private boolean shouldBeReceived(VehicleMessage msg) {
+        return Utilities.isDiagnosticResponse(msg) 
+                || Utilities.isCommandResponse(msg);
+    }
 
     public void send(VehicleMessage request) {
                 
+        if (!canBeSent(request)) {
+            Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
+            return;
+        }
+        
+        if (!emulate) {
+            registerForResponse(request);
+            if (!mVehicleManager.send(request)) {
+                DialogLauncher.launchAlert(this, "Unable to Send", "The request or command could" +
+                		" not be sent.  Ensure that the VI is on and connected.");
+                return;
+            }
+        } else {
+            //only for emulating recurring requests
+            if (Utilities.isDiagnosticRequest(request)) {
+                DiagnosticRequest diagReq = (DiagnosticRequest) request;
+                if (diagReq.getFrequency() != null && diagReq.getFrequency() > 0) {
+                    RecurringResponseGenerator generator = new RecurringResponseGenerator(diagReq, mResponseListener);
+                    mTimer.schedule(generator, 100, 1000);
+                }
+            }
+        }
+        
         if (Utilities.isDiagnosticRequest(request)) {
-            DiagnosticRequest diagReq = findMatchingRequest((DiagnosticRequest) request);
-            if (diagReq != null) {
-                outstandingRequests.remove(diagReq);
+            //remove an outstanding request that matches if a new one is sent because the new one
+            //will overwrite the old request in the VI
+            DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) request);
+            if (oldReq != null) {
+                outstandingRequests.remove(oldReq);
             }
             outstandingRequests.add((DiagnosticRequest) request);
             if (emulate) {
@@ -168,23 +202,7 @@ public class DiagnosticActivity extends Activity {
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeCommandResponse((Command) request));
             }
-        } else {
-            Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
-            return;
-        }
-        
-        if (!emulate) {
-            registerForResponse(request);
-            mVehicleManager.send(request);
-        } else {
-            if (Utilities.isDiagnosticRequest(request)) {
-                DiagnosticRequest diagReq = (DiagnosticRequest) request;
-                if (diagReq.getFrequency() != null && diagReq.getFrequency() > 0) {
-                    RecurringResponseGenerator generator = new RecurringResponseGenerator(diagReq, mResponseListener);
-                    mTimer.schedule(generator, 100, 1000);
-                }
-            }
-        }
+        } 
     }
     
     private void registerForResponse(VehicleMessage request) {
