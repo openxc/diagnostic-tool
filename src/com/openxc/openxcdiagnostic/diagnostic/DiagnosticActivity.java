@@ -307,6 +307,9 @@ public class DiagnosticActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mOutputTableManager.save();
+        
+        //TODO do we actually want to do this? 
         removeListener(outstandingCommands, mResponseListener);
         removeListener(outstandingRequests, mResponseListener);
     }
@@ -331,11 +334,13 @@ public class DiagnosticActivity extends Activity {
             unbindService(mConnection);
             mIsBound = false;
         }
+        mOutputTableManager.save();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ActivityLauncher.launchActivity(this, item.getItemId());
+        mOutputTableManager.save();
         return super.onOptionsItemSelected(item);
     }
 

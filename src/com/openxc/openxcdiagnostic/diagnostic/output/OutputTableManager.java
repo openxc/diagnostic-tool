@@ -110,6 +110,11 @@ public class OutputTableManager implements DiagnosticManager  {
         }
     }
     
+    public void save() {
+        mSaver.saveDiagnosticRows(mDiagnosticRows);
+        mSaver.saveCommandRows(mCommandRows);
+    }
+    
     public boolean replaceIfMatchesExisting(VehicleMessage req, VehicleMessage resp) {
         
         if (Utilities.isDiagnosticResponse(resp)) {
@@ -119,7 +124,6 @@ public class OutputTableManager implements DiagnosticManager  {
                 DiagnosticPair pair = (DiagnosticPair) row.getPair();
                 if (responseMatcher.matches((DiagnosticResponse) pair.getResponse())) {
                     row.setPair(new DiagnosticPair((DiagnosticRequest) req, (DiagnosticResponse) resp));
-                    mSaver.saveDiagnosticRows(mDiagnosticRows);
                     return true;
                 }
             }
@@ -130,7 +134,6 @@ public class OutputTableManager implements DiagnosticManager  {
                 CommandPair pair = (CommandPair) row.getPair();
                 if (responseMatcher.matches(pair.getResponse())) {
                     row.setPair(new CommandPair((Command) req, (CommandResponse) resp));
-                    mSaver.saveCommandRows(mCommandRows);
                     return true;
                 }
             }
@@ -150,10 +153,8 @@ public class OutputTableManager implements DiagnosticManager  {
         OutputRow row = new OutputRow(mContext, this, req, resp);
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.add(0, row);
-            mSaver.saveDiagnosticRows(mDiagnosticRows);
         } else {
             mCommandRows.add(0, row);
-            mSaver.saveCommandRows(mCommandRows);
         }
         
         setAdapter();
@@ -163,10 +164,8 @@ public class OutputTableManager implements DiagnosticManager  {
         
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.remove(row);
-            mSaver.saveDiagnosticRows(mDiagnosticRows);
         } else {
             mCommandRows.remove(row);
-            mSaver.saveCommandRows(mCommandRows);
         }
         
         updateAdapter();
@@ -174,13 +173,11 @@ public class OutputTableManager implements DiagnosticManager  {
     
     public void deleteAllDiagnosticResponses() {
         mDiagnosticRows = new ArrayList<>();
-        mSaver.saveDiagnosticRows(mDiagnosticRows);
         setAdapter();
     }
     
     public void deleteAllCommandResponses() {
         mCommandRows = new ArrayList<>();
-        mSaver.saveCommandRows(mCommandRows);
         setAdapter();
     }
     
