@@ -16,12 +16,12 @@ import com.openxc.openxcdiagnostic.diagnostic.command.LaunchSettingsDialogComman
 import com.openxc.openxcdiagnostic.diagnostic.command.RequestSendCommand;
 import com.openxc.openxcdiagnostic.util.DialogLauncher;
 
-public class ButtonsManager implements DiagnosticManager{
+public class ButtonManager implements DiagnosticManager{
 
     private DiagnosticActivity mContext;
     private boolean mDisplayCommands;
         
-    public ButtonsManager(DiagnosticActivity context, boolean displayCommands) {
+    public ButtonManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
         setRequestCommandState(displayCommands);
         initButtons();

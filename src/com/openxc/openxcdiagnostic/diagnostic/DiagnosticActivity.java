@@ -38,7 +38,7 @@ public class DiagnosticActivity extends Activity {
 
     private SettingsManager mSettingsManager;
     private InputManager mInputManager;
-    private ButtonsManager mButtonsManager;
+    private ButtonManager mButtonsManager;
     private FavoritesAlertManager mFavoritesAlertManager;
     private VehicleManager mVehicleManager;
     private boolean mIsBound;
@@ -294,7 +294,7 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mFavoritesAlertManager);
         mInputManager = new InputManager(this, displayCommands);
         mManagers.add(mInputManager);
-        mButtonsManager = new ButtonsManager(this, displayCommands);
+        mButtonsManager = new ButtonManager(this, displayCommands);
         mManagers.add(mButtonsManager);
         mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
