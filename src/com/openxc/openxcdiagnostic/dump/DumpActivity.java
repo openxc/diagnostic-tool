@@ -73,7 +73,7 @@ public class DumpActivity extends Activity {
     
     public void limitMessageCount(int numMessages) {
         while (mDumpLayout.getChildCount() > numMessages) {
-            mDumpLayout.removeViewAt(numMessages - 1);
+            mDumpLayout.removeViewAt(numMessages);
         }
     }
     
@@ -129,7 +129,6 @@ public class DumpActivity extends Activity {
         Log.i(TAG, "Vehicle Dump Created");
     }
     
-
     @Override
     public void onDestroy() {
         super.onDestroy();
