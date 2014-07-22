@@ -9,6 +9,7 @@ import com.openxc.messages.CommandResponse;
 import com.openxc.messages.DiagnosticMessage;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.DiagnosticResponse;
+import com.openxc.messages.formatters.ByteAdapter;
 import com.openxc.openxcdiagnostic.R;
 
 public class Formatter {
@@ -46,7 +47,7 @@ public class Formatter {
 
     public static String getPayloadOutput(DiagnosticMessage msg) {
         return msg.getPayload() == null ? "" : padRight("0x"
-                + new String(msg.getPayload()));
+                + ByteAdapter.byteArrayToHexString(msg.getPayload()));
     }
 
     public static String getSuccessOutput(DiagnosticResponse resp) {
