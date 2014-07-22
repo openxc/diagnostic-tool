@@ -391,8 +391,7 @@ public class InputManager implements DiagnosticManager {
             request.setName(name);
         }
 
-        // TODO not retrieving this value from UI yet
-        request.setMultipleResponses(false);
+        request.setMultipleResponses(mContext.multipleResponsesEnabled());
 
         return request;
     }

@@ -30,6 +30,10 @@ public class SettingsManager {
         if (!mPreferences.contains(getScrollingCheckboxKey())) {
             setShouldScroll(true);
         }
+        if (!mPreferences.contains(getMultipleResponsesEnabledKey())) {
+            setMultipleResponsesEnabled(true);
+        }
+        
         mDisplayCommands = mPreferences.getBoolean(getDisplayCommandsKey(), false);
     }
         
@@ -59,6 +63,16 @@ public class SettingsManager {
                 } else {
                     mContext.stopSniffing();
                 }
+            }
+        });
+        
+        final CheckedTextView multipleResponseCheckBox = (CheckedTextView) layout.findViewById(R.id.multipleResponseCheckBox);
+        multipleResponseCheckBox.setChecked(multipleResponsesEnabled());
+        multipleResponseCheckBox.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                multipleResponseCheckBox.setChecked(!multipleResponseCheckBox.isChecked());
+                setMultipleResponsesEnabled(multipleResponseCheckBox.isChecked());
             }
         });
         
@@ -176,12 +190,20 @@ public class SettingsManager {
         return mPreferences.getBoolean(getScrollingCheckboxKey(), true);
     }
     
+    public boolean multipleResponsesEnabled() {
+        return mPreferences.getBoolean(getMultipleResponsesEnabledKey(), true);
+    }
+    
     private void setShouldSniff(boolean shouldSniff) {
         save(getSniffingCheckboxKey(), shouldSniff);
     }
     
     private void setShouldScroll(boolean shouldScroll) {
         save(getScrollingCheckboxKey(), shouldScroll);
+    }
+    
+    private void setMultipleResponsesEnabled(boolean enabled) {
+        save(getMultipleResponsesEnabledKey(), enabled);
     }
     
     private void save(String key, boolean value) {
@@ -202,4 +224,8 @@ public class SettingsManager {
         return "scrolling_checkbox_key";
     }
 
+    private String getMultipleResponsesEnabledKey() {
+        return "multiple_responses_enabled";
+    }
+    
 }

@@ -49,7 +49,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = false;
+    boolean emulate = true;
     private Timer mTimer = new Timer();
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
@@ -254,6 +254,10 @@ public class DiagnosticActivity extends Activity {
     
     public boolean shouldScroll() {
         return mSettingsManager.shouldScroll();
+    }
+    
+    public boolean multipleResponsesEnabled() {
+        return mSettingsManager.multipleResponsesEnabled();
     }
 
     public void clearDiagnosticTable() {

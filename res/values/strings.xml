@@ -23,14 +23,15 @@
     <string name="frequency_favorites_label">Freq.</string>
     
     <!-- Diag Settings Strings -->
+    <string name="sniffing_label">Enable Response Sniffing</string>
+    <string name="response_scroll_label">Scroll to Top on Response Receipt</string>
+    <string name="multiple_responses_label">Allow Multiple Responses</string>
     <string name="settings_alert_label">Settings</string>
     <string name="cancel_recurring_requests_label">Cancel All Recurring Requests</string>
     <string name="cancel_recurring_requests_button_text">Cancel</string>
     <string name="delete_diagnostic_responses_label">Delete all Diagnostic Responses</string>
     <string name="delete_command_responses_label">Delete all Command Responses</string>
     <string name="delete_all_responses_button_text">Delete</string>
-    <string name="sniffing_label">Enable Response Sniffing</string>
-    <string name="response_scroll_label">Scroll to Top on Response Receipt</string>
     <string name="delete_diagnostic_responses_verification">"Are you sure you want to delete all diagnostic responses? This cannot be undone.</string>
     <string name="delete_command_responses_verification">"Are you sure you want to delete all command responses? This cannot be undone.</string>
     <string name="response_command_toggle_label">Toggle Response/Command</string>

@@ -19,6 +19,18 @@
     <LinearLayout style="@style/SettingsRow">
         <CheckedTextView 
             style="@style/SettingsItemLabel"
+            android:id="@+id/multipleResponseCheckBox"
+            android:text="@string/multiple_responses_label" 
+            android:textIsSelectable="false" 
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="false"/>
+    </LinearLayout>
+    
+    <include layout="@layout/horizontalline" />
+    
+    <LinearLayout style="@style/SettingsRow">
+        <CheckedTextView 
+            style="@style/SettingsItemLabel"
             android:id="@+id/responseScrollCheckBox"
             android:text="@string/response_scroll_label" 
             android:textIsSelectable="false" 
