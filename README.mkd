@@ -4,13 +4,16 @@ OpenXC Diagnostic Tool
 Diagnostic Tool for [OpenXC][].
 This application is a part of the [OpenXC Android](http://github.com/openxc/openxc-android) project.
 
-This application allows you to send and receive messages between an Android device and a Vehicle Interface (VI).
+This application allows you to send and receive messages between an Android device and a [Vehicle Interface (VI)]
+(http://openxcplatform.com/vehicle-interface/hardware.html).
 These messages include Diagnostic Requests and Diagnostic Responses.
 You can also send Commands to the VI and receive Command Responses.  See the [message specification page]
 (http://github.com/openxc/openxc-message-format) to see how these messages are formatted.
 
 The OpenXC Enabler application is required to use the Diagnostic Tool.  See [here]
-(http://openxcplatform.com/android/library-installation.html) for installation instructions.
+(http://openxcplatform.com/android/library-installation.html) for installation instructions.  Use the OpenXC Enabler 
+to establish a connection with a VI.  Once a connection has been established, either via USB or Bluetooth depending
+on your setup, you can forget about the connection and simply use the Diagnostic Tool.  
 
 ## Building and Launching from Eclipse
 
@@ -21,8 +24,29 @@ Android project in the repository. Select the project, and add it to your worksp
 
 After opening the Diagnostic Tool application project folder, there should be no build errors.
 If there are, start by right clicking on the project folder in the Project Explorer. Go to 
-'Android Tools -> Fix Project Properties.'  If the problem persists, open the Problems View to track down
+`Android Tools -> Fix Project Properties.`  If the problem persists, open the Problems View to track down
 the issue and fix it manually.
+
+## How to use the Diagnostic Tool
+
+The launch activity of the application is the Diagnostic activity.  There you can enter the fields necessary to send
+a request with the [correct formatting](http://github.com/openxc/openxc-message-format).  If and when a response is
+received, it will be added to the table beneath the `Send Request` button.  If the request is recurring and new responses
+are continually received, the new responses will update the table entries in real time as the responses are received.  
+
+If you aren't receiving a response when you expect to see one, first check that you have response sniffing enabled in settings.
+If that is enabled, and you're still not seeing a response you expect, check the Dump activity.  The Dump Activity 
+can be accessed via the options menu near the top of the screen.  The Dump Activity reports all messages 
+that are being received.  Keep in mind that the Dump activity only reports messages received while the Dump 
+activity is open, so you won't be able to simultaneously send a request/wait for a response and have the Dump activity 
+open...you likely can't open it fast enough after sending the request.  To get around this, you have two options:  
+
+1) Send the request with the [OpenXC Python tools](http://python.openxcplatform.com/en/master/) and have the Dump
+activity open in order to watch for a response on the tablet.
+
+2) Similarly, send the request with the [OpenXC Python tools](http://python.openxcplatform.com/en/master/), but simply watch for
+a response in the terminal.  This won't help you solve the problem if it is a connection issue, but it should at least
+help you determine if you should, in fact, see a response.  
 
 
 ## License
