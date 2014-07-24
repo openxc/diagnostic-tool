@@ -34,8 +34,20 @@ a request with the [correct formatting](http://github.com/openxc/openxc-message-
 received, it will be added to the table beneath the `Send Request` button.  If the request is recurring and new responses
 are continually received, the new responses will update the table entries in real time as the responses are received.  
 
-The Dump activity can be accessed via the options menu near the top of the screen.  There you can see all incoming
-messages in raw form. 
+If you aren't receiving a response when you expect to see one, first check that you have response sniffing enabled in settings.
+If that is enabled, and you're still not seeing a response you expect, check the Dump activity.  The Dump Activity 
+can be accessed via the options menu near the top of the screen.  The Dump Activity reports all messages 
+that are being received.  Keep in mind that the Dump activity only reports messages received while the Dump 
+activity is open, so you won't be able to simultaneously send a request/wait for a response and have the Dump activity 
+open...you likely can't open it fast enough after sending the request.  To get around this, you have two options.  
+
+1) Send the request with the [OpenXC Python tools](http://python.openxcplatform.com/en/master/) and have the Dump
+activity open in order to watch for a response on the tablet.
+
+2) Similarly, send the request with the [OpenXC Python tools](http://python.openxcplatform.com/en/master/), but simply watch for
+a response in the terminal.  This won't help you solve the problem if it is a connection issue, but it should at least
+help you determine if you should, in fact, see a response.  
+
 
 ## License
 
