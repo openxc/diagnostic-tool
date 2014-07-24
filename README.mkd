@@ -14,7 +14,7 @@ The OpenXC Enabler application is required to use the Diagnostic Tool.  See [her
 
 ## Building and Launching from Eclipse
 
-Clone the `diagnostic-tool` repository to your local disk, open Eclipse
+Clone the `diagnostic-tool` repository to your local disk. Open Eclipse
 and go to `File -> New -> Other -> Android -> Android Project from Existing
 Source`. Browse to the `diagnostic-tool` folder and it should detect the
 Android project in the repository. Select the project, and add it to your workspace.
