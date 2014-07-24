@@ -35,7 +35,8 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 public class DiagnosticActivity extends Activity {
 
     private static String TAG = "DiagnosticActivity";
-
+    private static int FUNCTIONAL_BROADCAST_ID = 0x7DF;
+    
     private SettingsManager mSettingsManager;
     private InputManager mInputManager;
     private ButtonManager mButtonsManager;
@@ -49,7 +50,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
     
-    boolean emulate = true;
+    boolean emulate = false;
     private Timer mTimer = new Timer();
 
     VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
@@ -149,7 +150,27 @@ public class DiagnosticActivity extends Activity {
                 return request;
             }
         }
+        
+        return findMatchingFunctionalBroadcastRequest(msg);
+    }
+    
+    private DiagnosticRequest findMatchingFunctionalBroadcastRequest(DiagnosticMessage msg) {
+        
+        for (int i=0; i < outstandingRequests.size(); i++) {
+            DiagnosticRequest request = outstandingRequests.get(i);
+            if (request.getId() == FUNCTIONAL_BROADCAST_ID) {
+                if (exactMatchExceptId(request, msg)) {
+                    return request;
+                }
+            }
+        }
+        
         return null;
+    }
+    
+    private boolean exactMatchExceptId(DiagnosticMessage msg1, DiagnosticMessage msg2) {
+        return msg1.getBusId() == msg2.getBusId() && msg1.getMode() == msg2.getMode()
+                && msg1.getPid() == msg2.getPid();
     }
     
     private boolean canBeSent(VehicleMessage msg) {
