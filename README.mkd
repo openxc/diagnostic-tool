@@ -12,7 +12,8 @@ You can also send Commands to the VI and receive Command Responses.  See the [me
 
 The OpenXC Enabler application is required to use the Diagnostic Tool.  See [here]
 (http://openxcplatform.com/android/library-installation.html) for installation instructions.  Use the OpenXC Enabler 
-to establish a connection with a VI.  
+to establish a connection with a VI.  Once a connection has been established, either via USB or Bluetooth depending
+on your setup, you can forget about the connection and simply use the Diagnostic Tool.  
 
 ## Building and Launching from Eclipse
 
@@ -23,8 +24,12 @@ Android project in the repository. Select the project, and add it to your worksp
 
 After opening the Diagnostic Tool application project folder, there should be no build errors.
 If there are, start by right clicking on the project folder in the Project Explorer. Go to 
-'Android Tools -> Fix Project Properties.'  If the problem persists, open the Problems View to track down
+`Android Tools -> Fix Project Properties.`  If the problem persists, open the Problems View to track down
 the issue and fix it manually.
+
+## How to use the Diagnostic Tool
+
+
 
 
 ## License
