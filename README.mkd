@@ -4,13 +4,15 @@ OpenXC Diagnostic Tool
 Diagnostic Tool for [OpenXC][].
 This application is a part of the [OpenXC Android](http://github.com/openxc/openxc-android) project.
 
-This application allows you to send and receive messages between an Android device and a Vehicle Interface (VI).
+This application allows you to send and receive messages between an Android device and a [Vehicle Interface (VI)]
+(http://openxcplatform.com/vehicle-interface/hardware.html).
 These messages include Diagnostic Requests and Diagnostic Responses.
 You can also send Commands to the VI and receive Command Responses.  See the [message specification page]
 (http://github.com/openxc/openxc-message-format) to see how these messages are formatted.
 
 The OpenXC Enabler application is required to use the Diagnostic Tool.  See [here]
-(http://openxcplatform.com/android/library-installation.html) for installation instructions.
+(http://openxcplatform.com/android/library-installation.html) for installation instructions.  Use the OpenXC Enabler 
+to establish a connection with a VI.  
 
 ## Building and Launching from Eclipse
 
