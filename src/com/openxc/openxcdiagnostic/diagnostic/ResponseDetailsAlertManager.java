@@ -61,11 +61,14 @@ public class ResponseDetailsAlertManager {
     public void refresh(final VehicleMessage req, final VehicleMessage resp) {
         mRequest = req;
         mResponse = resp;
-        mHandler.post(new Runnable() {
-            public void run() {
-                fill(req, resp);
-            }
-        });
+        
+        if (isShowing()) {
+            mHandler.post(new Runnable() {
+                public void run() {
+                    fill(req, resp);
+                }
+            });
+        }
     }
     
     private void fill(VehicleMessage req, VehicleMessage resp) {

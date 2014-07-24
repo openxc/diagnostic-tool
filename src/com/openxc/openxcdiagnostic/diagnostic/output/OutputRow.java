@@ -49,10 +49,7 @@ public class OutputRow {
         mRequest = pair.getRequest();
         mResponse = pair.getResponse();
         
-        if(mAlertManager.isShowing()) {
-            mAlertManager.refresh(mRequest, mResponse);
-        }
-        
+        mAlertManager.refresh(mRequest, mResponse);
         fillOutputResponseTable();
         setTimestamp();
     }
