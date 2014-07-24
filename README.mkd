@@ -9,7 +9,7 @@ These messages include Diagnostic Requests and Diagnostic Responses.
 You can also send Commands to the VI and receive Command Responses.  See the [message specification page]
 (http://github.com/openxc/openxc-message-format) to see how these messages are formatted.
 
-The OpenXC Enabler application is required to use this application.  Click [here]
+The OpenXC Enabler application is required to use the Diagnostic Tool.  Click [here]
 (http://openxcplatform.com/android/library-installation.html) for installation instructions.
 
 ## Building and Launching from Eclipse
