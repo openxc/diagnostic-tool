@@ -2,7 +2,7 @@ OpenXC Diagnostic Tool
 =========================
 
 Diagnostic Tool for [OpenXC][].
-This Application is a part of the [OpenXC][] project.
+This Application is a part of the [OpenXC Android](http://github.com/openxc/openxc-android) project.
 
 This Application allows you to send and receive messages between an Android device and a Vehicle Interface (VI).
 These messages include Diagnostic Requests and Diagnostic Responses.
