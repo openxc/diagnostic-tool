@@ -39,7 +39,7 @@ If that is enabled, and you're still not seeing a response you expect, check the
 can be accessed via the options menu near the top of the screen.  The Dump Activity reports all messages 
 that are being received.  Keep in mind that the Dump activity only reports messages received while the Dump 
 activity is open, so you won't be able to simultaneously send a request/wait for a response and have the Dump activity 
-open...you likely can't open it fast enough after sending the request.  To get around this, you have two options.  
+open...you likely can't open it fast enough after sending the request.  To get around this, you have two options:  
 
 1) Send the request with the [OpenXC Python tools](http://python.openxcplatform.com/en/master/) and have the Dump
 activity open in order to watch for a response on the tablet.
