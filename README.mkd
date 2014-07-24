@@ -29,8 +29,13 @@ the issue and fix it manually.
 
 ## How to use the Diagnostic Tool
 
+The launch activity of the application is the Diagnostic activity.  There you can enter the fields necessary to send
+a request with the [correct formatting](http://github.com/openxc/openxc-message-format).  If and when a response is
+received, it will be added to the table beneath the `Send Request` button.  If the request is recurring and new responses
+are continually received, the new responses will update the table entries in real time as the responses are received.  
 
-
+The Dump activity can be accessed via the options menu near the top of the screen.  There you can see all incoming
+messages in raw form. 
 
 ## License
 
