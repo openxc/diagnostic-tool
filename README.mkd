@@ -1,7 +1,7 @@
 OpenXC Diagnostic Tool
 =========================
 
-Diagnostic Tool for OpenXC.
+Diagnostic Tool for [OpenXC][].
 This Application is a part of the [OpenXC][] project.
 
 This Application allows you to send and receive messages between an Android device and a Vehicle Interface (VI).
@@ -29,3 +29,5 @@ the issue and fix it manually.
 
 Copyright (c) 2014 Ford Motor Company
 Licensed under the BSD license.
+
+[OpenXC]: http://openxcplatform.com
