@@ -1,4 +1,33 @@
-OpenXCDiagnostic
-==============
+OpenXC Diagnostic Tool
+=========================
 
-Diagnostic Tool for OpenXC.
+Diagnostic Tool for [OpenXC][].
+This application is a part of the [OpenXC Android](http://github.com/openxc/openxc-android) project.
+
+This application allows you to send and receive messages between an Android device and a Vehicle Interface (VI).
+These messages include Diagnostic Requests and Diagnostic Responses.
+You can also send Commands to the VI and receive Command Responses.  See the [message specification page]
+(http://github.com/openxc/openxc-message-format) to see how these messages are formatted.
+
+The OpenXC Enabler application is required to use the Diagnostic Tool.  See [here]
+(http://openxcplatform.com/android/library-installation.html) for installation instructions.
+
+## Building and Launching from Eclipse
+
+Clone the `diagnostic-tool` repository to your local disk. Open Eclipse
+and go to `File -> New -> Other -> Android -> Android Project from Existing
+Source`. Browse to the `diagnostic-tool` folder and it should detect the
+Android project in the repository. Select the project, and add it to your workspace.
+
+After opening the Diagnostic Tool application project folder, there should be no build errors.
+If there are, start by right clicking on the project folder in the Project Explorer. Go to 
+'Android Tools -> Fix Project Properties.'  If the problem persists, open the Problems View to track down
+the issue and fix it manually.
+
+
+## License
+
+Copyright (c) 2014 Ford Motor Company
+Licensed under the BSD license.
+
+[OpenXC]: http://openxcplatform.com
