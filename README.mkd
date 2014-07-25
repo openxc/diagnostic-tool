@@ -35,7 +35,9 @@ received, it will be added to the table beneath the `Send Request` button.  If t
 are continually received, the new responses will update the table entries in real time as the responses are received.  
 
 If you aren't receiving a response when you expect to see one, first check that you have response sniffing enabled in settings.
-If that is enabled, and you're still not seeing a response you expect, check the Dump activity.  The Dump Activity 
+Sniffing is required in order to see a response if you are sending a request to a functional ID instead of sending to
+a specific ID because you will never see a response from a functional ID, so the keys will not match.
+If sniffing is enabled, and you're still not seeing a response you expect, check the Dump activity.  The Dump Activity 
 can be accessed via the options menu near the top of the screen.  The Dump Activity reports all messages 
 that are being received.  Keep in mind that the Dump activity only reports messages received while the Dump 
 activity is open, so you won't be able to simultaneously send a request/wait for a response and have the Dump activity 
