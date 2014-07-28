@@ -82,29 +82,29 @@ public class ButtonManager implements DiagnosticManager {
 
     private void initRequestInfoButtons() {
 
-        final Map<Integer, Integer> infoMap = new HashMap<>();
+        final Map<Integer, Integer> infoLabels = new HashMap<>();
         final Map<Integer, Integer> buttonInfo = new HashMap<>();
 
         buttonInfo.put(R.id.frequencyQuestionButton, R.string.frequency_info);
-        infoMap.put(R.string.frequency_info, R.string.frequency_label);
+        infoLabels.put(R.string.frequency_info, R.string.frequency_label);
 
         buttonInfo.put(R.id.busQuestionButton, R.string.bus_info);
-        infoMap.put(R.string.bus_info, R.string.bus_label);
+        infoLabels.put(R.string.bus_info, R.string.bus_label);
 
         buttonInfo.put(R.id.idQuestionButton, R.string.id_info);
-        infoMap.put(R.string.id_info, R.string.id_label);
+        infoLabels.put(R.string.id_info, R.string.id_label);
 
         buttonInfo.put(R.id.modeQuestionButton, R.string.mode_info);
-        infoMap.put(R.string.mode_info, R.string.mode_label);
+        infoLabels.put(R.string.mode_info, R.string.mode_label);
 
         buttonInfo.put(R.id.pidQuestionButton, R.string.pid_info);
-        infoMap.put(R.string.pid_info, R.string.pid_label);
+        infoLabels.put(R.string.pid_info, R.string.pid_label);
 
         buttonInfo.put(R.id.payloadQuestionButton, R.string.payload_info);
-        infoMap.put(R.string.payload_info, R.string.payload_label);
+        infoLabels.put(R.string.payload_info, R.string.payload_label);
 
         buttonInfo.put(R.id.nameQuestionButton, R.string.name_info);
-        infoMap.put(R.string.name_info, R.string.name_label);
+        infoLabels.put(R.string.name_info, R.string.name_label);
 
         for (final Integer buttonId : buttonInfo.keySet()) {
             ((Button) mContext.findViewById(buttonId))
@@ -112,8 +112,8 @@ public class ButtonManager implements DiagnosticManager {
                         @Override
                         public void onClick(View v) {
                             int infoId = buttonInfo.get(buttonId);
-                            DialogLauncher.launchAlert(mContext,
-                                    mResources.getString(infoMap.get(infoId)),
+                            DialogLauncher.launchAlert(mContext, mResources
+                                    .getString(infoLabels.get(infoId)),
                                     mResources.getString(infoId), "OK");
                         }
                     });
