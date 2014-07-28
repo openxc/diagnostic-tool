@@ -8,20 +8,20 @@ public class DiagnosticPair implements Pair {
 
     private DiagnosticRequest mRequest;
     private DiagnosticResponse mResponse;
-    
+
     public DiagnosticPair(DiagnosticRequest request, DiagnosticResponse response) {
         mRequest = request;
         mResponse = response;
     }
-    
+
     public DiagnosticRequest getRequest() {
         return mRequest;
     }
-    
+
     public DiagnosticResponse getResponse() {
         return mResponse;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -29,7 +29,8 @@ public class DiagnosticPair implements Pair {
         }
 
         final DiagnosticPair other = (DiagnosticPair) obj;
-        return Objects.equal(mRequest, other.mRequest) && mResponse.equals(other.mResponse);
+        return Objects.equal(mRequest, other.mRequest)
+                && mResponse.equals(other.mResponse);
     }
-    
+
 }
