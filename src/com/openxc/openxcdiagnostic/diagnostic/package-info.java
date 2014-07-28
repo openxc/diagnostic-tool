@@ -1,5 +1,5 @@
 /**
- * Base package for classes that manage the diagnsotic activity.
+ * Base package for classes that manage the diagnostic activity.
  */
 /**
  * @author charlesreitz
