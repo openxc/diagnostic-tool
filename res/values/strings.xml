@@ -7,8 +7,6 @@
     <string name="menu_label">OpenXC Menu</string>
     <string name="graph_label">OpenXC Graph</string>
     <string name="dump_label">OpenXC Dump</string>
-    <string name="request_button_label">Send Request</string>
-    <string name="details_button_label">Details</string>
     
     <!-- Favorites Strings -->
     <string name="favorites_button_label">Favorites</string>
@@ -57,9 +55,13 @@
     <string name="success_label">Success</string>
     <string name="name_label">Name</string>
     <string name="command_label">Command</string>
+    <string name="negative_response_code_label">Code</string>
+    <string name="command_response_label">Message</string>
     <string name="alert_request_header">REQUEST</string>
     <string name="alert_command_header">COMMAND</string>
     <string name="alert_response_header">RESPONSE</string>
+    <string name="request_button_label">Send Request</string>
+    <string name="details_alert_label">Details</string>
     
     <!-- Info Strings -->
     <string name="bus_info">The numerical identifier of the CAN bus where this request should be sent, most likely 1 or 2 (for a vehicle interface with 2 CAN controllers).</string>
