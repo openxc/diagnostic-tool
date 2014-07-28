@@ -207,6 +207,26 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    private void removeListener(ArrayList<? extends KeyedMessage> commands,
+            VehicleMessage.Listener listener) {
+        for (int i = 0; i < commands.size(); i++) {
+            mVehicleManager.removeListener(commands.get(i), listener);
+        }
+    }
+
+    private void removeIfDone(VehicleMessage request) {
+        // unregister listener if frequency of request is 0 or null b/c no more
+        // should come
+        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+            DiagnosticRequest diagReq = (DiagnosticRequest) request;
+            if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
+                mVehicleManager.removeListener(diagReq, DiagnosticActivity.this.mResponseListener);
+            }
+        } else if (MessageAnalyzer.isCommand(request)) {
+            mVehicleManager.removeListener((Command) request, DiagnosticActivity.this.mResponseListener);
+        }
+    }
+
     public void startSniffing() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
@@ -250,6 +270,10 @@ public class DiagnosticActivity extends Activity {
 
     public boolean multipleResponsesEnabled() {
         return mSettingsManager.multipleResponsesEnabled();
+    }
+
+    public boolean isDisplayingCommands() {
+        return mSettingsManager.shouldDisplayCommands();
     }
 
     public void clearDiagnosticTable() {
@@ -296,10 +320,6 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mOutputTableManager);
     }
 
-    public boolean isDisplayingCommands() {
-        return mSettingsManager.shouldDisplayCommands();
-    }
-
     public void cancelRecurringRequests() {
         for (int i = 0; i < outstandingRequests.size(); i++) {
             DiagnosticRequest req = outstandingRequests.get(i);
@@ -318,26 +338,6 @@ public class DiagnosticActivity extends Activity {
         // TODO do we actually want to do this?
         removeListener(outstandingCommands, mResponseListener);
         removeListener(outstandingRequests, mResponseListener);
-    }
-
-    private void removeListener(ArrayList<? extends KeyedMessage> commands,
-            VehicleMessage.Listener listener) {
-        for (int i = 0; i < commands.size(); i++) {
-            mVehicleManager.removeListener(commands.get(i), listener);
-        }
-    }
-
-    private void removeIfDone(VehicleMessage request) {
-        // unregister listener if frequency of request is 0 or null b/c no more
-        // should come
-        if (MessageAnalyzer.isDiagnosticRequest(request)) {
-            DiagnosticRequest diagReq = (DiagnosticRequest) request;
-            if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
-                mVehicleManager.removeListener(diagReq, DiagnosticActivity.this.mResponseListener);
-            }
-        } else if (MessageAnalyzer.isCommand(request)) {
-            mVehicleManager.removeListener((Command) request, DiagnosticActivity.this.mResponseListener);
-        }
     }
 
     @Override
