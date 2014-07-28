@@ -1,6 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic.output;
 
 import java.util.ArrayList;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -19,7 +20,7 @@ import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 
-public class OutputTableManager implements DiagnosticManager  {
+public class OutputTableManager implements DiagnosticManager {
 
     private DiagnosticActivity mContext;
     private TableSaver mSaver;
@@ -29,37 +30,41 @@ public class OutputTableManager implements DiagnosticManager  {
     private ArrayList<OutputRow> mDiagnosticRows;
     private ArrayList<OutputRow> mCommandRows;
 
-    public OutputTableManager(DiagnosticActivity context, boolean displayCommands) {
+    public OutputTableManager(DiagnosticActivity context,
+            boolean displayCommands) {
         mContext = context;
         mSaver = new TableSaver(context);
-        mOutputList = (ListView) mContext.findViewById(R.id.responseOutputScroll);
+        mOutputList = (ListView) mContext
+                .findViewById(R.id.responseOutputScroll);
         mDiagnosticRows = loadSavedDiagnosticRows();
         mCommandRows = loadSavedCommandRows();
         setRequestCommandState(displayCommands);
     }
-    
+
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         setAdapter();
     }
-    
+
     private boolean shouldScrollToTop(VehicleMessage response) {
-        return ((MessageAnalyzer.isCommandResponse(response) && mContext.isDisplayingCommands()) 
-                || (MessageAnalyzer.isDiagnosticResponse(response) && !mContext.isDisplayingCommands()))
-                && mContext.shouldScroll();
+        return mContext.shouldScroll()
+                && ((MessageAnalyzer.isCommandResponse(response) && mContext
+                        .isDisplayingCommands()) || (MessageAnalyzer
+                        .isDiagnosticResponse(response) && !mContext
+                        .isDisplayingCommands()));
     }
-        
-    private void setAdapter() {            
+
+    private void setAdapter() {
         ArrayList<OutputRow> rows;
         if (mDisplayCommands) {
             rows = mCommandRows;
         } else {
             rows = mDiagnosticRows;
-        }        
-        
+        }
+
         mOutputList.setAdapter(new TableAdapter(mContext, rows));
     }
-    
+
     private void updateAdapter() {
         TableAdapter adapter = (TableAdapter) mOutputList.getAdapter();
         if (adapter != null) {
@@ -68,34 +73,35 @@ public class OutputTableManager implements DiagnosticManager  {
                 rows = mCommandRows;
             } else {
                 rows = mDiagnosticRows;
-            }    
+            }
             adapter.refresh(rows);
         }
     }
-    
-    private ArrayList<OutputRow> loadSavedCommandRows() {  
+
+    private ArrayList<OutputRow> loadSavedCommandRows() {
         return generateRowsFromPairs(mSaver.getCommandPairs());
     }
-    
-    private ArrayList<OutputRow> loadSavedDiagnosticRows() {   
+
+    private ArrayList<OutputRow> loadSavedDiagnosticRows() {
         return generateRowsFromPairs(mSaver.getDiagnosticPairs());
     }
-    
-    private ArrayList<OutputRow> generateRowsFromPairs(ArrayList<? extends Pair> pairs) {
+
+    private ArrayList<OutputRow> generateRowsFromPairs(
+            ArrayList<? extends Pair> pairs) {
         ArrayList<OutputRow> rows = new ArrayList<>();
-        for (int i=0; i < pairs.size(); i++) {
+        for (int i = 0; i < pairs.size(); i++) {
             Pair pair = pairs.get(i);
-            rows.add(new OutputRow(mContext, this, pair.getRequest(), pair.getResponse()));
+            rows.add(new OutputRow(mContext, this, pair.getRequest(), pair
+                    .getResponse()));
         }
         return rows;
     }
-    
+
     public void add(VehicleMessage req, VehicleMessage resp) {
-        
-        //if pair corresponds correctly
+
         if (correspond(req, resp)) {
-            
-            //fix scroll position of table after adding row
+
+            // fix scroll position of table after adding row
             int index = 0;
             int distance = 0;
             if (!shouldScrollToTop(resp)) {
@@ -106,79 +112,89 @@ public class OutputTableManager implements DiagnosticManager  {
             addToTable(req, resp);
             mOutputList.setSelectionFromTop(index, distance);
         } else {
-            Log.e(TAG, "Unable to add mismatched VehicleMessage types to table.");
+            Log.e(TAG,
+                    "Unable to add mismatched VehicleMessage types to table.");
         }
     }
-    
+
     public void save() {
         mSaver.saveDiagnosticRows(mDiagnosticRows);
         mSaver.saveCommandRows(mCommandRows);
     }
-    
-    public boolean replaceIfMatchesExisting(VehicleMessage req, VehicleMessage resp) {
-        
+
+    public boolean replaceIfMatchesExisting(VehicleMessage req,
+            VehicleMessage resp) {
+
         if (MessageAnalyzer.isDiagnosticResponse(resp)) {
-            ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) resp);
+            ExactKeyMatcher responseMatcher = ExactKeyMatcher
+                    .buildExactMatcher((DiagnosticResponse) resp);
             for (int i = 0; i < mDiagnosticRows.size(); i++) {
                 OutputRow row = mDiagnosticRows.get(i);
                 DiagnosticPair pair = (DiagnosticPair) row.getPair();
-                if (responseMatcher.matches((DiagnosticResponse) pair.getResponse())) {
-                    row.setPair(new DiagnosticPair((DiagnosticRequest) req, (DiagnosticResponse) resp));
+                if (responseMatcher.matches((DiagnosticResponse) pair
+                        .getResponse())) {
+                    row.setPair(new DiagnosticPair((DiagnosticRequest) req,
+                            (DiagnosticResponse) resp));
                     return true;
                 }
             }
-        } else if (MessageAnalyzer.isCommandResponse(resp)){
-            ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) resp);
+        } else if (MessageAnalyzer.isCommandResponse(resp)) {
+            ExactKeyMatcher responseMatcher = ExactKeyMatcher
+                    .buildExactMatcher((CommandResponse) resp);
             for (int i = 0; i < mCommandRows.size(); i++) {
                 OutputRow row = mCommandRows.get(i);
                 CommandPair pair = (CommandPair) row.getPair();
                 if (responseMatcher.matches(pair.getResponse())) {
-                    row.setPair(new CommandPair((Command) req, (CommandResponse) resp));
+                    row.setPair(new CommandPair((Command) req,
+                            (CommandResponse) resp));
                     return true;
                 }
             }
         }
         return false;
     }
-    
+
     private boolean correspond(VehicleMessage req, VehicleMessage resp) {
-        boolean bothValid = (MessageAnalyzer.isDiagnosticRequest(req) && MessageAnalyzer.isDiagnosticResponse(resp)) || 
-        (MessageAnalyzer.isCommand(req) && MessageAnalyzer.isCommandResponse(resp));
-        boolean nullReqValidResp = (req == null && (MessageAnalyzer.isDiagnosticResponse(resp) 
-                || MessageAnalyzer.isCommandResponse(resp)));
+        boolean bothValid = (MessageAnalyzer.isDiagnosticRequest(req) && MessageAnalyzer
+                .isDiagnosticResponse(resp))
+                || (MessageAnalyzer.isCommand(req) && MessageAnalyzer
+                        .isCommandResponse(resp));
+        boolean nullReqValidResp = (req == null && (MessageAnalyzer
+                .isDiagnosticResponse(resp) || MessageAnalyzer
+                .isCommandResponse(resp)));
         return bothValid || nullReqValidResp;
     }
-    
-    private void addToTable(VehicleMessage req, VehicleMessage resp) {   
+
+    private void addToTable(VehicleMessage req, VehicleMessage resp) {
         OutputRow row = new OutputRow(mContext, this, req, resp);
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.add(0, row);
         } else {
             mCommandRows.add(0, row);
         }
-        
+
         setAdapter();
     }
 
     public void removeRow(OutputRow row) {
-        
+
         if (row.getPair() instanceof DiagnosticPair) {
             mDiagnosticRows.remove(row);
         } else {
             mCommandRows.remove(row);
         }
-        
+
         updateAdapter();
     }
-    
+
     public void deleteAllDiagnosticResponses() {
         mDiagnosticRows = new ArrayList<>();
         setAdapter();
     }
-    
+
     public void deleteAllCommandResponses() {
         mCommandRows = new ArrayList<>();
         setAdapter();
     }
-    
+
 }
