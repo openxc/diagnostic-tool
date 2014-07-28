@@ -373,7 +373,7 @@ public class InputManager implements DiagnosticManager {
                 }
             }
         } catch (NumberFormatException e) {
-            return failAndToastError("Enter frequency does not appear to be a number.");
+            return failAndToastError("Entered frequency does not appear to be a number.");
         }
 
         try {
