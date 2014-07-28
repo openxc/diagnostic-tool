@@ -34,7 +34,7 @@
 	            android:id="@+id/frequencyInput"
 	            style="@style/BaseDiagInputText"
 	            android:layout_width="100dp"
-	            android:inputType="number"/>
+	            android:inputType="numberDecimal"/>
 	    
 	   </LinearLayout>
 	   
