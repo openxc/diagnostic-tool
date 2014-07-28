@@ -14,7 +14,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 import com.openxc.openxcdiagnostic.R;
-import com.openxc.openxcdiagnostic.dash.GridManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 
 public class MenuActivity extends Activity {
