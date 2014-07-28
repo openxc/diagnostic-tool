@@ -33,7 +33,7 @@ public class DumpActivity extends Activity {
     private LinearLayout mDumpLayout;
     private SettingsManager mSettingsManager;
     private boolean isPaused = false;
-    
+
     VehicleMessage.Listener mDumpListener = new VehicleMessage.Listener() {
         @Override
         public void receive(final VehicleMessage response) {
@@ -43,7 +43,8 @@ public class DumpActivity extends Activity {
                     if (!isPaused) {
                         TextView newRow = new TextView(DumpActivity.this);
                         newRow.setText(response.toString());
-                        newRow.setTextColor(DumpActivity.this.getResources().getColor(R.color.lightBlue));
+                        newRow.setTextColor(DumpActivity.this.getResources()
+                                .getColor(R.color.lightBlue));
                         newRow.setTextSize(18f);
                         mDumpLayout.addView(newRow, 0);
                         limitMessageCount(mSettingsManager.getNumMessages());
@@ -58,9 +59,11 @@ public class DumpActivity extends Activity {
         public void
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
-            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
+            mVehicleManager = ((VehicleManager.VehicleBinder) service)
+                    .getService();
             mIsBound = true;
-            mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mDumpListener);
+            mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(),
+                    mDumpListener);
         }
 
         @Override
@@ -70,23 +73,23 @@ public class DumpActivity extends Activity {
             mIsBound = false;
         }
     };
-    
+
     public void limitMessageCount(int numMessages) {
         while (mDumpLayout.getChildCount() > numMessages) {
             mDumpLayout.removeViewAt(numMessages);
         }
     }
-    
+
     private void initButtons() {
-                
+
         ((Button) findViewById(R.id.dumpClearButton))
-        .setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDumpLayout.removeAllViews();
-            }
-        });
-        
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDumpLayout.removeAllViews();
+                    }
+                });
+
         final Button pauseButton = (Button) findViewById(R.id.dumpPauseButton);
         pauseButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -98,17 +101,17 @@ public class DumpActivity extends Activity {
         setPauseButtonSelector();
 
         ((Button) findViewById(R.id.dumpSettingsButton))
-        .setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSettingsManager.showAlert();
-            }
-        });
-        
+                .setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSettingsManager.showAlert();
+                    }
+                });
+
     }
-    
+
     private void setPauseButtonSelector() {
-        
+
         int drawable;
 
         if (isPaused) {
@@ -116,7 +119,8 @@ public class DumpActivity extends Activity {
         } else {
             drawable = R.drawable.pause_button_selector;
         }
-        ((Button) findViewById(R.id.dumpPauseButton)).setBackground(getResources().getDrawable(drawable));
+        ((Button) findViewById(R.id.dumpPauseButton))
+                .setBackground(getResources().getDrawable(drawable));
     }
 
     @Override
@@ -128,19 +132,21 @@ public class DumpActivity extends Activity {
         initButtons();
         Log.i(TAG, "Vehicle Dump Created");
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mVehicleManager != null) {
-            mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mDumpListener);
+            mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(),
+                    mDumpListener);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        bindService(new Intent(this, VehicleManager.class), mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, VehicleManager.class), mConnection,
+                Context.BIND_AUTO_CREATE);
     }
 
     @Override
