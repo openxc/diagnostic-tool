@@ -7,7 +7,7 @@
     <string name="menu_label">OpenXC Menu</string>
     <string name="graph_label">OpenXC Graph</string>
     <string name="dump_label">OpenXC Dump</string>
-    
+
     <!-- Favorites Strings -->
     <string name="favorites_button_label">Favorites</string>
     <string name="favorites_alert_label">Favorites</string>
@@ -16,10 +16,10 @@
     <string name="remove_from_favorites_button_label">Remove From Favorites</string>
     <string name="add_to_favorites_button_label">Add To Favorites</string>
     <string name="delete_favorite_request_verification">"Are you sure you want to delete this request? This cannot be undone.</string>
-    <string name="delete_favorite_command_verification">Are you sure you want to delete this command? This cannot be undone.</string>   
-    <string name="cancel_recurring_requests_verification">Are you sure you want to cancel all recurring requests? A recurring request can be cancelled individually by sending the request with a frequency of 0.</string>   
+    <string name="delete_favorite_command_verification">Are you sure you want to delete this command? This cannot be undone.</string>
+    <string name="cancel_recurring_requests_verification">Are you sure you want to cancel all recurring requests? A recurring request can be cancelled individually by sending the request with a frequency of 0.</string>
     <string name="frequency_favorites_label">Freq.</string>
-    
+
     <!-- Diag Settings Strings -->
     <string name="sniffing_label">Enable Response Sniffing</string>
     <string name="response_scroll_label">Scroll to Top on Response Receipt</string>
@@ -35,17 +35,17 @@
     <string name="delete_diagnostic_responses_verification">"Are you sure you want to delete all diagnostic responses? This cannot be undone.</string>
     <string name="delete_command_responses_verification">"Are you sure you want to delete all command responses? This cannot be undone.</string>
     <string name="response_command_toggle_label">Toggle Response/Command</string>
-    
+
     <!-- Dump Settings Strings -->
     <string name="num_messages_label">Message Buffer</string>
     <string name="dump_settings_alert_label">Dump Settings</string>
-    
+
     <!-- Menu Tab Strings -->
     <string name="dashboard">Dash</string>
     <string name="diagnostic">Diagnostic</string>
     <string name="menu">Menu</string>
     <string name="dump">Dump</string>
-    
+
     <!-- Diagnostic Strings -->
     <string name="frequency_label">Frequency</string>
     <string name="bus_label">Bus</string>
@@ -64,18 +64,18 @@
     <string name="alert_response_header">RESPONSE</string>
     <string name="request_button_label">Send Request</string>
     <string name="details_alert_label">Details</string>
-    
+
     <!-- Info Strings -->
     <string name="bus_info">The numerical identifier of the CAN bus where this request should be sent, most likely 1 or 2 (for a vehicle interface with 2 CAN controllers).</string>
-    <string name ="id_info">The CAN arbitration ID for the request.</string>
+    <string name="id_info">The CAN arbitration ID for the request.</string>
     <string name="mode_info">The OBD-II mode of the request.</string>
     <string name="pid_info">(Optional) The PID for the request, if applicable.</string>
     <string name="payload_info">(Optional) Up to 7 bytes of data for the request\'s payload represented as a hexidecimal number in a string. Each byte in the string must be represented with 2 characters, e.g. 0x1 is 0x01 - the complete string must have an even number of characters.</string>
     <string name="name_info">(Optional) A human readable, string name for this request. If provided, the response will have a name field (much like a normal translated message) with this value in place of bus, id, mode and pid.</string>
     <string name="multipleResponses_info">If checked, the request will stay active for a full 100ms, even after receiving a diagnostic response message</string>
-    <string name="frequency_info">(Optional, defaults to 0) The frequency in Hz to send this request. To send a single non-recurring request, set this to 0 or leave it out.</string>    
-    <string name ="command_info">The command to which the VI should respond.</string>
-    
+    <string name="frequency_info">(Optional, defaults to 0) The frequency in Hz to send this request. To send a single non-recurring request, set this to 0 or leave it out.</string>
+    <string name="command_info">The command to which the VI should respond.</string>
+
     <!-- Vehicle Dashboard Strings -->
     <string name="steering_wheel_angle_label">Steering Wheel</string>
     <string name="vehicle_speed_label">Vehicle Speed</string>
@@ -87,12 +87,8 @@
     <string name="headlamp_status_label">Headlamp</string>
     <string name="engine_speed_label">Engine Speed</string>
     <string name="torque_at_transmission_label">Transmission Torque</string>
-    <string name="accelerator_pedal_position_label">
-        Accelerator Pedal
-    </string>
-    <string name="transmission_gear_pos_label">
-        Transmission Gear
-    </string>
+    <string name="accelerator_pedal_position_label">        Accelerator Pedal</string>
+    <string name="transmission_gear_pos_label">        Transmission Gear</string>
     <string name="ignition_label">Ignition Status</string>
     <string name="latitude_label">Latitude</string>
     <string name="longitude_label">Longitude</string>

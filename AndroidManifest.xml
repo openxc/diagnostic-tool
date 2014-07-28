@@ -3,9 +3,9 @@
     package="com.openxc.openxcdiagnostic"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -18,35 +18,32 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.openxc.openxcdiagnostic.diagnostic.DiagnosticActivity"
-            android:screenOrientation="sensorPortrait"
-            android:label="@string/diagnostic_label" >
+            android:label="@string/diagnostic_label"
+            android:screenOrientation="sensorPortrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity 
+        <activity
             android:name="com.openxc.openxcdiagnostic.dash.DashboardActivity"
             android:label="@string/dash_label" >
-      	</activity>
-      	
-        <activity 
+        </activity>
+        <activity
             android:name="com.openxc.openxcdiagnostic.menu.MenuActivity"
             android:label="@string/menu_label" >
-      	</activity>
-      	
-        <activity 
+        </activity>
+        <activity
             android:name="com.openxc.openxcdiagnostic.menu.GrapherActivity"
             android:label="@string/graph_label" >
-      	</activity>
-      	
-        <activity 
+        </activity>
+        <activity
             android:name="com.openxc.openxcdiagnostic.dump.DumpActivity"
             android:label="@string/dump_label" >
         </activity>
 
-        <service android:name="com.openxc.VehicleManager"/>
+        <service android:name="com.openxc.VehicleManager" />
     </application>
 
 </manifest>

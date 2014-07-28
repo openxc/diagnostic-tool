@@ -3,25 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="3dp">
-    
-    <include layout="@layout/diagfavoritesalertrequestheaderrow" 
-        android:id="@+id/favoritesAlertHeader"/>
-    
+    android:padding="3dp" >
+
+    <include
+        android:id="@+id/favoritesAlertHeader"
+        layout="@layout/diagfavoritesalertrequestheaderrow" />
+
     <include layout="@layout/thickhorizontalline" />
 
-	<ScrollView 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
-	   
-	    <LinearLayout 
-	        android:id="@+id/favoritesAlertTable"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical" >
-		</LinearLayout>
-	    
-	</ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/favoritesAlertTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

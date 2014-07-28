@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="fill_horizontal" >
-                      
-        <TextView
-            style="@style/FavoriteDataLabel"
-            android:id="@+id/commandHeader"
-            android:text="@string/command_label">
-        </TextView>  
-        
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="fill_horizontal"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/commandHeader"
+        style="@style/FavoriteDataLabel"
+        android:text="@string/command_label" >
+    </TextView>
+
 </LinearLayout>

@@ -3,119 +3,121 @@
     android:id="@+id/diagnostic"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true"
     android:background="@color/black"
-    android:orientation="vertical"
+    android:fillViewport="true"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
 
-    <LinearLayout     
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:gravity="fill_horizontal" >
-        
-        <LinearLayout 
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal" >
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@color/black"
-            android:orientation="horizontal">
-            
-	       <Button
-	             android:id="@+id/frequencyQuestionButton"
-	             style="@style/QuestionButton" />    
-	       <TextView
-	            android:id="@+id/frequencyLabel"
-	            style="@style/BaseDiagInputLabel"
-	            android:layout_width="100dp"
-	            android:text="@string/frequency_label"
-	            android:labelFor="@+id/frequencyInput" />
-	       <EditText
-	            android:id="@+id/frequencyInput"
-	            style="@style/BaseDiagInputText"
-	            android:layout_width="100dp"
-	            android:inputType="numberDecimal"/>
-	    
-	   </LinearLayout>
-	   
-        <View 
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/frequencyQuestionButton"
+                style="@style/QuestionButton" />
+
+            <TextView
+                android:id="@+id/frequencyLabel"
+                style="@style/BaseDiagInputLabel"
+                android:layout_width="100dp"
+                android:labelFor="@+id/frequencyInput"
+                android:text="@string/frequency_label" />
+
+            <EditText
+                android:id="@+id/frequencyInput"
+                style="@style/BaseDiagInputText"
+                android:layout_width="100dp"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
-            android:background="@color/lightBlue">
+            android:background="@color/lightBlue" >
         </View>
-        
-	   <LinearLayout 
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:orientation="horizontal"
             android:layout_gravity="right"
-            android:gravity="right">
+            android:background="@color/black"
+            android:gravity="right"
+            android:orientation="horizontal" >
 
-	       <Button 
+            <Button
                 android:id="@+id/clearButton"
-                android:background="@drawable/clear_button_selector"
-                android:layout_margin="5dp"
-                android:state_pressed="false"
                 android:layout_width="40dp"
-                android:layout_height="40dp" >
-	       </Button>
-	       
-	       <!-- Horizontal space filler -->
-	       <View 
-	           android:layout_width="0dp"
-	           android:layout_height="0dp"
-	           android:layout_weight="1" >
-	       </View>
-	       
-	       <Button 
-                android:id="@+id/favoritesButton"
-                android:background="@drawable/favorites_button_selector"
+                android:layout_height="40dp"
                 android:layout_margin="5dp"
+                android:background="@drawable/clear_button_selector"
+                android:state_pressed="false" >
+            </Button>
+
+            <!-- Horizontal space filler -->
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+            </View>
+
+            <Button
+                android:id="@+id/favoritesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/favorites_button_selector"
                 android:padding="5dp"
                 android:state_pressed="false"
-                android:text="@string/favorites_button_label"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" >
-           </Button>
-	       
-	       <!-- Horizontal space filler -->
-           <View 
-               android:layout_width="0dp"
-               android:layout_height="0dp"
-               android:layout_weight="1" >
-           </View>
-	       
-	       <Button 
-               style="@style/SettingsButton"
-               android:id="@+id/settingsButton" >
-           </Button>
-       </LinearLayout>
-	           
+                android:text="@string/favorites_button_label" >
+            </Button>
+
+            <!-- Horizontal space filler -->
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+            </View>
+
+            <Button
+                android:id="@+id/settingsButton"
+                style="@style/SettingsButton" >
+            </Button>
+        </LinearLayout>
     </LinearLayout>
-    
-    <View 
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@color/lightBlue">
+        android:background="@color/lightBlue" >
     </View>
-        
-	<include layout="@layout/diagrequestinput" 
-	    android:id="@+id/inputTable"/>
-		
-	<LinearLayout style="@style/DiagRequestInputRow" >
-		
-		<Button style = "@style/RequestButton"
-		    android:id="@+id/sendRequestButton"
-		    android:text="@string/request_button_label" />
-		
+
+    <include
+        android:id="@+id/inputTable"
+        layout="@layout/diagrequestinput" />
+
+    <LinearLayout style="@style/DiagRequestInputRow" >
+
+        <Button
+            android:id="@+id/sendRequestButton"
+            style="@style/RequestButton"
+            android:text="@string/request_button_label" />
     </LinearLayout>
-    
-    <ListView 
-	    android:id="@+id/responseOutputScroll"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent">
-	
-	</ListView>
-	
+
+    <ListView
+        android:id="@+id/responseOutputScroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
 </LinearLayout>

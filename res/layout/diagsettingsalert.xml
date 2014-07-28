@@ -4,92 +4,103 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout style="@style/SettingsRow">
-        <CheckedTextView 
-            style="@style/SettingsItemLabel"
+    <LinearLayout style="@style/SettingsRow" >
+
+        <CheckedTextView
             android:id="@+id/sniffingCheckBox"
-            android:text="@string/sniffing_label" 
-            android:textIsSelectable="false" 
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="false"/>
-    </LinearLayout>
-    
-    <include layout="@layout/horizontalline" />
-    
-    <LinearLayout style="@style/SettingsRow">
-        <CheckedTextView 
             style="@style/SettingsItemLabel"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="false"
+            android:text="@string/sniffing_label"
+            android:textIsSelectable="false" />
+    </LinearLayout>
+
+    <include layout="@layout/horizontalline" />
+
+    <LinearLayout style="@style/SettingsRow" >
+
+        <CheckedTextView
             android:id="@+id/multipleResponseCheckBox"
-            android:text="@string/multiple_responses_label" 
-            android:textIsSelectable="false" 
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="false"/>
-    </LinearLayout>
-    
-    <include layout="@layout/horizontalline" />
-    
-    <LinearLayout style="@style/SettingsRow">
-        <CheckedTextView 
             style="@style/SettingsItemLabel"
-            android:id="@+id/responseScrollCheckBox"
-            android:text="@string/response_scroll_label" 
-            android:textIsSelectable="false" 
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="true"/>
+            android:checked="false"
+            android:text="@string/multiple_responses_label"
+            android:textIsSelectable="false" />
     </LinearLayout>
-    
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout style="@style/SettingsRow">
+
+    <LinearLayout style="@style/SettingsRow" >
+
+        <CheckedTextView
+            android:id="@+id/responseScrollCheckBox"
+            style="@style/SettingsItemLabel"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:checked="true"
+            android:text="@string/response_scroll_label"
+            android:textIsSelectable="false" />
+    </LinearLayout>
+
+    <include layout="@layout/horizontalline" />
+
+    <LinearLayout style="@style/SettingsRow" >
+
         <TextView
             style="@style/SettingsItemLabel"
-            android:text="@string/cancel_recurring_requests_label" 
-            android:textIsSelectable="false"/>
+            android:text="@string/cancel_recurring_requests_label"
+            android:textIsSelectable="false" />
+
         <Button
+            android:id="@+id/cancelRecurringRequestsButton"
             style="@style/SettingsItemButton"
-            android:id="@+id/cancelRecurringRequestsButton" 
             android:background="@drawable/cancel_button_selector"
             android:text="@string/cancel_recurring_requests_button_text" />
     </LinearLayout>
-    
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout style="@style/SettingsRow">
+
+    <LinearLayout style="@style/SettingsRow" >
+
         <TextView
             style="@style/SettingsItemLabel"
-            android:text="@string/delete_diagnostic_responses_label" 
-            android:textIsSelectable="false"/>
+            android:text="@string/delete_diagnostic_responses_label"
+            android:textIsSelectable="false" />
+
         <Button
+            android:id="@+id/deleteDiagnosticResponsesButton"
             style="@style/SettingsItemButton"
-            android:id="@+id/deleteDiagnosticResponsesButton" 
             android:background="@drawable/delete_button_selector"
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
-    
+
     <include layout="@layout/horizontalline" />
-        
-    <LinearLayout style="@style/SettingsRow">
+
+    <LinearLayout style="@style/SettingsRow" >
+
         <TextView
             style="@style/SettingsItemLabel"
-            android:text="@string/delete_command_responses_label" 
-            android:textIsSelectable="false"/>
+            android:text="@string/delete_command_responses_label"
+            android:textIsSelectable="false" />
+
         <Button
+            android:id="@+id/deleteCommandResponsesButton"
             style="@style/SettingsItemButton"
-            android:id="@+id/deleteCommandResponsesButton" 
             android:background="@drawable/delete_button_selector"
             android:text="@string/delete_all_responses_button_text" />
     </LinearLayout>
-    
-    <include layout="@layout/horizontalline" /> 
-        
-    <LinearLayout style="@style/SettingsRow">
+
+    <include layout="@layout/horizontalline" />
+
+    <LinearLayout style="@style/SettingsRow" >
+
         <TextView
             style="@style/SettingsItemLabel"
-            android:text="@string/response_command_toggle_label" 
-            android:textIsSelectable="false"/>
+            android:text="@string/response_command_toggle_label"
+            android:textIsSelectable="false" />
+
         <Button
+            android:id="@+id/responseCommandToggleButton"
             style="@style/SettingsItemButton"
-            android:id="@+id/responseCommandToggleButton" 
             android:background="@drawable/delete_button_selector" />
     </LinearLayout>
 

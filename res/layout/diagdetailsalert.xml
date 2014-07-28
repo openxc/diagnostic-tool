@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="fill"
-        android:orientation="horizontal" >
-    
-        <LinearLayout 
-            style="@style/DiagDetailsAlertTable"
-            android:orientation="vertical"
-            android:id="@+id/diagAlertRequestTable" >
-        </LinearLayout>
-        
-        <include layout="@layout/verticalline" />
-                    
-        <LinearLayout 
-            style="@style/DiagDetailsAlertTable"
-            android:orientation="vertical"
-            android:id="@+id/diagAlertResponseTable" >
-        </LinearLayout>
-    
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="fill"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/diagAlertRequestTable"
+        style="@style/DiagDetailsAlertTable"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <include layout="@layout/verticalline" />
+
+    <LinearLayout
+        android:id="@+id/diagAlertResponseTable"
+        style="@style/DiagDetailsAlertTable"
+        android:orientation="vertical" >
+    </LinearLayout>
+
 </LinearLayout>

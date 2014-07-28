@@ -3,303 +3,338 @@
     android:id="@+id/dashboard"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true"
-    android:background="@color/lightBlue">
+    android:background="@color/lightBlue"
+    android:fillViewport="true" >
 
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:padding="2dp">
+        android:orientation="vertical"
+        android:padding="2dp" >
 
-        <TableRow style="@style/ItemRow">
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/steering_wheel_angle_label"
                 style="@style/ItemLabel"
-                android:text="@string/steering_wheel_angle_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/steering_wheel_angle_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/steering_wheel_angle"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/vehicle_speed_label"
                 style="@style/ItemLabel"
                 android:text="@string/vehicle_speed_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/vehicle_speed"
                 style="@style/ItemData"
                 android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/fuel_consumed_label"
                 style="@style/ItemLabel"
                 android:text="@string/fuel_consumed_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/fuel_consumed"
-                style="@style/ItemData" 
+                style="@style/ItemData"
                 android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/fuel_level_label"
                 style="@style/ItemLabel"
-                android:text="@string/fuel_level_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/fuel_level_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/fuel_level"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/odometer_label"
                 style="@style/ItemLabel"
-                android:text="@string/odometer_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/odometer_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/odometer"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/wiper_status_label"
                 style="@style/ItemLabel"
                 android:text="@string/wiper_status_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/wiper_status"
                 style="@style/ItemData"
                 android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/brake_pedal_status_label"
                 style="@style/ItemLabel"
-                android:text="@string/brake_pedal_status_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/brake_pedal_status_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/brake_pedal_status"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/parking_brake_status_label"
                 style="@style/ItemLabel"
-                android:text="@string/parking_brake_status_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/parking_brake_status_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/parking_brake_status"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/headlamp_status_label"
                 style="@style/ItemLabel"
                 android:text="@string/headlamp_status_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/headlamp_status"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/engine_speed_label"
                 style="@style/ItemLabel"
-                android:text="@string/engine_speed_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/engine_speed_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/engine_speed"
                 style="@style/ItemData"
                 android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/torque_at_transmission_label"
                 style="@style/ItemLabel"
-                android:text="@string/torque_at_transmission_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/torque_at_transmission_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/torque_at_transmission"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/accelerator_pedal_position_label"
                 style="@style/ItemLabel"
-                android:text="@string/accelerator_pedal_position_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/accelerator_pedal_position_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/accelerator_pedal_position"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/transmission_gear_pos_label"
                 style="@style/ItemLabel"
                 android:text="@string/transmission_gear_pos_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/transmission_gear_pos"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/ignition_label"
                 style="@style/ItemLabel"
-                android:text="@string/ignition_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/ignition_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/ignition"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/latitude_label"
                 style="@style/ItemLabel"
                 android:text="@string/latitude_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/latitude"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/longitude_label"
                 style="@style/ItemLabel"
-                android:text="@string/longitude_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/longitude_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/longitude"
                 style="@style/ItemData"
                 android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/android_latitude_label"
                 style="@style/ItemLabel"
                 android:text="@string/android_latitude_label"
                 android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/android_latitude"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
-        <TableRow style="@style/ItemRow">
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
+
+        <TableRow style="@style/ItemRow" >
+
             <TextView
                 android:id="@+id/android_longitude_label"
                 style="@style/ItemLabel"
-                android:text="@string/android_longitude_label" 
-                android:textIsSelectable="false"/>
+                android:text="@string/android_longitude_label"
+                android:textIsSelectable="false" />
+
             <TextView
                 android:id="@+id/android_longitude"
-                style="@style/ItemData" 
-                android:textIsSelectable="false"/>
+                style="@style/ItemData"
+                android:textIsSelectable="false" />
         </TableRow>
-        
-        <View 
-            android:layout_height="1dp"
-            android:background="@color/black"/>
 
+        <View
+            android:layout_height="1dp"
+            android:background="@color/black" />
     </TableLayout>
 
 </ScrollView>

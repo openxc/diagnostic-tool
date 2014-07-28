@@ -1,102 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:orientation="vertical"
-   android:layout_height="wrap_content"
-   android:layout_width="wrap_content" >
-   
-   <LinearLayout style="@style/DiagRequestInputRow" >
-           
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout style="@style/DiagRequestInputRow" >
+
         <Button
-             android:id="@+id/busQuestionButton"
-             style="@style/QuestionButton" />    
+            android:id="@+id/busQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/busLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/bus_label"
-            android:labelFor="@+id/busInput" />
+            android:labelFor="@+id/busInput"
+            android:text="@string/bus_label" />
+
         <EditText
             android:id="@+id/busInput"
             style="@style/DiagInputText"
             android:inputType="number" />
+
         <Button
-             android:id="@+id/idQuestionButton"
-             style="@style/QuestionButton" />
+            android:id="@+id/idQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/idLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/id_label"
-            android:labelFor="@+id/idInput"/>       
+            android:labelFor="@+id/idInput"
+            android:text="@string/id_label" />
+
         <EditText
             android:id="@+id/idInput"
             style="@style/DiagInputText"
             android:digits="0123456789ABCDEF"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="4"/>    
-        
+            android:maxLength="4" />
     </LinearLayout>
-             
-    <LinearLayout style="@style/DiagRequestInputRow">
-        
+
+    <LinearLayout style="@style/DiagRequestInputRow" >
+
         <Button
-             android:id="@+id/modeQuestionButton"
-             style="@style/QuestionButton" />
+            android:id="@+id/modeQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/modeLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/mode_label"
-            android:labelFor="@+id/modeInput"/>
+            android:labelFor="@+id/modeInput"
+            android:text="@string/mode_label" />
+
         <EditText
             android:id="@+id/modeInput"
             style="@style/DiagInputText"
             android:digits="0123456789ABCDEF"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="2"/>
+            android:maxLength="2" />
+
         <Button
-             android:id="@+id/pidQuestionButton"
-             style="@style/QuestionButton" />
+            android:id="@+id/pidQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/pidLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/pid_label"
-            android:labelFor="@+id/pidInput"/>
+            android:labelFor="@+id/pidInput"
+            android:text="@string/pid_label" />
+
         <EditText
             android:id="@+id/pidInput"
             style="@style/DiagInputText"
             android:digits="0123456789ABCDEF"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="4"/>    
-                 
+            android:maxLength="4" />
     </LinearLayout>
-             
-    <LinearLayout style="@style/DiagRequestInputRow">
-        
+
+    <LinearLayout style="@style/DiagRequestInputRow" >
+
         <Button
-             android:id="@+id/payloadQuestionButton"
-             style="@style/QuestionButton" />
+            android:id="@+id/payloadQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/payloadLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/payload_label"
-            android:labelFor="@+id/payloadInput"/>
+            android:labelFor="@+id/payloadInput"
+            android:text="@string/payload_label" />
+
         <EditText
             android:id="@+id/payloadInput"
             style="@style/DiagInputText"
             android:digits="0123456789ABCDEF"
             android:inputType="textCapCharacters|textNoSuggestions"
-            android:maxLength="14"/>                 
+            android:maxLength="14" />
+
         <Button
-             android:id="@+id/nameQuestionButton"
-             style="@style/QuestionButton" />
+            android:id="@+id/nameQuestionButton"
+            style="@style/QuestionButton" />
+
         <TextView
             android:id="@+id/nameLabel"
             style="@style/DiagInputLabel"
-            android:text="@string/name_label"
-            android:labelFor="@+id/nameInput"/>
+            android:labelFor="@+id/nameInput"
+            android:text="@string/name_label" />
+
         <EditText
             android:id="@+id/nameInput"
             style="@style/DiagInputText"
-            android:inputType="text"/>  
-   
+            android:inputType="text" />
     </LinearLayout>
-    
+
 </LinearLayout>

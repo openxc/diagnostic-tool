@@ -1,119 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
-		<TextView
-		    android:id="@+id/busLabel"
-		    style="@style/DiagOutputTableRowLabel"
-		    android:text="@string/bus_label" />
-		
-		<TextView
-		    android:id="@+id/busValue"
-		    style="@style/DiagOutputTableRowValue" />
-                      
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
+        <TextView
+            android:id="@+id/busLabel"
+            style="@style/DiagOutputTableRowLabel"
+            android:text="@string/bus_label" />
+
+        <TextView
+            android:id="@+id/busValue"
+            style="@style/DiagOutputTableRowValue" />
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/idLabel"
-            style="@style/DiagOutputTableRowLabel" 
+            style="@style/DiagOutputTableRowLabel"
             android:text="@string/id_label" />
-        
+
         <TextView
             android:id="@+id/idValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/modeLabel"
-            style="@style/DiagOutputTableRowLabel" 
+            style="@style/DiagOutputTableRowLabel"
             android:text="@string/mode_label" />
-        
+
         <TextView
             android:id="@+id/modeValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/pidLabel"
-            style="@style/DiagOutputTableRowLabel" 
+            style="@style/DiagOutputTableRowLabel"
             android:text="@string/pid_label" />
-        
+
         <TextView
             android:id="@+id/pidValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/successLabel"
-            style="@style/DiagOutputTableRowLabel" 
+            style="@style/DiagOutputTableRowLabel"
             android:text="@string/success_label" />
-        
+
         <TextView
             android:id="@+id/successValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/payloadLabel"
-            style="@style/DiagOutputTableRowLabel" 
+            style="@style/DiagOutputTableRowLabel"
             android:text="@string/payload_label" />
-        
+
         <TextView
             android:id="@+id/payloadValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout 
-        style="@style/DiagOutputInfoRow">
-         
+
+    <LinearLayout style="@style/DiagOutputInfoRow" >
+
         <TextView
             android:id="@+id/valueLabel"
             style="@style/DiagOutputTableRowLabel"
             android:text="@string/value_label" />
-        
+
         <TextView
             android:id="@+id/valueValue"
             style="@style/DiagOutputTableRowValue" />
-                      
     </LinearLayout>
-      
+
     <include layout="@layout/horizontalline" />
-	        
+
 </LinearLayout>

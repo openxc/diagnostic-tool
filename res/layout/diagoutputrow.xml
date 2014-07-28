@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="300dp"
-        android:orientation="horizontal"
-        android:layout_margin="15dp"
-        android:gravity="fill_horizontal" >
-    
-    <TextView 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:gravity="fill_horizontal"
+    android:minHeight="300dp"
+    android:orientation="horizontal" >
+
+    <TextView
         android:id="@+id/outputRowTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:background="@color/white"
         android:gravity="center"
-        android:textSize="23sp"
-        android:background="@color/white" >    
+        android:textSize="23sp" >
     </TextView>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:id="@+id/outputInfo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_margin="10dp"
-        android:padding="10dp"
         android:layout_weight="0.9"
-        android:background="@color/white" >    
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp" >
     </LinearLayout>
 
-    <LinearLayout 
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:orientation="vertical"
-       android:layout_margin="15dp"
-       android:gravity="fill_vertical" >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:gravity="fill_vertical"
+        android:orientation="vertical" >
 
-	   <Button
-	       android:background="@drawable/clear_button_selector"
-	       android:layout_margin="5dp"
-	       android:state_pressed="false"
-	       android:layout_width="55dp"
-	       android:layout_height="55dp"
-           android:id="@+id/responseDeleteButton"
-           android:layout_gravity="center_horizontal">
-       </Button>   
-      
-	   <!-- Vertical space filler -->
-	   <View 
-	       android:layout_width="0dp"
-           android:layout_height="0dp"
-           android:layout_weight="1" >
-	   </View>
-        
-	   <Button
-	       style="@android:attr/buttonBarButtonStyle"
-	       android:id="@+id/outputMoreButton"
-	       android:layout_width="55dp"
-	       android:layout_height="55dp"
-	       android:gravity="center"
-	       android:background="@drawable/details_button_selector"
-	       android:layout_margin="5dp"
-	       android:state_pressed="false"
-	       android:layout_gravity="center_horizontal" >
-	   </Button>
-	   
+        <Button
+            android:id="@+id/responseDeleteButton"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:background="@drawable/clear_button_selector"
+            android:state_pressed="false" >
+        </Button>
+
         <!-- Vertical space filler -->
-       <View 
-           android:layout_width="0dp"
-           android:layout_height="0dp"
-           android:layout_weight="1" >
-       </View>
-       	   
-	   <Button
-           android:id="@+id/outputResendButton"
-           android:background="@drawable/resend_button_selector"
-           android:layout_margin="5dp"
-           android:state_pressed="false"
-           android:layout_width="55dp"
-           android:layout_height="55dp" 
-           android:layout_gravity="center_horizontal">
-       </Button>
-    
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </View>
+
+        <Button
+            android:id="@+id/outputMoreButton"
+            style="@android:attr/buttonBarButtonStyle"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:background="@drawable/details_button_selector"
+            android:gravity="center"
+            android:state_pressed="false" >
+        </Button>
+
+        <!-- Vertical space filler -->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+        </View>
+
+        <Button
+            android:id="@+id/outputResendButton"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5dp"
+            android:background="@drawable/resend_button_selector"
+            android:state_pressed="false" >
+        </Button>
     </LinearLayout>
-	        
+
 </LinearLayout>

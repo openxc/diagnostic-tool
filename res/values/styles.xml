@@ -16,7 +16,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
+
     <style name="DefaultFont" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -32,15 +32,15 @@
     </style>
 
     <!-- Diagnostic Styles -->
-    
-    <style name="SettingsButton" >
+
+    <style name="SettingsButton">
         <item name="android:background">@drawable/settings_button_selector</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:state_pressed">false</item>
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
     </style>
-    
+
     <style name="DiagRequestInputRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -49,29 +49,29 @@
         <item name="android:gravity">fill_horizontal</item>
         <item name="android:weightSum">1</item>
     </style>
-    
-    <style name="QuestionButton" >
+
+    <style name="QuestionButton">
         <item name="android:background">@drawable/question_button_selector</item>
         <item name="android:state_pressed">false</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">30dp</item>
     </style>
-   
-    <style name ="BaseDiagInputLabel" >
+
+    <style name="BaseDiagInputLabel">
         <item name="android:textColor">@color/lightBlue</item>
         <item name="android:gravity">center</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="DiagInputLabel" parent="BaseDiagInputLabel">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">0.2</item>
         <item name="android:minWidth">150dp</item>
     </style>
-    
-    <style name ="BaseDiagInputText" >
+
+    <style name="BaseDiagInputText">
         <item name="android:ems">10</item>
         <item name="android:imeOptions">actionDone</item>
         <item name="android:singleLine">true</item>
@@ -81,12 +81,12 @@
         <item name="android:textSize">20sp</item>
         <item name="android:layout_height">match_parent</item>
     </style>
-    
+
     <style name="DiagInputText" parent="BaseDiagInputText">
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_weight">.25</item>
     </style>
-    
+
     <style name="RequestButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -94,30 +94,30 @@
         <item name="android:gravity">center</item>
         <item name="android:state_pressed">false</item>
     </style>
-    
-    <style name="DiagDetailsAlertContentText" >
+
+    <style name="DiagDetailsAlertContentText">
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">23sp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:padding">10dp</item>
     </style>
-   
+
     <style name="DiagDetailsAlertRowLabel" parent="DiagDetailsAlertContentText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="DiagDetailsAlertRowValue" parent="DiagDetailsAlertContentText">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:gravity">right</item>
         <item name="android:textStyle">italic</item>
     </style>
-    
-    <style name="DiagDetailsAlertTable" >
+
+    <style name="DiagDetailsAlertTable">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
@@ -125,15 +125,15 @@
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
     </style>
-    
-    <style name="DiagOutputTableContentText" >
+
+    <style name="DiagOutputTableContentText">
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">17sp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:padding">5dp</item>
     </style>
-    
+
     <style name="DiagOutputTableRowLabel" parent="DiagOutputTableContentText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
@@ -141,25 +141,25 @@
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="DiagOutputTableRowValue" parent="DiagOutputTableContentText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">right</item>
         <item name="android:textStyle">italic</item>
     </style>
-    
-    <style name="DiagOutputInfoRow" >
+
+    <style name="DiagOutputInfoRow">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">1dp</item>        
+        <item name="android:layout_margin">1dp</item>
         <item name="android:gravity">fill_horizontal</item>
     </style>
-    
+
     <!-- Diagnostic Favorites styles -->
-    
-    <style name="DiagFavoritesAlertRowButton" >
+
+    <style name="DiagFavoritesAlertRowButton">
         <item name="android:layout_weight">0.2</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
@@ -167,31 +167,31 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">5dp</item>
     </style>
-    
-    <style name="FavoriteDataBase" >
-         <item name="android:layout_height">wrap_content</item>
-         <item name="android:padding">5dp</item>
-         <item name="android:gravity">center</item>
-         <item name="android:scrollbars">none</item>
-         <item name="android:layout_gravity">center_vertical</item>
+
+    <style name="FavoriteDataBase">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
-    
+
     <style name="FavoriteDataLabel" parent="FavoriteDataBase">
-         <item name="android:layout_weight">1</item>
-         <item name="android:layout_width">wrap_content</item>
-         <item name="android:textSize">23sp</item>
-         <item name="android:singleLine">true</item>
-         <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="FavoriteDataItem" parent="FavoriteDataBase">
-         <item name="android:layout_width">0dp</item>
-         <item name="android:textSize">23sp</item>
-         <item name="android:textStyle">italic</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">italic</item>
     </style>
-    
+
     <!-- Diagnostic Settings styles -->
-    
+
     <style name="SettingsRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -200,28 +200,28 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:paddingRight">3dp</item>
     </style>
-    
+
     <style name="SettingsText">
         <item name="android:textSize">20sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_gravity">center_vertical</item>
-    </style>  
-    
+    </style>
+
     <style name="SettingsItemLabel" parent="SettingsText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">0.6</item>  
-    </style> 
-    
+        <item name="android:layout_weight">0.6</item>
+    </style>
+
     <style name="SettingsItemButton" parent="SettingsText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.4</item>
         <item name="android:gravity">center</item>
-    </style>    
-    
+    </style>
+
     <!-- Dashboard styles -->
-    
+
     <style name="ItemRow">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -231,12 +231,12 @@
 
     <style name="ItemText">
         <item name="android:textSize">20sp</item>
-    </style>    
+    </style>
 
     <style name="ItemLabel" parent="ItemText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>      
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="ItemData" parent="ItemText">

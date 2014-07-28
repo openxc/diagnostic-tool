@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-        
-    <include layout="@layout/diagfavoritesalertrequestdata"
-        android:id="@+id/diagFavoritesAlertRowData" />
-    
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/diagFavoritesAlertRowData"
+        layout="@layout/diagfavoritesalertrequestdata" />
+
     <include layout="@layout/horizontalline" />
-    
-    <LinearLayout   
-        android:orientation="horizontal"
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        android:gravity="fill_horizontal" >
-    
-          <Button
-              style="@style/DiagFavoritesAlertRowButton" 
-              android:id="@+id/favoritesRowDeleteButton"
-              android:text="@string/diag_favorites_delete_button_label"
-              android:background="@drawable/delete_button_selector" >
-          </Button>
-          
-          <Button
-              style="@style/DiagFavoritesAlertRowButton" 
-              android:id="@+id/favoritesRowSelectButton"
-              android:text="@string/diag_favorites_select_button_label"
-              android:background="@drawable/request_button_selector" >
-          </Button>
-          
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/favoritesRowDeleteButton"
+            style="@style/DiagFavoritesAlertRowButton"
+            android:background="@drawable/delete_button_selector"
+            android:text="@string/diag_favorites_delete_button_label" >
+        </Button>
+
+        <Button
+            android:id="@+id/favoritesRowSelectButton"
+            style="@style/DiagFavoritesAlertRowButton"
+            android:background="@drawable/request_button_selector"
+            android:text="@string/diag_favorites_select_button_label" >
+        </Button>
     </LinearLayout>
-    
+
     <include layout="@layout/thickhorizontalline" />
-              
+
 </LinearLayout>
-      

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <color name="lightBlue">#33A1C9</color>
     <color name="brightGreen">#0FF764</color>
     <color name="black">#000000</color>
@@ -8,4 +8,5 @@
     <color name="darkRed">#CC0000</color>
     <color name="yellow">#FFFF00</color>
     <color name="purple">#FF47FF</color>
+
 </resources>
