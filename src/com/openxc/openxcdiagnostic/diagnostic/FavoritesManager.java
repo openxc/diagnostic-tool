@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
-import com.openxc.openxcdiagnostic.util.Utilities;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 
 /**
  * 
@@ -38,9 +38,9 @@ public class FavoritesManager {
     }
     
     public static void add(VehicleMessage req) {
-        if (Utilities.isDiagnosticRequest(req)) {
+        if (MessageAnalyzer.isDiagnosticRequest(req)) {
             addFavoriteRequest((DiagnosticRequest) req);
-        } else if (Utilities.isCommand(req)) {
+        } else if (MessageAnalyzer.isCommand(req)) {
             addFavoriteCommand((Command) req);
         } else {
             Log.w(TAG, "Unable to add message to favorites of type " + req.getClass().toString());
@@ -96,9 +96,9 @@ public class FavoritesManager {
     }
     
     public static void remove(VehicleMessage req) {
-        if (Utilities.isDiagnosticRequest(req)) {
+        if (MessageAnalyzer.isDiagnosticRequest(req)) {
             removeFavoriteRequest((DiagnosticRequest) req);
-        } else if (Utilities.isCommand(req)) {
+        } else if (MessageAnalyzer.isCommand(req)) {
             removeFavoriteCommand((Command) req);
         } else {
             Log.w(TAG, "Unable to remove message from favorites of type " + req.getClass().toString());
@@ -142,9 +142,9 @@ public class FavoritesManager {
     }
     
     public static boolean contains(VehicleMessage message) {
-        if (Utilities.isDiagnosticRequest(message)) {
+        if (MessageAnalyzer.isDiagnosticRequest(message)) {
             return containsFavoriteRequest((DiagnosticRequest) message);
-        } else if (Utilities.isCommand(message)) {
+        } else if (MessageAnalyzer.isCommand(message)) {
             return containsFavoriteCommand((Command) message);
         } 
         return false;

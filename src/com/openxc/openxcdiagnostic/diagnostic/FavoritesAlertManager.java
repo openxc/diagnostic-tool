@@ -19,6 +19,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Formatter;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
@@ -109,7 +110,7 @@ public class FavoritesAlertManager implements DiagnosticManager {
         
         setRowDataFormat(row);
         
-        if (Utilities.isDiagnosticRequest(reqMessage)) {
+        if (MessageAnalyzer.isDiagnosticRequest(reqMessage)) {
              
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
             

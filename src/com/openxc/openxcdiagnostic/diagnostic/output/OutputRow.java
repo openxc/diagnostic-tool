@@ -17,6 +17,7 @@ import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.Formatter;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -87,10 +88,10 @@ public class OutputRow {
             @Override
             public void onClick(View v) {
                 String message;
-                if (Utilities.isDiagnosticRequest(mRequest)) {
+                if (MessageAnalyzer.isDiagnosticRequest(mRequest)) {
                     message = "Resending Request.";
                     mContext.send(mRequest);
-                } else if (Utilities.isCommand(mRequest)) {
+                } else if (MessageAnalyzer.isCommand(mRequest)) {
                     message = "Resending Command.";
                     mContext.send(mRequest);
                 } else {
@@ -104,7 +105,7 @@ public class OutputRow {
     private void setOutputInfoFormat() {
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
         int layoutId;
-        if (Utilities.isDiagnosticResponse(mResponse)) {
+        if (MessageAnalyzer.isDiagnosticResponse(mResponse)) {
             layoutId = R.layout.diagresponseoutputinfo;
         } else {
             layoutId = R.layout.commandresponseoutputinfo;
@@ -118,7 +119,7 @@ public class OutputRow {
         
         setOutputInfoFormat();
         LinearLayout infoTable = (LinearLayout) mView.findViewById(R.id.outputInfo);
-            if (Utilities.isDiagnosticResponse(mResponse)) {
+            if (MessageAnalyzer.isDiagnosticResponse(mResponse)) {
                 DiagnosticResponse resp = (DiagnosticResponse) mResponse;
                 ((TextView) infoTable.findViewById(R.id.busValue)).setText(Formatter.getBusOutput(resp));
                 ((TextView) infoTable.findViewById(R.id.idValue)).setText(Formatter.getIdOutput(resp));
@@ -127,7 +128,7 @@ public class OutputRow {
                 ((TextView) infoTable.findViewById(R.id.successValue)).setText(Formatter.getSuccessOutput(resp));
                 ((TextView) infoTable.findViewById(R.id.payloadValue)).setText(Formatter.getPayloadOutput(resp));
                 ((TextView) infoTable.findViewById(R.id.valueValue)).setText(Formatter.getValueOutput(resp));
-            } else if (Utilities.isCommandResponse(mResponse)){
+            } else if (MessageAnalyzer.isCommandResponse(mResponse)){
                 CommandResponse cmdResponse = (CommandResponse) mResponse;
                 ((TextView) infoTable.findViewById(R.id.commandValue)).setText( 
                         Formatter.getCommandOutput(cmdResponse));
@@ -153,7 +154,7 @@ public class OutputRow {
     }
 
     public Pair getPair() {
-        if (Utilities.isDiagnosticResponse(mResponse)) {
+        if (MessageAnalyzer.isDiagnosticResponse(mResponse)) {
             return new DiagnosticPair(mRequest == null ? null : (DiagnosticRequest) mRequest,
                     (DiagnosticResponse) mResponse);
         }

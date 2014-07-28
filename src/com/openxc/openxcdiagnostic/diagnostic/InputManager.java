@@ -27,6 +27,7 @@ import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.messages.formatters.ByteAdapter;
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -76,9 +77,9 @@ public class InputManager implements DiagnosticManager {
     }
     
     public void populateFields(VehicleMessage message) {
-        if (Utilities.isDiagnosticRequest(message)) {
+        if (MessageAnalyzer.isDiagnosticRequest(message)) {
             populateFields((DiagnosticRequest) message);
-        } else if (Utilities.isCommand(message)){ 
+        } else if (MessageAnalyzer.isCommand(message)){ 
             populateFields((Command) message);
         } else {
             Log.w(TAG, "Unable to populate fields from message from favorites of type " + message.getClass().toString());

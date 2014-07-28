@@ -17,7 +17,7 @@ import com.openxc.openxcdiagnostic.diagnostic.DiagnosticManager;
 import com.openxc.openxcdiagnostic.diagnostic.pair.CommandPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
-import com.openxc.openxcdiagnostic.util.Utilities;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 
 public class OutputTableManager implements DiagnosticManager  {
 
@@ -44,8 +44,8 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     private boolean shouldScrollToTop(VehicleMessage response) {
-        return ((Utilities.isCommandResponse(response) && mContext.isDisplayingCommands()) 
-                || (Utilities.isDiagnosticResponse(response) && !mContext.isDisplayingCommands()))
+        return ((MessageAnalyzer.isCommandResponse(response) && mContext.isDisplayingCommands()) 
+                || (MessageAnalyzer.isDiagnosticResponse(response) && !mContext.isDisplayingCommands()))
                 && mContext.shouldScroll();
     }
         
@@ -117,7 +117,7 @@ public class OutputTableManager implements DiagnosticManager  {
     
     public boolean replaceIfMatchesExisting(VehicleMessage req, VehicleMessage resp) {
         
-        if (Utilities.isDiagnosticResponse(resp)) {
+        if (MessageAnalyzer.isDiagnosticResponse(resp)) {
             ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) resp);
             for (int i = 0; i < mDiagnosticRows.size(); i++) {
                 OutputRow row = mDiagnosticRows.get(i);
@@ -127,7 +127,7 @@ public class OutputTableManager implements DiagnosticManager  {
                     return true;
                 }
             }
-        } else if (Utilities.isCommandResponse(resp)){
+        } else if (MessageAnalyzer.isCommandResponse(resp)){
             ExactKeyMatcher responseMatcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) resp);
             for (int i = 0; i < mCommandRows.size(); i++) {
                 OutputRow row = mCommandRows.get(i);
@@ -142,10 +142,10 @@ public class OutputTableManager implements DiagnosticManager  {
     }
     
     private boolean correspond(VehicleMessage req, VehicleMessage resp) {
-        boolean bothValid = (Utilities.isDiagnosticRequest(req) && Utilities.isDiagnosticResponse(resp)) || 
-        (Utilities.isCommand(req) && Utilities.isCommandResponse(resp));
-        boolean nullReqValidResp = (req == null && (Utilities.isDiagnosticResponse(resp) 
-                || Utilities.isCommandResponse(resp)));
+        boolean bothValid = (MessageAnalyzer.isDiagnosticRequest(req) && MessageAnalyzer.isDiagnosticResponse(resp)) || 
+        (MessageAnalyzer.isCommand(req) && MessageAnalyzer.isCommandResponse(resp));
+        boolean nullReqValidResp = (req == null && (MessageAnalyzer.isDiagnosticResponse(resp) 
+                || MessageAnalyzer.isCommandResponse(resp)));
         return bothValid || nullReqValidResp;
     }
     

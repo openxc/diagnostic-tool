@@ -17,8 +17,8 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.VehicleMessage;
 import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Formatter;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
-import com.openxc.openxcdiagnostic.util.Utilities;
 
 public class ResponseDetailsAlertManager {
     
@@ -80,7 +80,7 @@ public class ResponseDetailsAlertManager {
         
         LinearLayout requestTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertRequestTable);
         requestTable.removeAllViews();
-        if (Utilities.isDiagnosticRequest(reqMessage)) {
+        if (MessageAnalyzer.isDiagnosticRequest(reqMessage)) {
             DiagnosticRequest req = (DiagnosticRequest) reqMessage;
             createAndAddHeaderRow(requestTable, mContext.getResources().getString(R.string.alert_request_header));
             createAndAddRow(requestTable, "bus", Formatter.getBusOutput(req), req);
@@ -91,7 +91,7 @@ public class ResponseDetailsAlertManager {
             createAndAddRow(requestTable, "frequency", Formatter.getFrequencyOutput(req), req);
             createAndAddRow(requestTable, "name", Formatter.getNameOutput(req), req);
             createAndAddButtonsRow(requestTable, reqMessage);
-        } else if (Utilities.isCommand(reqMessage)) {
+        } else if (MessageAnalyzer.isCommand(reqMessage)) {
             Command command = (Command) reqMessage;
             createAndAddHeaderRow(requestTable, mContext.getResources().getString(R.string.alert_command_header));
             createAndAddRow(requestTable, "command", Formatter.getCommandOutput(command), command);
@@ -121,7 +121,7 @@ public class ResponseDetailsAlertManager {
                 
                 String message;
                 
-                if (Utilities.isDiagnosticRequest(req)) {
+                if (MessageAnalyzer.isDiagnosticRequest(req)) {
                     message = "Request";
                 } else {
                     message = "Command";
@@ -161,7 +161,7 @@ public class ResponseDetailsAlertManager {
         LinearLayout responseTable = (LinearLayout) alertLayout.findViewById(R.id.diagAlertResponseTable); 
         responseTable.removeAllViews();
         createAndAddHeaderRow(responseTable, mContext.getResources().getString(R.string.alert_response_header));
-        if (Utilities.isDiagnosticResponse(respMessage)) {
+        if (MessageAnalyzer.isDiagnosticResponse(respMessage)) {
             DiagnosticResponse resp = (DiagnosticResponse) respMessage;
             createAndAddRow(responseTable, "bus", Formatter.getBusOutput(resp), resp);
             createAndAddRow(responseTable, "id", Formatter.getIdOutput(resp), resp);
@@ -174,7 +174,7 @@ public class ResponseDetailsAlertManager {
             } else {
                 fillTableWithFailureDetails(responseTable, mContext, resp);
             }
-        } else if (Utilities.isCommandResponse(respMessage)) {
+        } else if (MessageAnalyzer.isCommandResponse(respMessage)) {
             CommandResponse resp = (CommandResponse) respMessage;
             createAndAddRow(responseTable, "message", Formatter.getMessageOutput(resp), resp);
         }
@@ -198,7 +198,7 @@ public class ResponseDetailsAlertManager {
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
         valueText.setText(value);
-        if (Utilities.isDiagnosticResponse(msg)) {
+        if (MessageAnalyzer.isDiagnosticResponse(msg)) {
             valueText.setTextColor(Formatter.getOutputColor(mContext, 
                     (DiagnosticResponse) msg));
         } 

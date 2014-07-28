@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+
 import com.openxc.VehicleManager;
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
@@ -29,6 +30,7 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.DialogLauncher;
+import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.RecurringResponseGenerator;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
@@ -36,7 +38,7 @@ public class DiagnosticActivity extends Activity {
 
     private static String TAG = "DiagnosticActivity";
     private static int FUNCTIONAL_BROADCAST_ID = 0x7DF;
-    
+
     private SettingsManager mSettingsManager;
     private InputManager mInputManager;
     private ButtonManager mButtonsManager;
@@ -46,43 +48,34 @@ public class DiagnosticActivity extends Activity {
     private final Handler mHandler = new Handler();
     private OutputTableManager mOutputTableManager;
     private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
-    
+
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
-    
-    boolean emulate = false;
+
+    boolean emulate = true;
     private Timer mTimer = new Timer();
 
-    VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
+    private VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
         public void receive(final VehicleMessage response) {
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    //prevent trying to add, for example, SimpleVehicleMessages received
-                    //due to sniffing
-                    if (shouldBeReceived(response)) {
-                        
+            // prevent trying to add, for example, SimpleVehicleMessages
+            // received
+            // due to sniffing
+            if (shouldBeReceived(response)) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
                         VehicleMessage request = findRequestThatMatchesResponse(response);
-                        //update response if old one is in table, otherwise just add it
+                        // update response if old one is in table, otherwise
+                        // just add it
                         if (!mOutputTableManager.replaceIfMatchesExisting(request, response)) {
                             mOutputTableManager.add(request, response);
                         }
-                    
-                        //unregister listener if frequency of request is 0 or null b/c no more should come
-                        if (Utilities.isDiagnosticRequest(request)) {
-                            DiagnosticRequest diagReq = (DiagnosticRequest) request;
-                            if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
-                                mVehicleManager.removeListener(diagReq, 
-                                    DiagnosticActivity.this.mResponseListener);
-                            }
-                        } else if (Utilities.isCommand(request)) {
-                            mVehicleManager.removeListener((Command) request, 
-                                    DiagnosticActivity.this.mResponseListener);
-                        }
+
+                        removeIfDone(request);
                     }
-                }
-            });
+                });
+            }
         }
     };
 
@@ -106,110 +99,105 @@ public class DiagnosticActivity extends Activity {
             mIsBound = false;
         }
     };
-    
-    private VehicleMessage findRequestThatMatchesResponse(VehicleMessage response) {
-        
-        if (Utilities.isDiagnosticResponse(response)) {
+
+    private VehicleMessage findRequestThatMatchesResponse(
+            VehicleMessage response) {
+
+        if (MessageAnalyzer.isDiagnosticResponse(response)) {
             return findMatchingRequest((DiagnosticResponse) response);
-        } else if (Utilities.isCommandResponse(response)) {
+        } else if (MessageAnalyzer.isCommandResponse(response)) {
             return findMatchingCommand((CommandResponse) response);
+        } else {
+            Log.e(TAG, "Attempted to find matching request/command for object of type: "
+                    + response.getClass());
         }
         return null;
     }
-    
+
     private Command findMatchingCommand(VehicleMessage msg) {
-        
-        ExactKeyMatcher matcher;
-        if (Utilities.isCommand(msg)) {
+
+        ExactKeyMatcher matcher = null;
+        if (MessageAnalyzer.isCommand(msg)) {
             matcher = ExactKeyMatcher.buildExactMatcher((Command) msg);
+        } else if (MessageAnalyzer.isCommandResponse(msg)) {
+            matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) msg);
         } else {
-            matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) msg);  
-        } 
-        
-        for (int i=0; i < outstandingCommands.size(); i++) {
-            Command command = outstandingCommands.get(i);
-            if (matcher.matches(command)) {
-                return command;
-            }
+            Log.e(TAG, "Attempted to find matching command for object of type: "
+                    + msg.getClass());
         }
-        return null;
+
+        return (Command) MessageAnalyzer.findMatching(matcher, outstandingCommands);
     }
-    
+
     private DiagnosticRequest findMatchingRequest(DiagnosticMessage msg) {
-        
-        ExactKeyMatcher matcher;
-        if (Utilities.isDiagnosticRequest(msg)) {
+
+        ExactKeyMatcher matcher = null;
+        if (MessageAnalyzer.isDiagnosticRequest(msg)) {
             matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticRequest) msg);
+        } else if (MessageAnalyzer.isDiagnosticResponse(msg)) {
+            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) msg);
         } else {
-            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) msg);  
-        } 
-        
-        for (int i=0; i < outstandingRequests.size(); i++) {
-            DiagnosticRequest request = outstandingRequests.get(i);
-            if (matcher.matches(request)) {
-                return request;
-            }
+            Log.e(TAG, "Attempted to find matching request for object of type: "
+                    + msg.getClass());
         }
-        
+
+        if (matcher != null) {
+            return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher, outstandingRequests);
+        }
+
         return findMatchingFunctionalBroadcastRequest(msg);
     }
-    
-    private DiagnosticRequest findMatchingFunctionalBroadcastRequest(DiagnosticMessage msg) {
-        
-        for (int i=0; i < outstandingRequests.size(); i++) {
+
+    private DiagnosticRequest findMatchingFunctionalBroadcastRequest(
+            DiagnosticMessage msg) {
+
+        for (int i = 0; i < outstandingRequests.size(); i++) {
             DiagnosticRequest request = outstandingRequests.get(i);
             if (request.getId() == FUNCTIONAL_BROADCAST_ID) {
-                if (exactMatchExceptId(request, msg)) {
+                if (MessageAnalyzer.exactMatchExceptId(request, msg)) {
                     return request;
                 }
             }
         }
-        
+
         return null;
     }
-    
-    private boolean exactMatchExceptId(DiagnosticMessage msg1, DiagnosticMessage msg2) {
-        return msg1.getBusId() == msg2.getBusId() && msg1.getMode() == msg2.getMode()
-                && msg1.getPid() == msg2.getPid();
-    }
-    
-    private boolean canBeSent(VehicleMessage msg) {
-        return Utilities.isDiagnosticRequest(msg) || Utilities.isCommand(msg);
-    }
-    
+
     private boolean shouldBeReceived(VehicleMessage msg) {
-        return Utilities.isDiagnosticResponse(msg) 
-                || Utilities.isCommandResponse(msg);
+        return MessageAnalyzer.isDiagnosticResponse(msg)
+                || MessageAnalyzer.isCommandResponse(msg);
     }
 
     public void send(VehicleMessage request) {
-                
-        if (!canBeSent(request)) {
+
+        if (!MessageAnalyzer.canBeSent(request)) {
             Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
             return;
         }
-        
+
         if (!emulate) {
             registerForResponse(request);
             if (!mVehicleManager.send(request)) {
-                DialogLauncher.launchAlert(this, "Unable to Send", "The request or command could" +
-                		" not be sent.  Ensure that the VI is on and connected.");
+                DialogLauncher.launchAlert(this, "Unable to Send", "The request or command could"
+                        + " not be sent.  Ensure that the VI is on and connected.");
                 return;
             }
         } else {
-            //only for emulating recurring requests
-            if (Utilities.isDiagnosticRequest(request)) {
+            // only for emulating recurring requests
+            if (MessageAnalyzer.isDiagnosticRequest(request)) {
                 DiagnosticRequest diagReq = (DiagnosticRequest) request;
-                if (diagReq.getFrequency() != null && diagReq.getFrequency() > 0) {
+                if (diagReq.getFrequency() != null
+                        && diagReq.getFrequency() > 0) {
                     RecurringResponseGenerator generator = new RecurringResponseGenerator(diagReq, mResponseListener);
                     mTimer.schedule(generator, 100, 1000);
                 }
             }
         }
-        
-        if (Utilities.isDiagnosticRequest(request)) {
-            //remove an outstanding request that matches if a new one is sent because the new one
-            //will overwrite the old request in the VI
+
+        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+            // remove an outstanding request that matches if a new one is sent
+            // because the new one
+            // will overwrite the old request in the VI
             DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) request);
             if (oldReq != null) {
                 outstandingRequests.remove(oldReq);
@@ -218,24 +206,25 @@ public class DiagnosticActivity extends Activity {
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeResponse((DiagnosticRequest) request));
             }
-        } else if (Utilities.isCommand(request)) {
+        } else if (MessageAnalyzer.isCommand(request)) {
             outstandingCommands.add((Command) request);
             if (emulate) {
                 mResponseListener.receive(Utilities.generateRandomFakeCommandResponse((Command) request));
             }
-        } 
-    }
-    
-    private void registerForResponse(VehicleMessage request) {
-        if (Utilities.isDiagnosticRequest(request)) {
-            mVehicleManager.addListener((DiagnosticRequest) request, mResponseListener);
-        } else if (Utilities.isCommand(request)) {
-            mVehicleManager.addListener((Command) request, mResponseListener);
-        } else {
-            Log.w(TAG, "Unable to register for response of type: " + request.getClass());
         }
     }
-    
+
+    private void registerForResponse(VehicleMessage request) {
+        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+            mVehicleManager.addListener((DiagnosticRequest) request, mResponseListener);
+        } else if (MessageAnalyzer.isCommand(request)) {
+            mVehicleManager.addListener((Command) request, mResponseListener);
+        } else {
+            Log.w(TAG, "Unable to register for response of type: "
+                    + request.getClass());
+        }
+    }
+
     public void startSniffing() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
     }
@@ -256,7 +245,7 @@ public class DiagnosticActivity extends Activity {
     public Command generateCommandFromInput() {
         return mInputManager.generateCommandFromInput();
     }
-    
+
     public DiagnosticRequest generateDiagnosticRequestFromInput() {
         return mInputManager.generateDiagnosticRequestFromInput();
     }
@@ -272,11 +261,11 @@ public class DiagnosticActivity extends Activity {
     public void launchSettings() {
         mSettingsManager.showAlert();
     }
-    
+
     public boolean shouldScroll() {
         return mSettingsManager.shouldScroll();
     }
-    
+
     public boolean multipleResponsesEnabled() {
         return mSettingsManager.multipleResponsesEnabled();
     }
@@ -284,13 +273,13 @@ public class DiagnosticActivity extends Activity {
     public void clearDiagnosticTable() {
         mOutputTableManager.deleteAllDiagnosticResponses();
     }
-    
+
     public void clearCommandTable() {
         mOutputTableManager.deleteAllCommandResponses();
     }
-    
+
     public void hideKeyboard() {
-        if(getCurrentFocus() != null) {
+        if (getCurrentFocus() != null) {
             InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             if (manager.isAcceptingText()) {
                 manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -298,13 +287,13 @@ public class DiagnosticActivity extends Activity {
             getCurrentFocus().clearFocus();
         }
     }
-    
-    public void setRequestCommandState(boolean displayCommands) {        
-        for (int i=0; i < mManagers.size(); i++) {
+
+    public void setRequestCommandState(boolean displayCommands) {
+        for (int i = 0; i < mManagers.size(); i++) {
             mManagers.get(i).setRequestCommandState(displayCommands);
         }
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -314,7 +303,7 @@ public class DiagnosticActivity extends Activity {
         mSettingsManager = new SettingsManager(this);
         FavoritesManager.init(this);
         boolean displayCommands = isDisplayingCommands();
-        //order matters here
+        // order matters here
         mFavoritesAlertManager = new FavoritesAlertManager(this, displayCommands);
         mManagers.add(mFavoritesAlertManager);
         mInputManager = new InputManager(this, displayCommands);
@@ -324,13 +313,13 @@ public class DiagnosticActivity extends Activity {
         mOutputTableManager = new OutputTableManager(this, displayCommands);
         mManagers.add(mOutputTableManager);
     }
-    
+
     public boolean isDisplayingCommands() {
         return mSettingsManager.shouldDisplayCommands();
     }
-    
+
     public void cancelRecurringRequests() {
-        for (int i=0; i < outstandingRequests.size(); i++) {
+        for (int i = 0; i < outstandingRequests.size(); i++) {
             DiagnosticRequest req = outstandingRequests.get(i);
             if (req.getFrequency() != null && req.getFrequency() > 0) {
                 req.setFrequency(null);
@@ -343,15 +332,29 @@ public class DiagnosticActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         mOutputTableManager.save();
-        
-        //TODO do we actually want to do this? 
+
+        // TODO do we actually want to do this?
         removeListener(outstandingCommands, mResponseListener);
         removeListener(outstandingRequests, mResponseListener);
     }
-    
-    private void removeListener(ArrayList<? extends KeyedMessage> commands, VehicleMessage.Listener listener) {
-        for (int i=0; i < commands.size(); i++) {
+
+    private void removeListener(ArrayList<? extends KeyedMessage> commands,
+            VehicleMessage.Listener listener) {
+        for (int i = 0; i < commands.size(); i++) {
             mVehicleManager.removeListener(commands.get(i), listener);
+        }
+    }
+
+    private void removeIfDone(VehicleMessage request) {
+        // unregister listener if frequency of request is 0 or null b/c no more
+        // should come
+        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+            DiagnosticRequest diagReq = (DiagnosticRequest) request;
+            if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
+                mVehicleManager.removeListener(diagReq, DiagnosticActivity.this.mResponseListener);
+            }
+        } else if (MessageAnalyzer.isCommand(request)) {
+            mVehicleManager.removeListener((Command) request, DiagnosticActivity.this.mResponseListener);
         }
     }
 
