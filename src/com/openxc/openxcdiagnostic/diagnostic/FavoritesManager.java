@@ -18,178 +18,186 @@ import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 
 /**
  * 
- * Manager for storing favorite requests and commands. 
+ * Manager for storing favorite requests and commands.
  * 
  */
 public class FavoritesManager {
 
     private static String TAG = "DiagnosticFavoritesManager";
-      
+
     private static ArrayList<DiagnosticRequest> sFavoriteRequests;
     private static ArrayList<Command> sFavoriteCommands;
     private static SharedPreferences sPreferences;
-    
-    //Don't like having to pass in a context to a static class on init, but advantageous this 
-    //way so you can access favorites from any class.
+
+    // Don't like having to pass in a context to a static class on init, but
+    // advantageous this way so you can access favorites from any class.
     public static void init(DiagnosticActivity context) {
         sPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sFavoriteRequests = loadFavoriteRequests();
         sFavoriteCommands = loadFavoriteCommands();
     }
-    
+
     public static void add(VehicleMessage req) {
         if (MessageAnalyzer.isDiagnosticRequest(req)) {
             addFavoriteRequest((DiagnosticRequest) req);
         } else if (MessageAnalyzer.isCommand(req)) {
             addFavoriteCommand((Command) req);
         } else {
-            Log.w(TAG, "Unable to add message to favorites of type " + req.getClass().toString());
+            Log.e(TAG, "Unable to add message to favorites of type "
+                    + req.getClass().toString());
         }
     }
-    
+
     private static void addFavoriteRequest(DiagnosticRequest req) {
         ArrayList<DiagnosticRequest> newFavorites = sFavoriteRequests;
         newFavorites.add(findAlphabeticPosition(req), req);
         setFavoriteRequests(newFavorites);
     }
-    
-    private static boolean isOrdered(String s1, String s2) {     
-        if (s1 == null || s1.trim() == "") {
-            return false;
-        } 
-        
-        if (s2 == null || s2.trim() == "") {
-            return true;
-        }
-        
-        return s1.compareToIgnoreCase(s2) < 0;
-    }
-    
-    private static int findAlphabeticPosition(DiagnosticRequest req) {
-        
-        int position = 0;
-        for (;position < sFavoriteRequests.size(); position++) {
-            if (isOrdered(req.getName(),
-                    sFavoriteRequests.get(position).getName())) {
-                break;
-            }
-        }
-        return position;
-    } 
-    
-    private static int findAlphabeticPosition(Command command) {
-        
-        int position = 0;
-        for (;position < sFavoriteCommands.size(); position++) {
-            if (isOrdered(command.getCommand().toString(),
-                    sFavoriteCommands.get(position).getCommand().toString())) {
-                break;
-            }
-        }
-        return position;
-    } 
-    
+
     private static void addFavoriteCommand(Command command) {
         ArrayList<Command> newFavorites = sFavoriteCommands;
         newFavorites.add(findAlphabeticPosition(command), command);
         setFavoriteCommands(newFavorites);
     }
-    
+
+    private static boolean isOrdered(String s1, String s2) {
+        if (s1 == null || s1.trim() == "") {
+            return false;
+        }
+
+        if (s2 == null || s2.trim() == "") {
+            return true;
+        }
+
+        return s1.compareToIgnoreCase(s2) < 0;
+    }
+
+    private static int findAlphabeticPosition(DiagnosticRequest req) {
+
+        int position = 0;
+        for (; position < sFavoriteRequests.size(); position++) {
+            if (isOrdered(req.getName(), sFavoriteRequests.get(position)
+                    .getName())) {
+                break;
+            }
+        }
+        return position;
+    }
+
+    private static int findAlphabeticPosition(Command command) {
+
+        int position = 0;
+        for (; position < sFavoriteCommands.size(); position++) {
+            if (isOrdered(command.getCommand().toString(), sFavoriteCommands
+                    .get(position).getCommand().toString())) {
+                break;
+            }
+        }
+        return position;
+    }
+
     public static void remove(VehicleMessage req) {
         if (MessageAnalyzer.isDiagnosticRequest(req)) {
             removeFavoriteRequest((DiagnosticRequest) req);
         } else if (MessageAnalyzer.isCommand(req)) {
             removeFavoriteCommand((Command) req);
         } else {
-            Log.w(TAG, "Unable to remove message from favorites of type " + req.getClass().toString());
+            Log.w(TAG, "Unable to remove message from favorites of type "
+                    + req.getClass().toString());
         }
     }
-    
+
     private static void removeFavoriteRequest(DiagnosticRequest req) {
         ArrayList<DiagnosticRequest> newFavorites = sFavoriteRequests;
         newFavorites.remove(req);
         setFavoriteRequests(newFavorites);
     }
-    
+
     private static void removeFavoriteCommand(Command command) {
         ArrayList<Command> newFavorites = sFavoriteCommands;
         newFavorites.remove(command);
         setFavoriteCommands(newFavorites);
     }
-    
+
     public static ArrayList<DiagnosticRequest> getFavoriteRequests() {
         return sFavoriteRequests;
     }
-    
+
     public static ArrayList<Command> getFavoriteCommands() {
         return sFavoriteCommands;
     }
-    
-    private static void setFavoriteRequests(ArrayList<DiagnosticRequest> newFavorites) {
-        Editor prefsEditor = sPreferences.edit();
+
+    private static void setFavoriteRequests(
+            ArrayList<DiagnosticRequest> newFavorites) {
         String json = (new Gson()).toJson(newFavorites);
-        prefsEditor.putString(getFavoriteRequestsKey(), json);
-        prefsEditor.commit();
+        save(getFavoriteRequestsKey(), json);
         sFavoriteRequests = newFavorites;
     }
-    
+
     private static void setFavoriteCommands(ArrayList<Command> newFavorites) {
-        Editor prefsEditor = sPreferences.edit();
         String json = (new Gson()).toJson(newFavorites);
-        prefsEditor.putString(getFavoriteCommandsKey(), json);
-        prefsEditor.commit();
+        save(getFavoriteCommandsKey(), json);
         sFavoriteCommands = newFavorites;
     }
-    
+
+    private static void save(String key, String json) {
+        Editor prefsEditor = sPreferences.edit();
+        prefsEditor.putString(key, json);
+        prefsEditor.commit();
+    }
+
     public static boolean contains(VehicleMessage message) {
         if (MessageAnalyzer.isDiagnosticRequest(message)) {
             return containsFavoriteRequest((DiagnosticRequest) message);
         } else if (MessageAnalyzer.isCommand(message)) {
             return containsFavoriteCommand((Command) message);
-        } 
+        }
         return false;
     }
-    
+
     private static boolean containsFavoriteRequest(DiagnosticRequest req) {
         return sFavoriteRequests.contains(req);
     }
-    
+
     private static boolean containsFavoriteCommand(Command command) {
         return sFavoriteCommands.contains(command);
     }
-    
+
     private static ArrayList<DiagnosticRequest> loadFavoriteRequests() {
- 
+
         @SuppressWarnings("serial")
-        Type type = new TypeToken<List<DiagnosticRequest>>(){}.getType();
+        Type type = new TypeToken<List<DiagnosticRequest>>() {
+        }.getType();
         String json = sPreferences.getString(getFavoriteRequestsKey(), "");
-        List<DiagnosticRequest> favoriteList = (new Gson()).fromJson(json, type);
+        List<DiagnosticRequest> favoriteList = (new Gson())
+                .fromJson(json, type);
         if (favoriteList != null) {
             return new ArrayList<>(favoriteList);
-        } 
-            
+        }
+
         return new ArrayList<>();
     }
-    
+
     private static ArrayList<Command> loadFavoriteCommands() {
-        
+
         @SuppressWarnings("serial")
-        Type type = new TypeToken<List<Command>>(){}.getType();
+        Type type = new TypeToken<List<Command>>() {
+        }.getType();
         String json = sPreferences.getString(getFavoriteCommandsKey(), "");
         List<Command> favoriteList = (new Gson()).fromJson(json, type);
         if (favoriteList != null) {
             return new ArrayList<>(favoriteList);
-        } 
-            
+        }
+
         return new ArrayList<>();
     }
-    
+
     private static String getFavoriteRequestsKey() {
         return "favorite_requests_key";
     }
-    
+
     private static String getFavoriteCommandsKey() {
         return "favorite_commands_key";
     }
-    
+
 }
