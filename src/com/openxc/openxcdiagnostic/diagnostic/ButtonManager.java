@@ -16,6 +16,11 @@ import com.openxc.openxcdiagnostic.diagnostic.command.LaunchSettingsDialogComman
 import com.openxc.openxcdiagnostic.diagnostic.command.RequestSendCommand;
 import com.openxc.openxcdiagnostic.util.DialogLauncher;
 
+/**
+ * 
+ * Class for managing all of the static buttons for the diagnostic activity UI.
+ * 
+ */
 public class ButtonManager implements DiagnosticManager {
 
     private DiagnosticActivity mContext;

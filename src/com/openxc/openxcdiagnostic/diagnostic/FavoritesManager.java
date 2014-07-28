@@ -37,6 +37,13 @@ public class FavoritesManager {
         sFavoriteCommands = loadFavoriteCommands();
     }
 
+    /**
+     * Add the given <code>req</code> to favorites. The method will decide
+     * whether it should be added as a Diagnostic Request or a Command.
+     * 
+     * @param req
+     *            The request/command to add.
+     */
     public static void add(VehicleMessage req) {
         if (MessageAnalyzer.isDiagnosticRequest(req)) {
             addFavoriteRequest((DiagnosticRequest) req);
@@ -146,7 +153,7 @@ public class FavoritesManager {
         prefsEditor.commit();
     }
 
-    public static boolean contains(VehicleMessage message) {
+    public static boolean isInFavorites(VehicleMessage message) {
         if (MessageAnalyzer.isDiagnosticRequest(message)) {
             return containsFavoriteRequest((DiagnosticRequest) message);
         } else if (MessageAnalyzer.isCommand(message)) {

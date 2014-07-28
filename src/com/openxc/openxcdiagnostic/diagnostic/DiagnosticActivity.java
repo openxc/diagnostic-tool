@@ -47,9 +47,10 @@ public class DiagnosticActivity extends Activity {
     private OutputTableManager mOutputTableManager;
     private ArrayList<DiagnosticManager> mManagers = new ArrayList<>();
 
-    private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
-    private ArrayList<Command> outstandingCommands = new ArrayList<>();
+    private ArrayList<DiagnosticRequest> mOutstandingRequests = new ArrayList<>();
+    private ArrayList<Command> mOutstandingCommands = new ArrayList<>();
 
+    // set this to true to generate fake responses
     boolean emulate = false;
 
     private VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
@@ -127,7 +128,7 @@ public class DiagnosticActivity extends Activity {
         }
 
         return (Command) MessageAnalyzer.findMatching(matcher,
-                outstandingCommands);
+                mOutstandingCommands);
     }
 
     private DiagnosticRequest findMatchingRequest(DiagnosticMessage msg) {
@@ -150,14 +151,14 @@ public class DiagnosticActivity extends Activity {
         }
 
         return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher,
-                outstandingRequests);
+                mOutstandingRequests);
     }
 
     private DiagnosticRequest findMatchingFunctionalBroadcastRequest(
             DiagnosticMessage msg) {
 
-        for (int i = 0; i < outstandingRequests.size(); i++) {
-            DiagnosticRequest request = outstandingRequests.get(i);
+        for (int i = 0; i < mOutstandingRequests.size(); i++) {
+            DiagnosticRequest request = mOutstandingRequests.get(i);
             if (request.getId() == FUNCTIONAL_BROADCAST_ID) {
                 if (MessageAnalyzer.exactMatchExceptId(request, msg)) {
                     return request;
@@ -173,29 +174,35 @@ public class DiagnosticActivity extends Activity {
                 || MessageAnalyzer.isCommandResponse(msg);
     }
 
-    public void send(VehicleMessage request) {
+    /**
+     * Send the given <code>message</code> to the vehicle manager
+     * 
+     * @param message
+     *            The message to send
+     */
+    public void send(VehicleMessage message) {
 
-        if (!MessageAnalyzer.canBeSent(request)) {
+        if (!MessageAnalyzer.canBeSent(message)) {
             Log.w(TAG,
                     "Request must be of type DiagnosticRequest or Command...not sending.");
             return;
         }
 
-        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+        if (MessageAnalyzer.isDiagnosticRequest(message)) {
             // remove an outstanding request that matches if a new one is sent
             // because the new one will overwrite the old request in the VI
-            DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) request);
+            DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) message);
             if (oldReq != null) {
-                outstandingRequests.remove(oldReq);
+                mOutstandingRequests.remove(oldReq);
             }
-            outstandingRequests.add((DiagnosticRequest) request);
-        } else if (MessageAnalyzer.isCommand(request)) {
-            outstandingCommands.add((Command) request);
+            mOutstandingRequests.add((DiagnosticRequest) message);
+        } else if (MessageAnalyzer.isCommand(message)) {
+            mOutstandingCommands.add((Command) message);
         }
 
         if (!emulate) {
-            registerForResponse(request);
-            if (!mVehicleManager.send(request)) {
+            registerForResponse(message);
+            if (!mVehicleManager.send(message)) {
                 DialogLauncher
                         .launchAlert(
                                 this,
@@ -205,7 +212,7 @@ public class DiagnosticActivity extends Activity {
                 return;
             }
         } else {
-            ResponseEmulator.emulate(request, mResponseListener);
+            ResponseEmulator.emulate(message, mResponseListener);
         }
 
     }
@@ -223,6 +230,17 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    /**
+     * Removes the given <code>VehicleMessage.Listener</code> from listening for
+     * all of the commands/requests in <code>commands</code>.
+     * 
+     * @param commands
+     *            The array of messages that each must extend
+     *            <code>KeyedMessage</code>
+     * @param listener
+     *            The listener to be unregistered from the
+     *            <code>Vehicle Manager</code>
+     */
     private void removeListener(ArrayList<? extends KeyedMessage> commands,
             VehicleMessage.Listener listener) {
         for (int i = 0; i < commands.size(); i++) {
@@ -230,6 +248,13 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    /**
+     * Removes the given request from the <code>Vehicle Manager</code> if the
+     * request is a <code>Command</code>, or if the request is a
+     * <code>Diagnostic Request</code> and has a frequency of 0 or null.
+     * 
+     * @param request
+     */
     private void removeIfDone(VehicleMessage request) {
         // unregister listener if frequency of request is 0 or null b/c no more
         // should come
@@ -245,6 +270,9 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    /**
+     * Register the listener with the VehicleManager to receive all messages.
+     */
     public void startSniffing() {
         mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(),
                 mResponseListener);
@@ -315,6 +343,12 @@ public class DiagnosticActivity extends Activity {
         }
     }
 
+    /**
+     * Propagate the command state to all of the managers
+     * 
+     * @param displayCommands
+     *            True if in command mode, false if in request mode.
+     */
     public void setRequestCommandState(boolean displayCommands) {
         for (int i = 0; i < mManagers.size(); i++) {
             mManagers.get(i).setRequestCommandState(displayCommands);
@@ -342,9 +376,13 @@ public class DiagnosticActivity extends Activity {
         mManagers.add(mOutputTableManager);
     }
 
+    /**
+     * For all outstanding recurring requests, send an equivalent request with a
+     * frequency of 0 to cancel the recurring request.
+     */
     public void cancelRecurringRequests() {
-        for (int i = 0; i < outstandingRequests.size(); i++) {
-            DiagnosticRequest req = outstandingRequests.get(i);
+        for (int i = 0; i < mOutstandingRequests.size(); i++) {
+            DiagnosticRequest req = mOutstandingRequests.get(i);
             if (req.getFrequency() != null && req.getFrequency() > 0) {
                 req.setFrequency(null);
                 send(req);
@@ -358,8 +396,8 @@ public class DiagnosticActivity extends Activity {
         mOutputTableManager.save();
 
         // TODO do we actually want to do this?
-        removeListener(outstandingCommands, mResponseListener);
-        removeListener(outstandingRequests, mResponseListener);
+        removeListener(mOutstandingCommands, mResponseListener);
+        removeListener(mOutstandingRequests, mResponseListener);
     }
 
     @Override

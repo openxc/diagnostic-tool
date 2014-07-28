@@ -153,7 +153,7 @@ public class ResponseDetailsAlertManager {
                     message = "Command";
                 }
 
-                if (!FavoritesManager.contains(req)) {
+                if (!FavoritesManager.isInFavorites(req)) {
                     FavoritesManager.add(req);
                     message = message + " Added to Favorites.";
                 } else {
@@ -170,7 +170,7 @@ public class ResponseDetailsAlertManager {
     private void configureFavoritesButton(Button button, VehicleMessage req) {
         String text;
         int backgroundSelector;
-        if (!FavoritesManager.contains(req)) {
+        if (!FavoritesManager.isInFavorites(req)) {
             backgroundSelector = R.drawable.favorites_button_selector;
             text = mResources.getString(R.string.add_to_favorites_button_label);
         } else {
