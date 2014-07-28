@@ -29,6 +29,8 @@
     <string name="cancel_recurring_requests_button_text">Cancel</string>
     <string name="delete_diagnostic_responses_label">Delete all Diagnostic Responses</string>
     <string name="delete_command_responses_label">Delete all Command Responses</string>
+    <string name="delete_label">Delete</string>
+    <string name="cancel_label">Cancel</string>
     <string name="delete_all_responses_button_text">Delete</string>
     <string name="delete_diagnostic_responses_verification">"Are you sure you want to delete all diagnostic responses? This cannot be undone.</string>
     <string name="delete_command_responses_verification">"Are you sure you want to delete all command responses? This cannot be undone.</string>
