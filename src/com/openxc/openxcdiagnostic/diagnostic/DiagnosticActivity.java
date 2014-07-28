@@ -1,7 +1,6 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -31,8 +30,7 @@ import com.openxc.openxcdiagnostic.diagnostic.output.OutputTableManager;
 import com.openxc.openxcdiagnostic.util.ActivityLauncher;
 import com.openxc.openxcdiagnostic.util.DialogLauncher;
 import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
-import com.openxc.openxcdiagnostic.util.RecurringResponseGenerator;
-import com.openxc.openxcdiagnostic.util.Utilities;
+import com.openxc.openxcdiagnostic.util.ResponseEmulator;
 
 public class DiagnosticActivity extends Activity {
 
@@ -53,14 +51,12 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
 
     boolean emulate = true;
-    private Timer mTimer = new Timer();
 
     private VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
         public void receive(final VehicleMessage response) {
             // prevent trying to add, for example, SimpleVehicleMessages
-            // received
-            // due to sniffing
+            // received due to sniffing
             if (shouldBeReceived(response)) {
                 mHandler.post(new Runnable() {
                     @Override
@@ -108,7 +104,7 @@ public class DiagnosticActivity extends Activity {
         } else if (MessageAnalyzer.isCommandResponse(response)) {
             return findMatchingCommand((CommandResponse) response);
         } else {
-            Log.e(TAG, "Attempted to find matching request/command for object of type: "
+            Log.e(TAG, "Attempted to find matching request/command for response of type: "
                     + response.getClass());
         }
         return null;
@@ -137,15 +133,15 @@ public class DiagnosticActivity extends Activity {
         } else if (MessageAnalyzer.isDiagnosticResponse(msg)) {
             matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) msg);
         } else {
-            Log.e(TAG, "Attempted to find matching request for object of type: "
+            Log.e(TAG, "Attempted to find matching diagnostic request for object of type: "
                     + msg.getClass());
         }
 
-        if (matcher != null) {
-            return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher, outstandingRequests);
+        if (matcher == null) {
+            return findMatchingFunctionalBroadcastRequest(msg);
         }
 
-        return findMatchingFunctionalBroadcastRequest(msg);
+        return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher, outstandingRequests);
     }
 
     private DiagnosticRequest findMatchingFunctionalBroadcastRequest(
@@ -175,6 +171,18 @@ public class DiagnosticActivity extends Activity {
             return;
         }
 
+        if (MessageAnalyzer.isDiagnosticRequest(request)) {
+            // remove an outstanding request that matches if a new one is sent
+            // because the new one will overwrite the old request in the VI
+            DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) request);
+            if (oldReq != null) {
+                outstandingRequests.remove(oldReq);
+            }
+            outstandingRequests.add((DiagnosticRequest) request);
+        } else if (MessageAnalyzer.isCommand(request)) {
+            outstandingCommands.add((Command) request);
+        }
+
         if (!emulate) {
             registerForResponse(request);
             if (!mVehicleManager.send(request)) {
@@ -183,35 +191,9 @@ public class DiagnosticActivity extends Activity {
                 return;
             }
         } else {
-            // only for emulating recurring requests
-            if (MessageAnalyzer.isDiagnosticRequest(request)) {
-                DiagnosticRequest diagReq = (DiagnosticRequest) request;
-                if (diagReq.getFrequency() != null
-                        && diagReq.getFrequency() > 0) {
-                    RecurringResponseGenerator generator = new RecurringResponseGenerator(diagReq, mResponseListener);
-                    mTimer.schedule(generator, 100, 1000);
-                }
-            }
+            ResponseEmulator.emulate(request, mResponseListener);
         }
 
-        if (MessageAnalyzer.isDiagnosticRequest(request)) {
-            // remove an outstanding request that matches if a new one is sent
-            // because the new one
-            // will overwrite the old request in the VI
-            DiagnosticRequest oldReq = findMatchingRequest((DiagnosticRequest) request);
-            if (oldReq != null) {
-                outstandingRequests.remove(oldReq);
-            }
-            outstandingRequests.add((DiagnosticRequest) request);
-            if (emulate) {
-                mResponseListener.receive(Utilities.generateRandomFakeResponse((DiagnosticRequest) request));
-            }
-        } else if (MessageAnalyzer.isCommand(request)) {
-            outstandingCommands.add((Command) request);
-            if (emulate) {
-                mResponseListener.receive(Utilities.generateRandomFakeCommandResponse((Command) request));
-            }
-        }
     }
 
     private void registerForResponse(VehicleMessage request) {
