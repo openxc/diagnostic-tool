@@ -34,6 +34,7 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 public class InputManager implements DiagnosticManager {
 
     private static String TAG = "DiagnosticInputManager";
+    private static int HEX_RADIX = 16;
     private EditText mFrequencyInputText;
     private EditText mBusInputText;
     private EditText mIdInputText;
@@ -49,9 +50,9 @@ public class InputManager implements DiagnosticManager {
     private boolean mDisplayCommands;
 
     private class InputHolder {
-        private String frequencyInput = getFrequencyInput();    
+        private String frequencyInput = getFrequencyInput();
     }
-    
+
     private class RequestInputHolder extends InputHolder {
         private String busInput = getBusInput();
         private String idInput = getIdInput();
@@ -60,7 +61,7 @@ public class InputManager implements DiagnosticManager {
         private String payloadInput = getPayloadInput();
         private String nameInput = getNameInput();
     }
-    
+
     private class CommandInputHolder extends InputHolder {
         private String commandInput = getCommandInput();
     }
@@ -70,38 +71,47 @@ public class InputManager implements DiagnosticManager {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         setRequestCommandState(displayCommands);
     }
-    
+
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         initTextFields();
     }
-    
+
     public void populateFields(VehicleMessage message) {
         if (MessageAnalyzer.isDiagnosticRequest(message)) {
             populateFields((DiagnosticRequest) message);
-        } else if (MessageAnalyzer.isCommand(message)){ 
+        } else if (MessageAnalyzer.isCommand(message)) {
             populateFields((Command) message);
         } else {
-            Log.w(TAG, "Unable to populate fields from message from favorites of type " + message.getClass().toString());
+            Log.w(TAG,
+                    "Unable to populate fields from message from favorites of type "
+                            + message.getClass().toString());
         }
     }
-    
+
     private void populateFields(Command command) {
-        mCommandInputText.setText(selfOrEmptyIfNull(String.valueOf(command.getCommand())));
+        mCommandInputText.setText(selfOrEmptyIfNull(String.valueOf(command
+                .getCommand())));
     }
 
     private void populateFields(DiagnosticRequest req) {
-        mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getFrequency())));
+        mFrequencyInputText.setText(selfOrEmptyIfNull(String.valueOf(req
+                .getFrequency())));
         mBusInputText.setText(String.valueOf(req.getBusId()));
-        mIdInputText.setText(Integer.toHexString(req.getId()).toUpperCase(Locale.US));
-        mModeInputText.setText(Integer.toHexString(req.getMode()).toUpperCase(Locale.US));
-        mPidInputText.setText(req.getPid() == null ? "" : Integer.toHexString(req.getPid()).toUpperCase(Locale.US));
-        mPayloadInputText.setText(req.getPayload() == null ? "" : new String(req.getPayload()));
-        mNameInputText.setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
+        mIdInputText.setText(Integer.toHexString(req.getId()).toUpperCase(
+                Locale.US));
+        mModeInputText.setText(Integer.toHexString(req.getMode()).toUpperCase(
+                Locale.US));
+        mPidInputText.setText(req.getPid() == null ? "" : Integer.toHexString(
+                req.getPid()).toUpperCase(Locale.US));
+        mPayloadInputText.setText(req.getPayload() == null ? "" : new String(
+                req.getPayload()));
+        mNameInputText
+                .setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
-    
+
     public void populateFields(InputHolder holder) {
-        
+
         mFrequencyInputText.setText(holder.frequencyInput);
 
         if (holder instanceof RequestInputHolder) {
@@ -110,7 +120,7 @@ public class InputManager implements DiagnosticManager {
             populateCommandFields((CommandInputHolder) holder);
         }
     }
-    
+
     private void populateCommandFields(CommandInputHolder holder) {
         mCommandInputText.setText(holder.commandInput);
     }
@@ -136,32 +146,38 @@ public class InputManager implements DiagnosticManager {
             textFields.get(i).setText("");
         }
     }
-    
+
     private void initTextFields() {
-        
+
         textFields = new ArrayList<>();
-        
-        mFrequencyInputText = (EditText) mContext.findViewById(R.id.frequencyInput);
+
+        mFrequencyInputText = (EditText) mContext
+                .findViewById(R.id.frequencyInput);
         mFrequencyInputText.setHint("0");
         textFields.add(mFrequencyInputText);
-        
+
         int inputTableId = R.id.inputTable;
-        FrameLayout mainLayout = (FrameLayout) mContext.findViewById(android.R.id.content);
-        LinearLayout diagnosticLayout = (LinearLayout) mainLayout.findViewById(R.id.diagnostic);
-        LinearLayout oldView = (LinearLayout) diagnosticLayout.findViewById(inputTableId);
+        FrameLayout mainLayout = (FrameLayout) mContext
+                .findViewById(android.R.id.content);
+        LinearLayout diagnosticLayout = (LinearLayout) mainLayout
+                .findViewById(R.id.diagnostic);
+        LinearLayout oldView = (LinearLayout) diagnosticLayout
+                .findViewById(inputTableId);
         LinearLayout newView;
         if (mDisplayCommands) {
-            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagcommandinput, null);
+            newView = (LinearLayout) mContext.getLayoutInflater().inflate(
+                    R.layout.diagcommandinput, null);
             initCommandTextFields(newView);
             restoreCommandTextFields();
         } else {
-            newView = (LinearLayout) mContext.getLayoutInflater().inflate(R.layout.diagrequestinput, null);
+            newView = (LinearLayout) mContext.getLayoutInflater().inflate(
+                    R.layout.diagrequestinput, null);
             initRequestTextFields(newView);
             restoreRequestTextFields();
         }
         newView.setId(inputTableId);
         Utilities.replaceView(diagnosticLayout, oldView, newView);
-                
+
         for (int i = 0; i < textFields.size(); i++) {
             final EditText textField = textFields.get(i);
             textField.setOnEditorActionListener(new OnEditorActionListener() {
@@ -180,13 +196,13 @@ public class InputManager implements DiagnosticManager {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start,
                         int count, int after) {
-                    //Do nothing
+                    // Do nothing
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start,
                         int before, int count) {
-                    //Do nothing
+                    // Do nothing
                 }
 
                 @Override
@@ -196,7 +212,7 @@ public class InputManager implements DiagnosticManager {
             });
         }
     }
-    
+
     private void initCommandTextFields(LinearLayout parent) {
         mCommandInputText = (EditText) parent.findViewById(R.id.commandInput);
         textFields.add(mCommandInputText);
@@ -232,7 +248,7 @@ public class InputManager implements DiagnosticManager {
     }
 
     private void saveFields() {
-        
+
         InputHolder inputHolder;
         String inputKey;
         if (mDisplayCommands) {
@@ -259,7 +275,7 @@ public class InputManager implements DiagnosticManager {
             populateFields(inputHolder);
         }
     }
-    
+
     private void restoreCommandTextFields() {
 
         @SuppressWarnings("serial")
@@ -275,24 +291,23 @@ public class InputManager implements DiagnosticManager {
     private String getRequestInputKey() {
         return "request_input_key";
     }
-    
+
     private String getCommandInputKey() {
         return "command_input_key";
     }
 
     /**
-     * Method to ensure that null is returned by
-     * methods that call it when it should be. There are
-     * so many fail points in those methods that it's safer to always return a
-     * call to this method than to match up a "return null" statement everywhere
-     * there should be a fail and a Toast. If the Toast happens when it should,
-     * the fail (return of null) must too.
+     * Method to ensure that null is returned by methods that call it when it
+     * should be. There are so many fail points in those methods that it's safer
+     * to always return a call to this method than to match up a "return null"
+     * statement everywhere there should be a fail and a Toast. If the Toast
+     * happens when it should, the fail (return of null) must too.
      */
     private DiagnosticRequest failAndToastError(String message) {
         Toaster.showToast(mContext, message);
         return null;
     }
-    
+
     private Command failAndToastCommandError(String message) {
         Toaster.showToast(mContext, message);
         return null;
@@ -300,19 +315,19 @@ public class InputManager implements DiagnosticManager {
 
     private DiagnosticRequest generateRequestFromRequiredInputFields() {
 
-        Integer busId, id, mode;
+        Integer bus, id, mode;
 
         try {
-            busId = Integer.parseInt(getBusInput());
-            if (busId < DiagnosticMessage.BUS_RANGE.getMin()
-                    || busId > DiagnosticMessage.BUS_RANGE.getMax()) {
-                return failAndToastError("Invalid Bus entry. Did you mean 1 or 2?");
+            bus = Integer.parseInt(getBusInput());
+            if (bus < DiagnosticMessage.BUS_RANGE.getMin()
+                    || bus > DiagnosticMessage.BUS_RANGE.getMax()) {
+                return failAndToastError("Invalid Bus entry. Did you mean 1?");
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Bus does not appear to be an integer.");
         }
         try {
-            id = Integer.parseInt(getIdInput(), 16);
+            id = Integer.parseInt(getIdInput(), HEX_RADIX);
             if (id < 0) {
                 return failAndToastError("Id cannot be negative.");
             }
@@ -320,21 +335,23 @@ public class InputManager implements DiagnosticManager {
             return failAndToastError("Entered ID does not appear to be an integer.");
         }
         try {
-            mode = Integer.parseInt(getModeInput(), 16);
+            mode = Integer.parseInt(getModeInput(), HEX_RADIX);
             if (mode < DiagnosticMessage.MODE_RANGE.getMin()
                     || mode > DiagnosticMessage.MODE_RANGE.getMax()) {
                 return failAndToastError("Invalid mode entry.  Mode must be "
                         + "0x"
-                        + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin())
+                        + Integer.toHexString(DiagnosticMessage.MODE_RANGE
+                                .getMin())
                         + " <= Mode <= "
                         + "0x"
-                        + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
+                        + Integer.toHexString(DiagnosticMessage.MODE_RANGE
+                                .getMax()));
             }
         } catch (NumberFormatException e) {
             return failAndToastError("Entered Mode does not appear to be an integer.");
         }
 
-        return new DiagnosticRequest(busId, id, mode);
+        return new DiagnosticRequest(bus, id, mode);
     }
 
     public DiagnosticRequest generateDiagnosticRequestFromInput() {
@@ -363,7 +380,7 @@ public class InputManager implements DiagnosticManager {
             String pidInput = getPidInput();
             // pid is optional, ok if empty
             if (!pidInput.equals("")) {
-                int pid = Integer.parseInt(pidInput, 16);
+                int pid = Integer.parseInt(pidInput, HEX_RADIX);
                 if (pid > 0) {
                     request.setPid(pid);
                 } else {
@@ -378,7 +395,8 @@ public class InputManager implements DiagnosticManager {
         if (!payloadString.equals("")) {
             if (payloadString.length() <= MAX_PAYLOAD_LENGTH_IN_CHARS) {
                 if (payloadString.length() % 2 == 0) {
-                    request.setPayload(ByteAdapter.hexStringToByteArray(payloadString));
+                    request.setPayload(ByteAdapter
+                            .hexStringToByteArray(payloadString));
                 } else {
                     return failAndToastError("Payload must have an even number of digits.");
                 }
@@ -396,21 +414,21 @@ public class InputManager implements DiagnosticManager {
 
         return request;
     }
-    
+
     public Command generateCommandFromInput() {
         String commandInput = getCommandInput();
         if (commandInput.equals("")) {
             return failAndToastCommandError("Command cannot be empty.");
-        } 
-        
+        }
+
         Command.CommandType[] values = Command.CommandType.values();
-        for (int i=0; i < values.length; i++) {
+        for (int i = 0; i < values.length; i++) {
             Command.CommandType type = values[i];
             if (type.toString().equals(commandInput)) {
                 return new Command(type);
             }
         }
-       return null;
+        return null;
     }
 
     private String getFrequencyInput() {
@@ -440,7 +458,7 @@ public class InputManager implements DiagnosticManager {
     private String getNameInput() {
         return mNameInputText.getText().toString();
     }
-    
+
     private String getCommandInput() {
         return mCommandInputText.getText().toString();
     }
