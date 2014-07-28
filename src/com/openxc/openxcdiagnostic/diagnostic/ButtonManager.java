@@ -16,17 +16,19 @@ import com.openxc.openxcdiagnostic.diagnostic.command.LaunchSettingsDialogComman
 import com.openxc.openxcdiagnostic.diagnostic.command.RequestSendCommand;
 import com.openxc.openxcdiagnostic.util.DialogLauncher;
 
-public class ButtonManager implements DiagnosticManager{
+public class ButtonManager implements DiagnosticManager {
 
     private DiagnosticActivity mContext;
     private boolean mDisplayCommands;
-        
+    private Resources mResources;
+
     public ButtonManager(DiagnosticActivity context, boolean displayCommands) {
         mContext = context;
+        mResources = mContext.getResources();
         setRequestCommandState(displayCommands);
         initButtons();
     }
-    
+
     @Override
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
@@ -35,39 +37,45 @@ public class ButtonManager implements DiagnosticManager{
         } else {
             initRequestInfoButtons();
         }
-        
+
         setRequestButtonText();
     }
 
     private void initButtons() {
-        
+
         setRequestButtonText();
-        
+
         Map<Integer, ButtonCommand> buttonActions = new HashMap<>();
-        buttonActions.put(R.id.sendRequestButton, new RequestSendCommand(mContext));
-        buttonActions.put(R.id.clearButton, new ClearInputFieldsCommand(mContext));
-        buttonActions.put(R.id.favoritesButton, new LaunchFavoritesDialogCommand(mContext));
-        buttonActions.put(R.id.settingsButton, new LaunchSettingsDialogCommand(mContext));
-        
-        for (final Map.Entry<Integer, ButtonCommand> entry : buttonActions.entrySet()) {
+        buttonActions.put(R.id.sendRequestButton, new RequestSendCommand(
+                mContext));
+        buttonActions.put(R.id.clearButton, new ClearInputFieldsCommand(
+                mContext));
+        buttonActions.put(R.id.favoritesButton,
+                new LaunchFavoritesDialogCommand(mContext));
+        buttonActions.put(R.id.settingsButton, new LaunchSettingsDialogCommand(
+                mContext));
+
+        for (final Map.Entry<Integer, ButtonCommand> entry : buttonActions
+                .entrySet()) {
             ((Button) mContext.findViewById(entry.getKey()))
-            .setOnClickListener(new OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   entry.getValue().execute();
-               }
-            });
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            entry.getValue().execute();
+                        }
+                    });
         }
     }
-        
+
     private void initCommandInfoButton() {
-        final Resources res = mContext.getResources();
-        Button commandInfoButton = (Button) mContext.findViewById(R.id.commandQuestionButton);
+        Button commandInfoButton = (Button) mContext
+                .findViewById(R.id.commandQuestionButton);
         commandInfoButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogLauncher.launchAlert(mContext, res.getString(R.string.command_label), 
-                        res.getString(R.string.command_info), "OK");
+                DialogLauncher.launchAlert(mContext,
+                        mResources.getString(R.string.command_label),
+                        mResources.getString(R.string.command_info), "OK");
             }
         });
     }
@@ -98,20 +106,20 @@ public class ButtonManager implements DiagnosticManager{
         buttonInfo.put(R.id.nameQuestionButton, R.string.name_info);
         infoMap.put(R.string.name_info, R.string.name_label);
 
-        final Resources res = mContext.getResources();
         for (final Integer buttonId : buttonInfo.keySet()) {
             ((Button) mContext.findViewById(buttonId))
-            .setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int infoId = buttonInfo.get(buttonId);
-                    DialogLauncher.launchAlert(mContext, res.getString(infoMap.get(infoId)), 
-                            res.getString(infoId), "OK");
-                }
-            });
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int infoId = buttonInfo.get(buttonId);
+                            DialogLauncher.launchAlert(mContext,
+                                    mResources.getString(infoMap.get(infoId)),
+                                    mResources.getString(infoId), "OK");
+                        }
+                    });
         }
     }
-    
+
     private void setRequestButtonText() {
         String label;
         if (mDisplayCommands) {
@@ -119,7 +127,7 @@ public class ButtonManager implements DiagnosticManager{
         } else {
             label = "Send Request";
         }
-        
+
         ((Button) mContext.findViewById(R.id.sendRequestButton)).setText(label);
     }
 
