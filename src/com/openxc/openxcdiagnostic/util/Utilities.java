@@ -32,8 +32,9 @@ public class Utilities {
 
     // this contains NegativeResponseCode.None, but ok because it's just
     // for testing anyway
-    private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes 
-    = Collections.unmodifiableList(Arrays.asList(DiagnosticResponse.NegativeResponseCode.values()));
+    private static final List<DiagnosticResponse.NegativeResponseCode> negativeResponseCodes = Collections
+            .unmodifiableList(Arrays
+                    .asList(DiagnosticResponse.NegativeResponseCode.values()));
 
     public static String getDocumentationError(DiagnosticResponse resp) {
         return resp.getNegativeResponseCode().toDocumentationString() + " ";
@@ -52,12 +53,13 @@ public class Utilities {
             bd = bd.round(new MathContext(4, RoundingMode.HALF_UP));
             value = bd.doubleValue();
         } else {
-            responseCode = negativeResponseCodes.get(rnd.nextInt(negativeResponseCodes.size()));
+            responseCode = negativeResponseCodes.get(rnd
+                    .nextInt(negativeResponseCodes.size()));
         }
 
         DiagnosticResponse response = new DiagnosticResponse(bus, id, mode);
         if (request.getPid() != null) {
-            response.setPid(request.getPid()); 
+            response.setPid(request.getPid());
         }
         response.setPayload(request.getPayload());
         response.setNegativeResponseCode(responseCode);
@@ -65,9 +67,11 @@ public class Utilities {
         response.timestamp();
         return response;
     }
-    
-    public static CommandResponse generateRandomFakeCommandResponse(Command command) {
-        CommandResponse resp = new CommandResponse(command.getCommand(), "test command response");
+
+    public static CommandResponse generateRandomFakeCommandResponse(
+            Command command) {
+        CommandResponse resp = new CommandResponse(command.getCommand(),
+                "test command response");
         resp.timestamp();
         return resp;
     }
@@ -81,17 +85,20 @@ public class Utilities {
 
     public static int getScreenHeight(Activity context) {
         Rect displayRect = new Rect();
-        context.getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRect);
+        context.getWindow().getDecorView()
+                .getWindowVisibleDisplayFrame(displayRect);
         return displayRect.height();
     }
 
     public static int getScreenWidth(Activity context) {
         Rect displayRect = new Rect();
-        context.getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRect);
+        context.getWindow().getDecorView()
+                .getWindowVisibleDisplayFrame(displayRect);
         return displayRect.width();
     }
-    
-    public static void replaceView(LinearLayout layout, View oldView, View newView) {
+
+    public static void replaceView(LinearLayout layout, View oldView,
+            View newView) {
         layout.addView(newView, layout.indexOfChild(oldView));
         layout.removeView(oldView);
     }

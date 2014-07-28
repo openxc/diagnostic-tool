@@ -13,10 +13,10 @@ import com.openxc.messages.formatters.ByteAdapter;
 import com.openxc.openxcdiagnostic.R;
 
 public class Formatter {
-    
-    private Formatter() {      
+
+    private Formatter() {
     }
-    
+
     private static String padRight(String st) {
         return st + " ";
     }
@@ -42,7 +42,8 @@ public class Formatter {
     }
 
     public static String getPidOutput(DiagnosticMessage msg) {
-        return msg.getPid() == null ? "" : padRight("0x" + Integer.toHexString(msg.getPid()).toUpperCase(Locale.US));
+        return msg.getPid() == null ? "" : padRight("0x"
+                + Integer.toHexString(msg.getPid()).toUpperCase(Locale.US));
     }
 
     public static String getPayloadOutput(DiagnosticMessage msg) {
@@ -59,24 +60,26 @@ public class Formatter {
     }
 
     public static String getFrequencyOutput(DiagnosticRequest req) {
-        return req.getFrequency() == null ? ""
-                : padRight(String.valueOf(req.getFrequency()));
+        return req.getFrequency() == null ? "" : padRight(String.valueOf(req
+                .getFrequency()));
     }
 
     public static String getNameOutput(DiagnosticRequest req) {
-        return req.getName() == null ? "" : padRight(String.valueOf(req.getName()));
+        return req.getName() == null ? "" : padRight(String.valueOf(req
+                .getName()));
     }
-    
+
     public static String getMessageOutput(CommandResponse resp) {
         return resp.getMessage() == null ? "" : padRight(resp.getMessage());
     }
-    
+
     public static String getCommandOutput(CommandResponse resp) {
         return getCommandOutput(new Command(resp.getCommand()));
     }
-    
+
     public static String getCommandOutput(Command command) {
-        return command.getCommand() == null ? "" : padRight(command.getCommand().toString());
+        return command.getCommand() == null ? "" : padRight(command
+                .getCommand().toString());
     }
 
     public static String getResponseCodeOutput(DiagnosticResponse resp) {
@@ -88,10 +91,10 @@ public class Formatter {
         return padRight(Utilities.getDocumentationError(resp) + " : "
                 + getResponseCodeOutput(resp));
     }
-    
+
     public static int getOutputColor(Activity context, DiagnosticResponse resp) {
         int color = resp.isSuccessful() ? R.color.lightBlue : R.color.darkRed;
         return context.getResources().getColor(color);
     }
-    
+
 }

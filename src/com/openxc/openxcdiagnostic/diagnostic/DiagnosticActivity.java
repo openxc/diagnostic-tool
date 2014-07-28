@@ -50,7 +50,7 @@ public class DiagnosticActivity extends Activity {
     private ArrayList<DiagnosticRequest> outstandingRequests = new ArrayList<>();
     private ArrayList<Command> outstandingCommands = new ArrayList<>();
 
-    boolean emulate = true;
+    boolean emulate = false;
 
     private VehicleMessage.Listener mResponseListener = new VehicleMessage.Listener() {
         @Override
@@ -64,7 +64,8 @@ public class DiagnosticActivity extends Activity {
                         VehicleMessage request = findRequestThatMatchesResponse(response);
                         // update response if old one is in table, otherwise
                         // just add it
-                        if (!mOutputTableManager.replaceIfMatchesExisting(request, response)) {
+                        if (!mOutputTableManager.replaceIfMatchesExisting(
+                                request, response)) {
                             mOutputTableManager.add(request, response);
                         }
 
@@ -80,7 +81,8 @@ public class DiagnosticActivity extends Activity {
         public void
                 onServiceConnected(ComponentName className, IBinder service) {
             Log.i(TAG, "Bound to VehicleManager");
-            mVehicleManager = ((VehicleManager.VehicleBinder) service).getService();
+            mVehicleManager = ((VehicleManager.VehicleBinder) service)
+                    .getService();
             mIsBound = true;
 
             if (mSettingsManager.shouldSniff()) {
@@ -104,8 +106,9 @@ public class DiagnosticActivity extends Activity {
         } else if (MessageAnalyzer.isCommandResponse(response)) {
             return findMatchingCommand((CommandResponse) response);
         } else {
-            Log.e(TAG, "Attempted to find matching request/command for response of type: "
-                    + response.getClass());
+            Log.e(TAG,
+                    "Attempted to find matching request/command for response of type: "
+                            + response.getClass());
         }
         return null;
     }
@@ -118,30 +121,36 @@ public class DiagnosticActivity extends Activity {
         } else if (MessageAnalyzer.isCommandResponse(msg)) {
             matcher = ExactKeyMatcher.buildExactMatcher((CommandResponse) msg);
         } else {
-            Log.e(TAG, "Attempted to find matching command for object of type: "
-                    + msg.getClass());
+            Log.e(TAG,
+                    "Attempted to find matching command for object of type: "
+                            + msg.getClass());
         }
 
-        return (Command) MessageAnalyzer.findMatching(matcher, outstandingCommands);
+        return (Command) MessageAnalyzer.findMatching(matcher,
+                outstandingCommands);
     }
 
     private DiagnosticRequest findMatchingRequest(DiagnosticMessage msg) {
 
         ExactKeyMatcher matcher = null;
         if (MessageAnalyzer.isDiagnosticRequest(msg)) {
-            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticRequest) msg);
+            matcher = ExactKeyMatcher
+                    .buildExactMatcher((DiagnosticRequest) msg);
         } else if (MessageAnalyzer.isDiagnosticResponse(msg)) {
-            matcher = ExactKeyMatcher.buildExactMatcher((DiagnosticResponse) msg);
+            matcher = ExactKeyMatcher
+                    .buildExactMatcher((DiagnosticResponse) msg);
         } else {
-            Log.e(TAG, "Attempted to find matching diagnostic request for object of type: "
-                    + msg.getClass());
+            Log.e(TAG,
+                    "Attempted to find matching diagnostic request for object of type: "
+                            + msg.getClass());
         }
 
         if (matcher == null) {
             return findMatchingFunctionalBroadcastRequest(msg);
         }
 
-        return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher, outstandingRequests);
+        return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher,
+                outstandingRequests);
     }
 
     private DiagnosticRequest findMatchingFunctionalBroadcastRequest(
@@ -167,7 +176,8 @@ public class DiagnosticActivity extends Activity {
     public void send(VehicleMessage request) {
 
         if (!MessageAnalyzer.canBeSent(request)) {
-            Log.w(TAG, "Request must be of type DiagnosticRequest or Command...not sending.");
+            Log.w(TAG,
+                    "Request must be of type DiagnosticRequest or Command...not sending.");
             return;
         }
 
@@ -186,8 +196,12 @@ public class DiagnosticActivity extends Activity {
         if (!emulate) {
             registerForResponse(request);
             if (!mVehicleManager.send(request)) {
-                DialogLauncher.launchAlert(this, "Unable to Send", "The request or command could"
-                        + " not be sent.  Ensure that the VI is on and connected.");
+                DialogLauncher
+                        .launchAlert(
+                                this,
+                                "Unable to Send",
+                                "The request or command could"
+                                        + " not be sent.  Ensure that the VI is on and connected.");
                 return;
             }
         } else {
@@ -198,12 +212,14 @@ public class DiagnosticActivity extends Activity {
 
     private void registerForResponse(VehicleMessage request) {
         if (MessageAnalyzer.isDiagnosticRequest(request)) {
-            mVehicleManager.addListener((DiagnosticRequest) request, mResponseListener);
+            mVehicleManager.addListener((DiagnosticRequest) request,
+                    mResponseListener);
         } else if (MessageAnalyzer.isCommand(request)) {
             mVehicleManager.addListener((Command) request, mResponseListener);
         } else {
-            Log.w(TAG, "Unable to register for response of type: "
-                    + request.getClass());
+            Log.w(TAG,
+                    "Unable to register for response of type: "
+                            + request.getClass());
         }
     }
 
@@ -220,15 +236,18 @@ public class DiagnosticActivity extends Activity {
         if (MessageAnalyzer.isDiagnosticRequest(request)) {
             DiagnosticRequest diagReq = (DiagnosticRequest) request;
             if (diagReq.getFrequency() == null || diagReq.getFrequency() == 0) {
-                mVehicleManager.removeListener(diagReq, DiagnosticActivity.this.mResponseListener);
+                mVehicleManager.removeListener(diagReq,
+                        DiagnosticActivity.this.mResponseListener);
             }
         } else if (MessageAnalyzer.isCommand(request)) {
-            mVehicleManager.removeListener((Command) request, DiagnosticActivity.this.mResponseListener);
+            mVehicleManager.removeListener((Command) request,
+                    DiagnosticActivity.this.mResponseListener);
         }
     }
 
     public void startSniffing() {
-        mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+        mVehicleManager.addListener(KeyMatcher.getWildcardMatcher(),
+                mResponseListener);
     }
 
     /**
@@ -237,7 +256,8 @@ public class DiagnosticActivity extends Activity {
      * which were registered for individually.
      */
     public void stopSniffing() {
-        mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(), mResponseListener);
+        mVehicleManager.removeListener(KeyMatcher.getWildcardMatcher(),
+                mResponseListener);
     }
 
     public void populateFields(VehicleMessage req) {
@@ -288,7 +308,8 @@ public class DiagnosticActivity extends Activity {
         if (getCurrentFocus() != null) {
             InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             if (manager.isAcceptingText()) {
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                manager.hideSoftInputFromWindow(getCurrentFocus()
+                        .getWindowToken(), 0);
             }
             getCurrentFocus().clearFocus();
         }
@@ -310,7 +331,8 @@ public class DiagnosticActivity extends Activity {
         FavoritesManager.init(this);
         boolean displayCommands = isDisplayingCommands();
         // order matters here
-        mFavoritesAlertManager = new FavoritesAlertManager(this, displayCommands);
+        mFavoritesAlertManager = new FavoritesAlertManager(this,
+                displayCommands);
         mManagers.add(mFavoritesAlertManager);
         mInputManager = new InputManager(this, displayCommands);
         mManagers.add(mInputManager);
@@ -343,7 +365,8 @@ public class DiagnosticActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        bindService(new Intent(this, VehicleManager.class), mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, VehicleManager.class), mConnection,
+                Context.BIND_AUTO_CREATE);
     }
 
     @Override

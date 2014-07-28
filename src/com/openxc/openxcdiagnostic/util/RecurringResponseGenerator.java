@@ -9,13 +9,14 @@ public class RecurringResponseGenerator extends TimerTask {
 
     DiagnosticRequest mRequest;
     VehicleMessage.Listener mListener;
-    
-    public RecurringResponseGenerator(DiagnosticRequest request, VehicleMessage.Listener listener) {
+
+    public RecurringResponseGenerator(DiagnosticRequest request,
+            VehicleMessage.Listener listener) {
         mRequest = request;
         mListener = listener;
     }
 
     public void run() {
-       mListener.receive(Utilities.generateRandomFakeResponse(mRequest));
+        mListener.receive(Utilities.generateRandomFakeResponse(mRequest));
     }
 }
