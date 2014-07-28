@@ -31,6 +31,11 @@ import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
+/**
+ * 
+ * Manager for handling and saving input; and generating requests/commands.
+ * 
+ */
 public class InputManager implements DiagnosticManager {
 
     private static String TAG = "DiagnosticInputManager";
@@ -354,6 +359,14 @@ public class InputManager implements DiagnosticManager {
         return new DiagnosticRequest(bus, id, mode);
     }
 
+    /**
+     * Creates a <code>DiagnosticRequest</code> based on the values of the input
+     * fields. Some error checking is done to ensure the validity of the input
+     * fields before constructing the <code>DiagnosticRequest</code>
+     * 
+     * @return The successfully generated <code>DiagnosticRequest</code>, or
+     *         null if unsuccessful
+     */
     public DiagnosticRequest generateDiagnosticRequestFromInput() {
 
         DiagnosticRequest request = generateRequestFromRequiredInputFields();
@@ -415,6 +428,14 @@ public class InputManager implements DiagnosticManager {
         return request;
     }
 
+    /**
+     * Creates a <code>Command</code> based on the values of the input fields.
+     * Some error checking is done to ensure the validity of the input fields
+     * before constructing the <code>Command</code>
+     * 
+     * @return The successfully generated <code>Command</code>, or null if
+     *         unsuccessful
+     */
     public Command generateCommandFromInput() {
         String commandInput = getCommandInput();
         if (commandInput.equals("")) {

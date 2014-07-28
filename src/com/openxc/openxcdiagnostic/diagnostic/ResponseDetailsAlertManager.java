@@ -21,6 +21,12 @@ import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
 
+/**
+ * 
+ * Manager for showing details about a Request/Command and
+ * Response/CommandResponse.
+ * 
+ */
 public class ResponseDetailsAlertManager {
 
     private DiagnosticActivity mContext;
