@@ -22,7 +22,7 @@
 
     <!-- Diag Settings Strings -->
     <string name="sniffing_label">Enable Response Sniffing</string>
-    <string name="response_scroll_label">Scroll to Top on Response Receipt</string>
+    <string name="response_scroll_label">Scroll to Top on NEW Response</string>
     <string name="multiple_responses_label">Allow Multiple Responses</string>
     <string name="settings_alert_label">Settings</string>
     <string name="cancel_recurring_requests_label">Cancel All Recurring Requests</string>
