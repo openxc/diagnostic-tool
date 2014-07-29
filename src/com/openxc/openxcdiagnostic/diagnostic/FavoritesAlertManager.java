@@ -24,7 +24,7 @@ import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
  * 
- * Manager for storing favorite requests.
+ * Manager for the alert that displays favorite requests or commands.
  * 
  */
 public class FavoritesAlertManager implements DiagnosticManager {
@@ -44,6 +44,9 @@ public class FavoritesAlertManager implements DiagnosticManager {
         mDisplayCommands = displayCommands;
     }
 
+    /**
+     * Launch the favorites alert.
+     */
     public void showAlert() {
 
         LinearLayout favoritesLayout = (LinearLayout) mContext
@@ -63,6 +66,14 @@ public class FavoritesAlertManager implements DiagnosticManager {
         mAlert.show();
     }
 
+    /**
+     * Sets the header to the appropriate layout, checking the value of
+     * mDisplayCommands to determine if the command header or request header
+     * should be displayed
+     * 
+     * @param favoritesLayout
+     *            The layout of the alert
+     */
     private void setHeader(LinearLayout favoritesLayout) {
         int alertHeaderId = R.id.favoritesAlertHeader;
         LinearLayout oldView = (LinearLayout) favoritesLayout
@@ -79,6 +90,12 @@ public class FavoritesAlertManager implements DiagnosticManager {
         Utilities.replaceView(favoritesLayout, oldView, newView);
     }
 
+    /**
+     * Populates the layout with data
+     * 
+     * @param favoritesLayout
+     *            The layout of the alert.
+     */
     private void fillTable(LinearLayout favoritesLayout) {
 
         ArrayList<? extends VehicleMessage> favs;
@@ -93,6 +110,12 @@ public class FavoritesAlertManager implements DiagnosticManager {
         }
     }
 
+    /**
+     * Sets the given <code>row</code> to the correct layout for either a
+     * command or a request.
+     * 
+     * @param row
+     */
     private void setRowDataFormat(LinearLayout row) {
         int alertRowDataId = R.id.diagFavoritesAlertRowData;
         LinearLayout oldView = (LinearLayout) row.findViewById(alertRowDataId);
@@ -108,6 +131,13 @@ public class FavoritesAlertManager implements DiagnosticManager {
         Utilities.replaceView(row, oldView, newView);
     }
 
+    /**
+     * Creates and adds a row to the given <code>favoritesLayout</code> with the
+     * <code>reqMessage</code> populating the row.
+     * 
+     * @param favoritesLayout
+     * @param reqMessage
+     */
     private void createAndAddRowToTable(final LinearLayout favoritesLayout,
             final VehicleMessage reqMessage) {
 

@@ -45,6 +45,9 @@ public class ResponseDetailsAlertManager {
         mResources = context.getResources();
     }
 
+    /**
+     * Display the request and the response in table form in an alert dialog.
+     */
     public void show() {
 
         mIsShowing = true;
@@ -66,10 +69,24 @@ public class ResponseDetailsAlertManager {
         builder.create().show();
     }
 
+    /**
+     * @return <code>true</code> if the alert is showing; <code>false</code>
+     *         otherwise
+     */
     public boolean isShowing() {
         return mIsShowing;
     }
 
+    /**
+     * Sets the request and response to the new <code>req</code> and
+     * <code>resp</code>, respectively
+     * 
+     * @param req
+     *            The new <code>DiagnosticRequest</code> or <code>Command</code>
+     * @param resp
+     *            The new <code>DiagnosticResponse</code> or
+     *            <code>CommandResponse</code>
+     */
     public void refresh(final VehicleMessage req, final VehicleMessage resp) {
         mRequest = req;
         mResponse = resp;
@@ -138,6 +155,12 @@ public class ResponseDetailsAlertManager {
         }
     }
 
+    /**
+     * Adds a row with the favorites button to the <code>parent</code>
+     * 
+     * @param parent
+     * @param req
+     */
     private void createAndAddButtonsRow(LinearLayout parent,
             final VehicleMessage req) {
         LinearLayout row = (LinearLayout) mContext.getLayoutInflater().inflate(
@@ -173,6 +196,13 @@ public class ResponseDetailsAlertManager {
         parent.addView(row);
     }
 
+    /**
+     * Sets the color and text of the favorites button depending on if the
+     * request is already in favorites or not
+     * 
+     * @param button
+     * @param req
+     */
     private void configureFavoritesButton(Button button, VehicleMessage req) {
         String text;
         int backgroundSelector;
@@ -244,6 +274,19 @@ public class ResponseDetailsAlertManager {
                 Formatter.getResponseCodeOutput(resp), resp);
     }
 
+    /**
+     * Adds a row to the given <code>parent</code> with the given
+     * <code>label</code> and <code>value</code>.
+     * 
+     * @param parent
+     *            The table to add the row to
+     * @param label
+     *            The label for the row, displayed on the left
+     * @param value
+     *            The value of the row, displayed on the right
+     * @param msg
+     *            The message from which the value comes.
+     */
     private void createAndAddRow(LinearLayout parent, String label,
             String value, VehicleMessage msg) {
 
@@ -259,6 +302,13 @@ public class ResponseDetailsAlertManager {
         parent.addView(row);
     }
 
+    /**
+     * Adds a header row to the given <code>parent</code> with the given
+     * <code>header</code>
+     * 
+     * @param parent
+     * @param header
+     */
     private void createAndAddHeaderRow(LinearLayout parent, String header) {
         LinearLayout headerRow = (LinearLayout) mContext.getLayoutInflater()
                 .inflate(R.layout.diagdetailsalertheaderrow, null);

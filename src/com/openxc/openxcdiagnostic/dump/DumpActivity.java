@@ -110,6 +110,10 @@ public class DumpActivity extends Activity {
 
     }
 
+    /**
+     * Set the background of the pause button depending on if the activity is
+     * "paused"
+     */
     private void setPauseButtonSelector() {
 
         int drawable;

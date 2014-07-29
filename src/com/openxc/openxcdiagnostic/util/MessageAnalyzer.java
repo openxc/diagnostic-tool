@@ -11,6 +11,11 @@ import com.openxc.messages.ExactKeyMatcher;
 import com.openxc.messages.KeyedMessage;
 import com.openxc.messages.VehicleMessage;
 
+/**
+ * 
+ * Class for inquiring about <code>VehicleMessage(s)</code>
+ * 
+ */
 public class MessageAnalyzer {
 
     public static boolean isCommand(VehicleMessage msg) {
@@ -33,6 +38,13 @@ public class MessageAnalyzer {
         return isDiagnosticRequest(msg) || isCommand(msg);
     }
 
+    /**
+     * Determines if the given messages have equal bus, mode, and pid.
+     * 
+     * @param msg1
+     * @param msg2
+     * @return
+     */
     public static boolean exactMatchExceptId(DiagnosticMessage msg1,
             DiagnosticMessage msg2) {
         return msg1.getBusId() == msg2.getBusId()
@@ -40,6 +52,14 @@ public class MessageAnalyzer {
                 && msg1.getPid() == msg2.getPid();
     }
 
+    /**
+     * Finds a matching <code>KeyedMessage</code> in <code>arr</code>. Matching
+     * is determined by matcher.matches(KeyedMessage)
+     * 
+     * @param matcher
+     * @param arr
+     * @return
+     */
     public static VehicleMessage findMatching(ExactKeyMatcher matcher,
             ArrayList<? extends KeyedMessage> arr) {
 

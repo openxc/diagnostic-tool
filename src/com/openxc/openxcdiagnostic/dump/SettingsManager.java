@@ -23,6 +23,9 @@ public class SettingsManager {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
     }
 
+    /**
+     * Display the settings alert.
+     */
     public void showAlert() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -52,6 +55,11 @@ public class SettingsManager {
         mMessagesInput.setText(String.valueOf(getNumMessages()));
     }
 
+    /**
+     * 
+     * @return The number of messages to keep in the queue specified by the
+     *         user. Defaults to 999.
+     */
     public int getNumMessages() {
         return mPreferences.getInt(getNumMessagesKey(), 999);
     }

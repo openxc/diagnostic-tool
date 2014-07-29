@@ -13,6 +13,12 @@ import android.widget.LinearLayout;
 
 import com.openxc.openxcdiagnostic.R;
 
+/**
+ * 
+ * Manager for showing the settings alert, storing preferences, and executing
+ * other actions.
+ * 
+ */
 public class SettingsManager {
 
     private SharedPreferences mPreferences;
@@ -39,6 +45,9 @@ public class SettingsManager {
                 false);
     }
 
+    /**
+     * Display the settings alert dialog.
+     */
     public void showAlert() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -186,6 +195,12 @@ public class SettingsManager {
         });
     }
 
+    /**
+     * Set the background selector and text based on the value of
+     * mDisplayCommands
+     * 
+     * @param toggleButton
+     */
     private void configureToggleButton(Button toggleButton) {
         String buttonText;
         int backgroundSelector;

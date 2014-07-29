@@ -36,10 +36,24 @@ public class Utilities {
             .unmodifiableList(Arrays
                     .asList(DiagnosticResponse.NegativeResponseCode.values()));
 
+    /**
+     * Gets the error as it appears in documentation
+     * 
+     * @param resp
+     * @return The result of calling
+     *         resp.getNegativeResponseCode().toDocumentationString().
+     */
     public static String getDocumentationError(DiagnosticResponse resp) {
         return resp.getNegativeResponseCode().toDocumentationString() + " ";
     }
 
+    /**
+     * Generates a random fake response that will match the given
+     * <code>DiagnosticRequest</code>
+     * 
+     * @param request
+     * @return A fake <code>DiagnosticResponse</code>
+     */
     public static DiagnosticResponse generateRandomFakeResponse(
             DiagnosticRequest request) {
         int bus = request.getBusId();
@@ -68,6 +82,13 @@ public class Utilities {
         return response;
     }
 
+    /**
+     * Generates a random fake response that will match the given
+     * <code>Command</code>
+     * 
+     * @param command
+     * @return A fake <code>CommandResponse</code>
+     */
     public static CommandResponse generateRandomFakeCommandResponse(
             Command command) {
         CommandResponse resp = new CommandResponse(command.getCommand(),
@@ -76,6 +97,13 @@ public class Utilities {
         return resp;
     }
 
+    /**
+     * Converts a <code>long</code> into a familiar string
+     * 
+     * @param time
+     * @return The time in HH:mm:ss format and the date, separated by a newline
+     *         character.
+     */
     public static String epochTimeToTime(long time) {
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         DateFormat dateFormat = new SimpleDateFormat("MM/dd", Locale.US);
@@ -97,6 +125,14 @@ public class Utilities {
         return displayRect.width();
     }
 
+    /**
+     * Swaps <code>oldView</code> out for <code>newView</code> in
+     * <code>layout</code>
+     * 
+     * @param layout
+     * @param oldView
+     * @param newView
+     */
     public static void replaceView(LinearLayout layout, View oldView,
             View newView) {
         layout.addView(newView, layout.indexOfChild(oldView));

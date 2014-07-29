@@ -12,11 +12,23 @@ import com.openxc.messages.DiagnosticResponse;
 import com.openxc.messages.formatters.ByteAdapter;
 import com.openxc.openxcdiagnostic.R;
 
+/**
+ * 
+ * Class for consolidating logic and ensuring consistency of output for all of
+ * the message field outputs.
+ * 
+ */
 public class Formatter {
 
     private Formatter() {
     }
 
+    /**
+     * Appends a space to <code>st</code>
+     * 
+     * @param st
+     * @return
+     */
     private static String padRight(String st) {
         return st + " ";
     }
@@ -92,6 +104,12 @@ public class Formatter {
                 + getResponseCodeOutput(resp));
     }
 
+    /**
+     * 
+     * @param context
+     * @param resp
+     * @return Light blue if resp.isSuccessful() == true, dark red otherwise
+     */
     public static int getOutputColor(Activity context, DiagnosticResponse resp) {
         int color = resp.isSuccessful() ? R.color.lightBlue : R.color.darkRed;
         return context.getResources().getColor(color);

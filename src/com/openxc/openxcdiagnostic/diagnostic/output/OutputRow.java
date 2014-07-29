@@ -24,6 +24,12 @@ import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
 import com.openxc.openxcdiagnostic.util.Utilities;
 
+/**
+ * 
+ * Logically represents a single entry in the output table. Responsible for
+ * managing the corresponding buttons and details alert.
+ * 
+ */
 public class OutputRow {
 
     private LinearLayout mView;
@@ -49,6 +55,12 @@ public class OutputRow {
         initButtons();
     }
 
+    /**
+     * Sets the pair of the row to the given <code>pair</code>
+     * 
+     * @param pair
+     *            The new pair
+     */
     public void setPair(final Pair pair) {
         mRequest = pair.getRequest();
         mResponse = pair.getResponse();
@@ -113,6 +125,10 @@ public class OutputRow {
                 });
     }
 
+    /**
+     * Sets the correct output layout, dependent on if the response is a
+     * <code>DiagnosticResponse</code> or a <code>CommandResponse</code>
+     */
     private void setOutputInfoFormat() {
         LinearLayout infoTable = (LinearLayout) mView
                 .findViewById(R.id.outputInfo);
@@ -186,10 +202,21 @@ public class OutputRow {
         }
     }
 
+    /**
+     * Get the view.
+     * 
+     * @return The linearlayout used to layout the row
+     */
     public LinearLayout getView() {
         return mView;
     }
 
+    /**
+     * Get the current (DiagnosticRequest + DiagnosticResponse) or (Command +
+     * CommandResponse) wrapped in the appropriate pair.
+     * 
+     * @return
+     */
     public Pair getPair() {
         if (MessageAnalyzer.isDiagnosticResponse(mResponse)) {
             return new DiagnosticPair(mRequest == null ? null

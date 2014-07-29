@@ -5,6 +5,11 @@ import java.util.TimerTask;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
 
+/**
+ * 
+ * Task for generating fake responses.
+ * 
+ */
 public class RecurringResponseGenerator extends TimerTask {
 
     DiagnosticRequest mRequest;

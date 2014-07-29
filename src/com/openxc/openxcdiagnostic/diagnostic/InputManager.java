@@ -77,11 +77,18 @@ public class InputManager implements DiagnosticManager {
         setRequestCommandState(displayCommands);
     }
 
+    @Override
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         initTextFields();
     }
 
+    /**
+     * Populate the input fields with the given <code>message</message>
+     * 
+     * @param message
+     *            The message with which to fill the fields.
+     */
     public void populateFields(VehicleMessage message) {
         if (MessageAnalyzer.isDiagnosticRequest(message)) {
             populateFields((DiagnosticRequest) message);
@@ -115,7 +122,7 @@ public class InputManager implements DiagnosticManager {
                 .setText(selfOrEmptyIfNull(String.valueOf(req.getName())));
     }
 
-    public void populateFields(InputHolder holder) {
+    private void populateFields(InputHolder holder) {
 
         mFrequencyInputText.setText(holder.frequencyInput);
 
@@ -146,6 +153,9 @@ public class InputManager implements DiagnosticManager {
         return st;
     }
 
+    /**
+     * Sets all currently-displayed fields to the empty string.
+     */
     public void clearFields() {
         for (int i = 0; i < textFields.size(); i++) {
             textFields.get(i).setText("");

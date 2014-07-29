@@ -6,6 +6,11 @@ import com.openxc.messages.Command;
 import com.openxc.messages.DiagnosticRequest;
 import com.openxc.messages.VehicleMessage;
 
+/**
+ * 
+ * Class for emulating fake responses.
+ * 
+ */
 public class ResponseEmulator {
 
     private static Timer mTimer = new Timer();

@@ -39,7 +39,8 @@ public class FavoritesManager {
 
     /**
      * Add the given <code>req</code> to favorites. The method will decide
-     * whether it should be added as a Diagnostic Request or a Command.
+     * whether it should be added as a <code>DiagnosticRequest</code> or a
+     * <code>Command</code>.
      * 
      * @param req
      *            The request/command to add.
@@ -67,6 +68,18 @@ public class FavoritesManager {
         setFavoriteCommands(newFavorites);
     }
 
+    /**
+     * Determines if the given strings are in the correct alphabetic order
+     * determined by the order of the arguments
+     * 
+     * @param s1
+     * @param s2
+     * @return <code>True</code> if <code>s1</code> precedes <code>s2</code>,
+     *         false otherwise. If <code>s1</code> is null or empty/whitespace,
+     *         the method will return <code>false</code>. If <code>s2</code> is
+     *         null or empty/whitespace, the method will return
+     *         <code>true</code>.
+     */
     private static boolean isOrdered(String s1, String s2) {
         if (s1 == null || s1.trim() == "") {
             return false;
@@ -79,6 +92,14 @@ public class FavoritesManager {
         return s1.compareToIgnoreCase(s2) < 0;
     }
 
+    /**
+     * Finds the index at which the <code>req</code> should be placed in
+     * <code>sFavoriteRequests</code>
+     * 
+     * @param req
+     *            The request to insert
+     * @return The index
+     */
     private static int findAlphabeticPosition(DiagnosticRequest req) {
 
         int position = 0;
@@ -91,6 +112,14 @@ public class FavoritesManager {
         return position;
     }
 
+    /**
+     * Finds the index at which the <code>command</code> should be placed in
+     * <code>sFavoriteCommands</code>
+     * 
+     * @param req
+     *            The request to insert
+     * @return The index
+     */
     private static int findAlphabeticPosition(Command command) {
 
         int position = 0;
@@ -103,6 +132,14 @@ public class FavoritesManager {
         return position;
     }
 
+    /**
+     * Remove the given <code>req</code> from favorites. The method will decide
+     * whether it should be removed from <code>sFavoriteRequests</code> or
+     * <code>sFavoriteCommands</code>.
+     * 
+     * @param req
+     *            The request/command to add.
+     */
     public static void remove(VehicleMessage req) {
         if (MessageAnalyzer.isDiagnosticRequest(req)) {
             removeFavoriteRequest((DiagnosticRequest) req);
@@ -153,6 +190,12 @@ public class FavoritesManager {
         prefsEditor.commit();
     }
 
+    /**
+     * Determines if the given VehicleMessage is in favorites
+     * 
+     * @param message
+     * @return True if the message is in favorites, false otherwise.
+     */
     public static boolean isInFavorites(VehicleMessage message) {
         if (MessageAnalyzer.isDiagnosticRequest(message)) {
             return containsFavoriteRequest((DiagnosticRequest) message);

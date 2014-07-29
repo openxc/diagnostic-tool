@@ -20,6 +20,11 @@ import com.openxc.openxcdiagnostic.diagnostic.pair.DiagnosticPair;
 import com.openxc.openxcdiagnostic.diagnostic.pair.Pair;
 import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 
+/**
+ * 
+ * Manager for handling the output table and all its rows.
+ * 
+ */
 public class OutputTableManager implements DiagnosticManager {
 
     private DiagnosticActivity mContext;
@@ -41,11 +46,19 @@ public class OutputTableManager implements DiagnosticManager {
         setRequestCommandState(displayCommands);
     }
 
+    @Override
     public void setRequestCommandState(boolean displayCommands) {
         mDisplayCommands = displayCommands;
         setAdapter();
     }
 
+    /**
+     * Determines if the output should scroll to the top
+     * 
+     * @param response
+     * @return True if the <code>response</code> corresponds to the table that
+     *         is currently showing, and the setting is checked in settings
+     */
     private boolean shouldScrollToTop(VehicleMessage response) {
         return mContext.shouldScroll()
                 && ((MessageAnalyzer.isCommandResponse(response) && mContext
@@ -86,6 +99,14 @@ public class OutputTableManager implements DiagnosticManager {
         return generateRowsFromPairs(mSaver.getDiagnosticPairs());
     }
 
+    /**
+     * Retro-creates an <code>OutputRow</code> for each element in
+     * <code>pairs</code>
+     * 
+     * @param pairs
+     *            An array of Pairs
+     * @return The array of rows
+     */
     private ArrayList<OutputRow> generateRowsFromPairs(
             ArrayList<? extends Pair> pairs) {
         ArrayList<OutputRow> rows = new ArrayList<>();
@@ -97,6 +118,13 @@ public class OutputTableManager implements DiagnosticManager {
         return rows;
     }
 
+    /**
+     * Add the given <code>req</code> and <code>resp</code> to the table in a
+     * new <code>OutputRow</code>
+     * 
+     * @param req
+     * @param resp
+     */
     public void add(VehicleMessage req, VehicleMessage resp) {
 
         if (correspond(req, resp)) {
@@ -117,11 +145,25 @@ public class OutputTableManager implements DiagnosticManager {
         }
     }
 
+    /**
+     * Takes a "snapshot" of the current rows in both tables and writes it to
+     * memory for later use
+     */
     public void save() {
         mSaver.saveDiagnosticRows(mDiagnosticRows);
         mSaver.saveCommandRows(mCommandRows);
     }
 
+    /**
+     * Searches for a row in <code>mDiagnosticRows</code> or
+     * <code>mCommandRows</code> with a response that matches <code>resp</code>
+     * according to an <code>ExactKeyMatcher</code> built from <code>resp</code>
+     * . If it is found, the row is updated with the provided messages.
+     * 
+     * @param req
+     * @param resp
+     * @return True if a matching row was found and updated, false otherwise.
+     */
     public boolean replaceIfMatchesExisting(VehicleMessage req,
             VehicleMessage resp) {
 
@@ -154,6 +196,21 @@ public class OutputTableManager implements DiagnosticManager {
         return false;
     }
 
+    /**
+     * Checks that the provided messages are a legitimate combination of
+     * <code>DiagnosticRequest</code> and <code>DiagnosticResponse</code> or
+     * <code>Command</code> and <code>CommandResponse</code>.
+     * 
+     * @param req
+     * @param resp
+     * @return <code>true</code> if <code>req</code> is a
+     *         <code>DiagnosticRequest</code> and <code>resp</code> is a
+     *         <code>DiagnosticResponse</code> (<code>req</code> may be null) or
+     *         if <code>req</code> is a <code>Command</code> and
+     *         <code>resp</code> is a <code>CommandResponse</code> (
+     *         <code>req</code> may again be null); <code>false</code>
+     *         otherwise.
+     */
     private boolean correspond(VehicleMessage req, VehicleMessage resp) {
         boolean bothValid = (MessageAnalyzer.isDiagnosticRequest(req) && MessageAnalyzer
                 .isDiagnosticResponse(resp))
@@ -176,6 +233,11 @@ public class OutputTableManager implements DiagnosticManager {
         setAdapter();
     }
 
+    /**
+     * Remove the given <code>row</code> from the table.
+     * 
+     * @param row
+     */
     public void removeRow(OutputRow row) {
 
         if (row.getPair() instanceof DiagnosticPair) {
@@ -187,11 +249,17 @@ public class OutputTableManager implements DiagnosticManager {
         updateAdapter();
     }
 
+    /**
+     * Clears the diagnostic table of all rows.
+     */
     public void deleteAllDiagnosticResponses() {
         mDiagnosticRows = new ArrayList<>();
         setAdapter();
     }
 
+    /**
+     * Clears the command response table of all rows.
+     */
     public void deleteAllCommandResponses() {
         mCommandRows = new ArrayList<>();
         setAdapter();
