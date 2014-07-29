@@ -146,12 +146,14 @@ public class DiagnosticActivity extends Activity {
                             + msg.getClass());
         }
 
-        if (matcher == null) {
-            return findMatchingFunctionalBroadcastRequest(msg);
+        DiagnosticRequest matchingRequest = null;
+        if (matcher != null) {
+            matchingRequest = (DiagnosticRequest) MessageAnalyzer.findMatching(
+                    matcher, mOutstandingRequests);
         }
 
-        return (DiagnosticRequest) MessageAnalyzer.findMatching(matcher,
-                mOutstandingRequests);
+        return matchingRequest == null ? findMatchingFunctionalBroadcastRequest(msg)
+                : matchingRequest;
     }
 
     private DiagnosticRequest findMatchingFunctionalBroadcastRequest(
