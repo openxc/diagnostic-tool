@@ -28,14 +28,14 @@
             <TextView
                 android:id="@+id/frequencyLabel"
                 style="@style/BaseDiagInputLabel"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:labelFor="@+id/frequencyInput"
                 android:text="@string/frequency_label" />
 
             <EditText
                 android:id="@+id/frequencyInput"
                 style="@style/BaseDiagInputText"
-                android:layout_width="100dp"
+                android:layout_width="50dp"
                 android:inputType="numberDecimal" />
         </LinearLayout>
 

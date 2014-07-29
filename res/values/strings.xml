@@ -47,7 +47,7 @@
     <string name="dump">Dump</string>
 
     <!-- Diagnostic Strings -->
-    <string name="frequency_label">Frequency</string>
+    <string name="frequency_label">Freq.</string>
     <string name="bus_label">Bus</string>
     <string name="id_label">ID</string>
     <string name="mode_label">Mode</string>

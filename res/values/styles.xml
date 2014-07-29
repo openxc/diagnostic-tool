@@ -63,11 +63,13 @@
         <item name="android:gravity">center</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
     <style name="DiagInputLabel" parent="BaseDiagInputLabel">
         <item name="android:layout_width">0dip</item>
-        <item name="android:layout_weight">0.2</item>
+        <item name="android:layout_weight">0.25</item>
         <item name="android:minWidth">150dp</item>
     </style>
 

@@ -235,27 +235,25 @@ public class InputManager implements DiagnosticManager {
 
     private void initRequestTextFields(LinearLayout parent) {
 
+        String hexHint = "0x";
         mBusInputText = (EditText) parent.findViewById(R.id.busInput);
         mBusInputText.setHint("1 or 2");
         textFields.add(mBusInputText);
 
         mIdInputText = (EditText) parent.findViewById(R.id.idInput);
-        mIdInputText.setHint("0x");
+        mIdInputText.setHint(hexHint);
         textFields.add(mIdInputText);
 
         mModeInputText = (EditText) parent.findViewById(R.id.modeInput);
-        mModeInputText.setHint("0x"
-                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMin())
-                + " - " + "0x"
-                + Integer.toHexString(DiagnosticMessage.MODE_RANGE.getMax()));
+        mModeInputText.setHint(hexHint);
         textFields.add(mModeInputText);
 
         mPidInputText = (EditText) parent.findViewById(R.id.pidInput);
-        mPidInputText.setHint("0x");
+        mPidInputText.setHint(hexHint);
         textFields.add(mPidInputText);
 
         mPayloadInputText = (EditText) parent.findViewById(R.id.payloadInput);
-        mPayloadInputText.setHint("e.g. 0x1234");
+        mPayloadInputText.setHint(hexHint);
         textFields.add(mPayloadInputText);
 
         mNameInputText = (EditText) parent.findViewById(R.id.nameInput);
