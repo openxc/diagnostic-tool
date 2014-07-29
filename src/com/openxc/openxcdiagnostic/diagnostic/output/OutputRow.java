@@ -80,7 +80,9 @@ public class OutputRow {
                 .setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mAlertManager.show();
+                        if (!mAlertManager.isShowing()) {
+                            mAlertManager.show();
+                        }
                     }
                 });
 
