@@ -70,7 +70,7 @@ public class SettingsManager {
         editor.commit();
     }
 
-    private String getNumMessagesKey() {
+    private static String getNumMessagesKey() {
         return "num_messages_key";
     }
 }

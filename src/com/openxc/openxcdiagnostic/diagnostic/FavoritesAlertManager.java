@@ -87,6 +87,7 @@ public class FavoritesAlertManager implements DiagnosticManager {
                     R.layout.diagfavoritesalertrequestheaderrow, null);
         }
         newView.setId(alertHeaderId);
+        Utilities.scaleDownAllLabelsToFit(newView);
         Utilities.replaceView(favoritesLayout, oldView, newView);
     }
 

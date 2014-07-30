@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -138,6 +140,46 @@ public class Utilities {
             View newView) {
         layout.addView(newView, layout.indexOfChild(oldView));
         layout.removeView(oldView);
+    }
+
+    /**
+     * Finds all TextViews in a given layout and returns them in an
+     * <code>ArrayList</code>
+     * 
+     * @param layout
+     * @return
+     */
+    public static ArrayList<TextView> getAllLabels(ViewGroup layout) {
+
+        ArrayList<TextView> views = new ArrayList<>();
+
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View view = layout.getChildAt(i);
+            if (view instanceof ViewGroup) {
+                views.addAll(getAllLabels((ViewGroup) layout.getChildAt(i)));
+            } else if (view instanceof TextView) {
+                views.add((TextView) view);
+            }
+        }
+
+        return views;
+    }
+
+    public static void scaleDownAllLabelsToFit(ViewGroup layout) {
+
+        for (final TextView tv : getAllLabels(layout)) {
+            tv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top,
+                        int right, int bottom, int oldLeft, int oldTop,
+                        int oldRight, int oldBottom) {
+                    if (right - left > 0) {
+                        scaleDownTextToFit(tv);
+                    }
+                }
+            });
+        }
+
     }
 
     public static void scaleDownTextToFit(TextView tv) {
