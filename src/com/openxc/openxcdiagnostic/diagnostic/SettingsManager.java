@@ -1,5 +1,7 @@
 package com.openxc.openxcdiagnostic.diagnostic;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -7,11 +9,14 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.openxc.openxcdiagnostic.R;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
  * 
@@ -60,6 +65,39 @@ public class SettingsManager {
         builder.setPositiveButton("Done", null);
         builder.create().show();
         initButtons(settingsLayout);
+        fitLabels(settingsLayout);
+    }
+
+    private ArrayList<TextView> getAllLabels(ViewGroup layout) {
+
+        ArrayList<TextView> views = new ArrayList<>();
+
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View view = layout.getChildAt(i);
+            if (view instanceof ViewGroup) {
+                views.addAll(getAllLabels((ViewGroup) layout.getChildAt(i)));
+            } else if (view instanceof TextView) {
+                views.add((TextView) view);
+            }
+        }
+
+        return views;
+    }
+
+    private void fitLabels(LinearLayout settingsLayout) {
+
+        for (final TextView tv : getAllLabels(settingsLayout)) {
+            tv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top,
+                        int right, int bottom, int oldLeft, int oldTop,
+                        int oldRight, int oldBottom) {
+                    if (right - left > 0) {
+                        Utilities.scaleDownTextToFit(tv);
+                    }
+                }
+            });
+        }
     }
 
     private void initButtons(View layout) {

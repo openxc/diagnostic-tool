@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.openxc.messages.Command;
 import com.openxc.messages.CommandResponse;
@@ -137,5 +138,14 @@ public class Utilities {
             View newView) {
         layout.addView(newView, layout.indexOfChild(oldView));
         layout.removeView(oldView);
+    }
+
+    public static void scaleDownTextToFit(TextView tv) {
+
+        float fontSize = tv.getTextSize();
+        while ((int) tv.getPaint().measureText(tv.getText().toString()) > tv
+                .getWidth() - tv.getPaddingLeft() - tv.getPaddingRight()) {
+            tv.setTextSize(fontSize--);
+        }
     }
 }
