@@ -205,7 +205,6 @@
         <item name="android:textSize">20sp</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:padding">5dp</item>
     </style>
 
     <style name="SettingsItemLabel" parent="SettingsText">
