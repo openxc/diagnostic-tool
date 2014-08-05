@@ -141,8 +141,7 @@ public class ResponseDetailsAlertManager {
             Command command = (Command) reqMessage;
             createAndAddHeaderRow(requestTable,
                     mResources.getString(R.string.alert_command_header));
-            createAndAddRow(requestTable,
-                    mResources.getString(R.string.command_label),
+            createAndAddRow(requestTable, "Cmd.",
                     Formatter.getCommandOutput(command), command);
             createAndAddButtonsRow(requestTable, reqMessage);
         } else if (reqMessage == null) {
@@ -252,8 +251,7 @@ public class ResponseDetailsAlertManager {
             }
         } else if (MessageAnalyzer.isCommandResponse(respMessage)) {
             CommandResponse resp = (CommandResponse) respMessage;
-            createAndAddRow(responseTable,
-                    mResources.getString(R.string.command_response_label),
+            createAndAddRow(responseTable, "Msg.",
                     Formatter.getMessageOutput(resp), resp);
         }
     }
