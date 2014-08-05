@@ -191,6 +191,7 @@ public class OutputRow {
             int outputColor = Formatter.getOutputColor(mContext, resp);
             for (TextView tv : outputs) {
                 tv.setTextColor(outputColor);
+                Utilities.fitTextInTextView(mContext, tv);
             }
 
         } else if (MessageAnalyzer.isCommandResponse(mResponse)) {

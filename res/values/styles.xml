@@ -132,21 +132,19 @@
         <item name="android:textIsSelectable">true</item>
         <item name="android:textSize">17sp</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="DiagOutputTableRowLabel" parent="DiagOutputTableContentText">
-        <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:singleLine">true</item>
         <item name="android:gravity">left</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DiagOutputTableRowValue" parent="DiagOutputTableContentText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_weight">0.8</item>
         <item name="android:gravity">right</item>
         <item name="android:textStyle">italic</item>
     </style>
