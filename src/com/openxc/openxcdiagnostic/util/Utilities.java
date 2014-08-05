@@ -15,7 +15,9 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.graphics.Rect;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -143,8 +145,8 @@ public class Utilities {
     }
 
     /**
-     * Finds all TextViews in a given layout and returns them in an
-     * <code>ArrayList</code>
+     * Recursively finds all TextViews in a given layout and returns them in an
+     * <code>ArrayList</code>.
      * 
      * @param layout
      * @return
@@ -165,29 +167,83 @@ public class Utilities {
         return views;
     }
 
-    public static void scaleDownAllLabelsToFit(ViewGroup layout) {
+    public static void scaleDownAllLabelsToFit(Activity context,
+            ViewGroup layout) {
 
-        for (final TextView tv : getAllLabels(layout)) {
+        for (TextView tv : getAllLabels(layout)) {
+            fitTextInTextView(context, tv);
+        }
+    }
+
+    public static void fitTextInTextView(final Activity context,
+            final TextView tv) {
+
+        if (tv.getText().toString().trim().equals("")) {
+            return;
+        }
+
+        if (tv.getWidth() == 0) {
+
             tv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @Override
                 public void onLayoutChange(View v, int left, int top,
                         int right, int bottom, int oldLeft, int oldTop,
                         int oldRight, int oldBottom) {
                     if (right - left > 0) {
-                        scaleDownTextToFit(tv);
+                        fitText(context, tv);
+                        tv.removeOnLayoutChangeListener(this);
                     }
                 }
             });
+        } else {
+            fitText(context, tv);
         }
-
     }
 
-    public static void scaleDownTextToFit(TextView tv) {
+    private static boolean textTooWide(TextView tv) {
+        return (int) tv.getPaint().measureText(tv.getText().toString()) > tv
+                .getWidth() - tv.getPaddingLeft() - tv.getPaddingRight();
+    }
 
-        float fontSize = tv.getTextSize();
-        while ((int) tv.getPaint().measureText(tv.getText().toString()) > tv
-                .getWidth() - tv.getPaddingLeft() - tv.getPaddingRight()) {
-            tv.setTextSize(fontSize--);
+    private static boolean textTooTall(Activity context, TextView tv) {
+        return getRequiredHeight(context, tv) > tv.getHeight()
+                - tv.getPaddingBottom() - tv.getPaddingTop();
+    }
+
+    private static void fitText(Activity context, TextView tv) {
+
+        if (tv.getText().toString().trim().equals("")) {
+            return;
         }
+
+        tv.setTextSize(getMaxFittingFontSize(context, tv));
+    }
+
+    private static int getRequiredHeight(Activity context, TextView tv) {
+        TextView textView = new TextView(context);
+        textView.setText(tv.getText());
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, tv.getTextSize());
+        int widthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                getScreenWidth(context), MeasureSpec.AT_MOST);
+        int heightMeasureSpec = MeasureSpec.makeMeasureSpec(0,
+                MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        return textView.getMeasuredHeight();
+    }
+
+    public static float getMaxFittingFontSize(Activity context, TextView tv) {
+
+        if (tv.getText().toString().trim().equals("")) {
+            return Float.MAX_VALUE;
+        }
+
+        float fontSize = 2;
+        float originalFontSize = tv.getTextSize();
+        tv.setTextSize(fontSize);
+        while (!textTooTall(context, tv) && !textTooWide(tv)) {
+            tv.setTextSize(fontSize++);
+        }
+        tv.setTextSize(originalFontSize);
+        return fontSize - 2;
     }
 }

@@ -61,7 +61,7 @@ public class SettingsManager {
         builder.setPositiveButton("Done", null);
         builder.create().show();
         initButtons(settingsLayout);
-        Utilities.scaleDownAllLabelsToFit(settingsLayout);
+        Utilities.scaleDownAllLabelsToFit(mContext, settingsLayout);
     }
 
     private void initButtons(View layout) {

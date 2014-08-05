@@ -20,6 +20,7 @@ import com.openxc.openxcdiagnostic.R;
 import com.openxc.openxcdiagnostic.util.Formatter;
 import com.openxc.openxcdiagnostic.util.MessageAnalyzer;
 import com.openxc.openxcdiagnostic.util.Toaster;
+import com.openxc.openxcdiagnostic.util.Utilities;
 
 /**
  * 
@@ -216,6 +217,7 @@ public class ResponseDetailsAlertManager {
         }
         button.setBackground(mResources.getDrawable(backgroundSelector));
         button.setText(text);
+        Utilities.fitTextInTextView(mContext, button);
     }
 
     private void fillResponseTable(VehicleMessage respMessage) {
@@ -295,6 +297,7 @@ public class ResponseDetailsAlertManager {
         ((TextView) row.findViewById(R.id.alertRowLabel)).setText(label);
         TextView valueText = (TextView) row.findViewById(R.id.alertRowValue);
         valueText.setText(value);
+        Utilities.fitTextInTextView(mContext, valueText);
         if (MessageAnalyzer.isDiagnosticResponse(msg)) {
             valueText.setTextColor(Formatter.getOutputColor(mContext,
                     (DiagnosticResponse) msg));
