@@ -53,6 +53,8 @@ public class FavoritesAlertManager implements DiagnosticManager {
                 .getLayoutInflater().inflate(R.layout.diagfavoritesalert, null);
         favoritesLayout.setMinimumHeight((int) (Utilities
                 .getScreenHeight(mContext)));
+        favoritesLayout.setMinimumWidth((int) (Utilities
+                .getScreenWidth(mContext)));
         setHeader(favoritesLayout);
         fillTable(favoritesLayout);
 
